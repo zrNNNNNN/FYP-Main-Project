@@ -33,7 +33,7 @@
   .stats{margin-left:auto;color:var(--muted);font-size:.9rem;}
   .message{margin-top:12px;padding:10px;border-radius:10px;background:#fff;font-size:.95rem;color:var(--muted);border:1px solid #eee;}
   /* popup */
-  .overlay{position:fixed;inset:0;background:rgba(2,6,23,.45);display:flex;align-items:center;justify-content:center;z-index:40;backdrop-filter:blur(2px);}
+  .overlay{position:fixed;inset:0;background:rgba(2,6,23,.45);display:none;align-items:center;justify-content:center;z-index:40;backdrop-filter:blur(2px);}
   .modal{background:var(--card);padding:20px;border-radius:14px;max-width:420px;width:94%;text-align:center;box-shadow:0 18px 40px rgba(2,6,23,.32);}
   .modal h3{margin:0 0 8px;}
   .keysvg{width:92px;height:92px;margin:8px auto;display:block;}
@@ -65,13 +65,12 @@
 
   <div class="controls">
     <button id="resetBtn" class="ghost" aria-label="Reset game">Reset</button>
-    <button id="showAnswers" class="ghost" aria-label="Show correct matches">Show answers</button>
     <div class="message small" id="hint">Tip: Tap a Course then a Job. Correct matches will lock in.</div>
   </div>
 </div>
 
 <!-- Key popup (hidden until success) -->
-<div id="overlay" class="overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
     <h3 id="modalTitle">Key #1 Received!</h3>
     <!-- Inline SVG key -->
@@ -82,6 +81,7 @@
     </svg>
     <p class="small">Screenshot this page to claim your prize later at Level 1!</p>
     <div style="margin-top:12px;">
+      <button id="closeModal" class="tryagain">Close</button>
     </div>
   </div>
 </div>
@@ -89,10 +89,7 @@
 <script>
 /* -------------------------
    Customize courses & jobs
-   -------------------------
-   Replace these strings with your 5 courses and 5 corresponding jobs.
-   The matching is index-based: courses[i] matches jobs[i].
-*/
+   ------------------------- */
 const courses = [
   "Aerospace Engineering",
   "Cloud Engineering",
@@ -110,20 +107,19 @@ const jobs = [
 ];
 
 /* -------------------------
-   Implementation (no backend)
+   DOM references
    ------------------------- */
 const coursesList = document.getElementById('coursesList');
 const jobsList = document.getElementById('jobsList');
 const matchedCountEl = document.getElementById('matchedCount');
 const attemptsEl = document.getElementById('attempts');
 const overlay = document.getElementById('overlay');
-const claimBtn = document.getElementById('claimBtn');
-const closeModal = document.getElementById('closeModal');
+const resetBtn = document.getElementById('resetBtn');
+const closeModalBtn = document.getElementById('closeModal');
 
 let state = {
   shuffledCourses: [],
   shuffledJobs: [],
-  // mapping from shuffled index -> true original index
   courseMap: [],
   jobMap: [],
   selectedCourseIndex: null,
@@ -147,6 +143,7 @@ function resetGame() {
   state.attempts = 0;
   attemptsEl.textContent = 0;
   matchedCountEl.textContent = 0;
+  overlay.style.display = 'none';
   renderLists();
 }
 
@@ -186,7 +183,6 @@ function renderLists(){
 }
 
 function updateSelectionStyles() {
-  // clear
   document.querySelectorAll('.item').forEach(el=>el.classList.remove('selected'));
   if (state.selectedCourseIndex !== null) {
     const el = coursesList.querySelector(`[data-index="${state.selectedCourseIndex}"]`);
@@ -199,10 +195,8 @@ function updateSelectionStyles() {
 }
 
 function selectCourse(i){
-  // ignore if already matched
   if (Object.values(state.matchedPairs).includes(String(i))) return;
   state.selectedCourseIndex = i;
-  // if previously selected job, try match
   if (state.selectedJobIndex !== null) {
     tryMatch();
   } else {
@@ -226,27 +220,22 @@ function tryMatch(){
   attemptsEl.textContent = state.attempts;
 
   if (courseOriginalIndex === jobOriginalIndex) {
-    // correct
     state.matchedPairs[state.selectedJobIndex] = String(state.selectedCourseIndex);
     matchedCountEl.textContent = Object.keys(state.matchedPairs).length;
-    // lock selection and clear
     state.selectedCourseIndex = null;
     state.selectedJobIndex = null;
     renderLists();
-    // check win
     if (Object.keys(state.matchedPairs).length === courses.length) {
-      // show key popup
-      showKeyPopup();
+      overlay.style.display = 'flex';
     }
   } else {
-    // incorrect — brief visual feedback, then deselect
     const cEl = coursesList.querySelector(`[data-index="${state.selectedCourseIndex}"]`);
     const jEl = jobsList.querySelector(`[data-index="${state.selectedJobIndex}"]`);
-    if(cEl) cEl.style.borderColor = 'rgba(239,68,68,.25)';
-    if(jEl) jEl.style.borderColor = 'rgba(239,68,68,.25)';
+    if (cEl) cEl.style.borderColor = 'rgba(239,68,68,.25)';
+    if (jEl) jEl.style.borderColor = 'rgba(239,68,68,.25)';
     setTimeout(()=>{
-      if(cEl) cEl.style.borderColor = '';
-      if(jEl) jEl.style.borderColor = '';
+      if (cEl) cEl.style.borderColor = '';
+      if (jEl) jEl.style.borderColor = '';
       state.selectedCourseIndex = null;
       state.selectedJobIndex = null;
       updateSelectionStyles();
@@ -254,33 +243,13 @@ function tryMatch(){
   }
 }
 
-function showKeyPopup(){
-  overlay.style.display = 'flex';
-}
+/* Event bindings */
+resetBtn.addEventListener('click', resetGame);
+closeModalBtn.addEventListener('click', ()=>{ overlay.style.display = 'none'; });
 
-document.getElementById('resetBtn').addEventListener('click', ()=>resetGame());
-document.getElementById('showAnswers').addEventListener('click', ()=>revealAnswers());
-closeModal.addEventListener('click', ()=>overlay.style.display='none');
-claimBtn.addEventListener('click', ()=> {
-  // you may hook this to record redemption (optional)
-  alert('Prize claimed — you can log this manually or implement a backend to track winners.');
-  overlay.style.display = 'none';
-});
-
-function revealAnswers(){
-  // mark matchedPairs as correct map of indices
-  state.matchedPairs = {};
-  // Build a reverse lookup: for each shuffled job j -> find the matching shuffled course i
-  state.jobMap.forEach((origJobIndex, jIdx)=>{
-    // find the shuffled course index whose orig index equals origJobIndex
-    const courseShuffledIdx = state.courseMap.findIndex(v => v === origJobIndex);
-    if (courseShuffledIdx !== -1) state.matchedPairs[jIdx] = String(courseShuffledIdx);
-  });
-  renderLists();
-  matchedCountEl.textContent = Object.keys(state.matchedPairs).length;
-}
-
-resetGame(); // initial start
+/* Start */
+resetGame();
 </script>
 </body>
 </html>
+
