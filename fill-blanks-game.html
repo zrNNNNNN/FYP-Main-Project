@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Fill the Blanks — SEG Open House</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0f172a; --bg2:#1e293b;
+    --card-bg: rgba(255,255,255,0.06);
+    --accent-500:#2563eb;
+    --accent-400:#3b82f6;
+    --muted:#9aa6c0;
+    --success:#10b981;
+    --danger:#ef4444;
+    --card-radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    color:#e6eef8;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:20px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .stage{width:100%;max-width:980px;}
+
+  header{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    margin-bottom:18px;
+  }
+
+  .hero{
+    flex:1;
+    background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
+    border-radius:12px;
+    padding:18px;
+    box-shadow: 0 6px 20px rgba(2,6,23,.06);
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .logo{
+    width:56px;height:56px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
+    color:white;font-weight:700;font-size:20px;
+    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+    flex:0 0 56px;
+  }
+  .hero h1{margin:0;font-size:1.15rem}
+  .hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
+
+  main {
+    margin-top:6px;
+    display:block;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--card-radius);
+    padding:18px;
+    box-shadow: 0 12px 40px rgba(2,6,23,.28);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .question{
+    margin-bottom:14px;
+    padding:12px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .question h3{margin:0 0 8px;font-size:0.98rem;color:#e6f0ff}
+  .hint{margin:0 0 8px;color:var(--muted);font-size:.92rem}
+
+  p.desc{line-height:1.6;color:#e6eef8;font-size:.98rem;margin:0;word-break:break-word}
+
+  /* blank input style (no visible underscores) */
+  input.blank{
+    min-width:84px;
+    border-radius:6px;
+    border:0;
+    border-bottom:2px solid rgba(255,255,255,0.06);
+    background: transparent;
+    padding:6px 8px;
+    margin:0 6px;
+    font-weight:600;
+    color:#fff;
+    outline:none;
+    transition: box-shadow .15s, border-color .15s, transform .08s;
+    display:inline-block;
+    font-size:.95rem;
+    text-align:left;
+  }
+  input.blank:focus{
+    border-bottom-color: rgba(59,130,246,0.9);
+    box-shadow: 0 8px 18px rgba(59,130,246,0.06);
+    transform: translateY(-2px);
+  }
+  input.blank.correct{
+    border-bottom-color: rgba(16,185,129,0.6) !important;
+    box-shadow: 0 8px 18px rgba(16,185,129,0.06);
+  }
+  input.blank.wrong{
+    border-bottom-color: rgba(239,68,68,0.6) !important;
+    box-shadow: 0 8px 18px rgba(239,68,68,0.04);
+  }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
+    color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    box-shadow: 0 8px 22px rgba(37,99,235,0.12);
+  }
+  .btn.ghost{
+    background:transparent;color:var(--accent-500);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:9px 12px;
+  }
+  .stats{margin-left:auto;color:var(--muted);font-weight:600;}
+
+  /* modal + confetti */
+  #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
+  .overlay{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;
+  }
+  .overlay.show{display:flex}
+  .modal{
+    width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);
+    border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);
+    transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
+  }
+  .overlay.show .modal{transform:translateY(0);opacity:1}
+  .modal h3{margin:0;font-size:1.18rem;color:#ffd166}
+  .modal p{color:var(--muted);margin-top:8px}
+  .modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
+
+  /* small helpers */
+  .note{color:var(--muted);font-size:.92rem;margin-top:12px}
+  @media (max-width:640px){
+    .hero{flex-direction:row;align-items:center}
+    .logo{width:48px;height:48px}
+    input.blank{min-width:72px}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <header>
+    <div class="hero" aria-hidden="false">
+      <div class="logo">SEG</div>
+      <div>
+        <h1>Fill In The Missing Words</h1>
+        <p class="lead" style="margin:4px 0 0;color:var(--muted)">Read the full descriptions on the wall. Fill in all blanks to collect <strong>Key #2</strong>.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="gameTitle">
+      <div id="questionsContainer" role="list" aria-live="polite"></div>
+
+      <div class="controls" style="margin-top:12px;">
+        <button id="submitBtn" class="btn" aria-label="Submit answers">Submit Answers</button>
+        <button id="resetBtn" class="btn ghost" aria-label="Reset">Reset</button>
+        <div class="stats" aria-live="polite">Attempts: <span id="attempts">0</span></div>
+      </div>
+
+      <p class="note">Tip: Answers are case-insensitive. Each blank replaces the first occurrence of the word in the description.</p>
+    </section>
+  </main>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document" aria-labelledby="modalTitle">
+    <div class="key" aria-hidden="true">
+      <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="k" x1="0" x2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs><path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k)"/></svg>
+    </div>
+    <h3 id="modalTitle">Key #2 Received!</h3>
+    <p>Great! Screenshot this page to claim your prize at Level 1.</p>
+    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
+      <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
+      <button id="claimBtn" class="btn" aria-label="Claim">Claim (log)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   QUESTIONS — customize here
+   The script replaces the FIRST whole-word occurrence of each blank.
+   Add or edit question objects as needed.
+   ========================= */
+const questions = [
+  {
+    title: "Advanced & Digital Manufacturing — 3D printing",
+    fullText: "Turn ideas into impact with advanced 3D printing – from building parts for planes to creating custom-fit implants that save lives in healthcare.",
+    blanks: ["impact", "building", "implants", "save"]
+  },
+  {
+    title: "Aerospace Engineering — Aircraft & Space",
+    fullText: "Aerospace Engineering covers aerodynamics, propulsion, and systems design. Students learn about aircraft structures and flight dynamics. Core projects include designing UAVs, testing wind-tunnel models, and integrating avionics systems for robust flight control.",
+    blanks: ["aerodynamics"]
+  },
+  {
+    title: "Cloud Engineering — Distributed Systems",
+    fullText: "Cloud Engineering teaches how to design scalable distributed systems, container orchestration, and secure cloud-native architectures. Students practice deploying applications on public clouds, implementing CI/CD pipelines, and optimizing infrastructure for cost and performance.",
+    blanks: ["container"]
+  },
+  {
+    title: "Biomedical Engineering — Health Tech",
+    fullText: "Biomedical Engineering combines biology and engineering to develop diagnostics, prosthetics, and wearable health devices. Labs focus on medical imaging, signal processing, and creating biocompatible materials for implants and sensors.",
+    blanks: ["prosthetics"]
+  },
+  {
+    title: "AI & Data Engineering — Intelligent Systems",
+    fullText: "AI & Data Engineering covers machine learning, data pipelines, model deployment, and ethical AI. Students train models on real datasets, deploy inference endpoints, and learn feature engineering and data validation techniques.",
+    blanks: ["feature"]
+  }
+];
+
+/* =========================
+   DOM refs & state
+   ========================= */
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const attemptsEl = document.getElementById('attempts');
+const overlay = document.getElementById('overlay');
+const closeModal = document.getElementById('closeModal');
+const claimBtn = document.getElementById('claimBtn');
+const confettiCanvas = document.getElementById('confetti');
+
+let attempts = 0;
+
+/* utility */
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/* build UI dynamically (first whole-word occurrence replaced) */
+function buildQuestions(){
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const node = document.createElement('article');
+    node.className = 'question';
+    node.setAttribute('role','listitem');
+
+    const header = document.createElement('h3');
+    header.textContent = `Question ${qi+1}: ${q.title}`;
+    node.appendChild(header);
+
+    const hint = document.createElement('div');
+    hint.className = 'hint';
+    hint.textContent = 'Refer to the printed description at the booth to complete the blanks.';
+    node.appendChild(hint);
+
+    // replace blanks with token (prefer whole word)
+    let html = q.fullText;
+    q.blanks.forEach((blank, bi) => {
+      const token = `@@BLANK_${qi}_${bi}@@`;
+      const reWord = new RegExp('\\b' + escapeRegExp(blank) + '\\b', 'i');
+      if (reWord.test(html)) {
+        html = html.replace(reWord, token);
+      } else {
+        // fallback to non-boundary match (handles punctuation-adjacent)
+        html = html.replace(new RegExp(escapeRegExp(blank), 'i'), token);
+      }
+    });
+
+    // split into parts and create nodes
+    const parts = html.split(/(@@BLANK_\d+_\d+@@)/g);
+    const p = document.createElement('p');
+    p.className = 'desc';
+    parts.forEach(part => {
+      if (!part) return;
+      const m = part.match(/^@@BLANK_(\d+)_(\d+)@@$/);
+      if (m) {
+        const [_, qIdxStr, bIdxStr] = m;
+        const id = `input_${qIdxStr}_${bIdxStr}`;
+        const input = document.createElement('input');
+        input.className = 'blank';
+        input.type = 'text';
+        input.id = id;
+        // no visible underscores; blank looks clean
+        input.placeholder = '';
+        input.autocapitalize = 'off';
+        input.spellcheck = false;
+        input.dataset.q = qIdxStr;
+        input.dataset.b = bIdxStr;
+        input.setAttribute('aria-label', `Blank ${Number(qIdxStr)+1}-${Number(bIdxStr)+1}`);
+        p.appendChild(input);
+      } else {
+        p.appendChild(document.createTextNode(part));
+      }
+    });
+
+    node.appendChild(p);
+    container.appendChild(node);
+  });
+
+  attemptsEl.textContent = attempts;
+  // focus first input for convenience
+  setTimeout(()=> {
+    const first = container.querySelector('input.blank');
+    if (first) first.focus();
+  }, 200);
+}
+
+/* validation */
+function validateAnswers(){
+  const inputs = Array.from(container.querySelectorAll('input.blank'));
+  let allCorrect = true;
+  inputs.forEach(inp => {
+    inp.classList.remove('correct','wrong');
+    const qIdx = Number(inp.dataset.q);
+    const bIdx = Number(inp.dataset.b);
+    const expected = questions[qIdx].blanks[bIdx];
+    const value = (inp.value || '').trim();
+    if (!value) {
+      allCorrect = false;
+      inp.classList.add('wrong');
+    } else if (value.toLowerCase() === expected.toLowerCase()) {
+      inp.classList.add('correct');
+    } else {
+      allCorrect = false;
+      inp.classList.add('wrong');
+    }
+  });
+  return allCorrect;
+}
+
+/* small shake for feedback */
+function shake(el){
+  el.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240,iterations:1});
+}
+
+/* confetti simple burst */
+function fireConfetti(){
+  const ctx = confettiCanvas.getContext('2d');
+  const w = confettiCanvas.width = window.innerWidth;
+  const h = confettiCanvas.height = window.innerHeight;
+  confettiCanvas.style.display = 'block';
+  const pieces = [];
+  const count = Math.floor(Math.min(80, w/10));
+  for(let i=0;i<count;i++){
+    pieces.push({
+      x: Math.random()*w,
+      y: Math.random()*-h*0.2,
+      w: 6 + Math.random()*10,
+      h: 6 + Math.random()*10,
+      vx: -2 + Math.random()*4,
+      vy: 2 + Math.random()*6,
+      rot: Math.random()*360,
+      speed: 0.02 + Math.random()*0.06,
+      color: ['#2563eb','#ef4444','#10b981','#f59e0b','#7c3aed'][Math.floor(Math.random()*5)]
+    });
+  }
+  let t0 = performance.now();
+  function render(t){
+    const dt = t - t0; t0 = t;
+    ctx.clearRect(0,0,w,h);
+    for(let p of pieces){
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.speed*30;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+    // stop after ~2400ms
+    if ((t - startTime) < 2400) requestAnimationFrame(render);
+    else { confettiCanvas.style.display='none'; ctx.clearRect(0,0,w,h); }
+  }
+  const startTime = performance.now();
+  requestAnimationFrame(render);
+}
+
+/* submit handler */
+submitBtn.addEventListener('click', ()=>{
+  attempts++;
+  attemptsEl.textContent = attempts;
+  const inputs = Array.from(container.querySelectorAll('input.blank'));
+  if (inputs.length === 0) return;
+
+  // empty check
+  const anyEmpty = inputs.some(i => !i.value.trim());
+  if (anyEmpty) {
+    inputs.filter(i=>!i.value.trim()).forEach(i=>i.classList.add('wrong'));
+    shake(container);
+    return;
+  }
+
+  const ok = validateAnswers();
+  if (ok){
+    // show modal + confetti
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    fireConfetti();
+  } else {
+    shake(container);
+  }
+});
+
+/* reset */
+resetBtn.addEventListener('click', ()=>{
+  attempts = 0;
+  buildQuestions();
+});
+
+/* modal buttons */
+closeModal.addEventListener('click', ()=>{
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+});
+claimBtn.addEventListener('click', ()=>{
+  // placeholder: log claim locally. Replace with fetch to endpoint if needed.
+  alert('Claim recorded locally. Replace this with backend logging if you want persistence.');
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+});
+
+/* init */
+buildQuestions();
+
+/* accessibility: keep canvas sized */
+window.addEventListener('resize', ()=> {
+  if (confettiCanvas.style.display !== 'none'){
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+});
+</script>
+</body>
+</html>
