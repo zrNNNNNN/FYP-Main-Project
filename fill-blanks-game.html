@@ -198,7 +198,7 @@
     <p>Great! Screenshot this page to claim your prize at Level 1.</p>
     <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
       <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
-      <button id="claimBtn" class="btn" aria-label="Claim">Claim (log)</button>
+      <button id="claimBtn" class="btn" aria-label="Claim">Claim</button>
     </div>
   </div>
 </div>
@@ -270,7 +270,7 @@ function buildQuestions(){
 
     const hint = document.createElement('div');
     hint.className = 'hint';
-    hint.textContent = 'Refer to the printed description at the booth to complete the blanks.';
+    hint.textContent = 'Refer to the printed description on the wall to complete the blanks.';
     node.appendChild(hint);
 
     // replace blanks with token (prefer whole word)
@@ -436,7 +436,7 @@ closeModal.addEventListener('click', ()=>{
 });
 claimBtn.addEventListener('click', ()=>{
   // placeholder: log claim locally. Replace with fetch to endpoint if needed.
-  alert('Claim recorded locally. Replace this with backend logging if you want persistence.');
+  alert('Successfully Claimed!');
   overlay.classList.remove('show');
   overlay.setAttribute('aria-hidden','true');
 });
