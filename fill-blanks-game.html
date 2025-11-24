@@ -6,158 +6,181 @@
 <title>Fill the Blanks — SEG Open House</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg1:#0f172a; --bg2:#1e293b;
-    --card-bg: rgba(255,255,255,0.06);
-    --accent-500:#2563eb;
-    --accent-400:#3b82f6;
-    --muted:#9aa6c0;
-    --success:#10b981;
-    --danger:#ef4444;
-    --card-radius:16px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    color:#e6eef8;
-    background: linear-gradient(135deg,var(--bg1),var(--bg2));
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding:20px;
-    display:flex;
-    justify-content:center;
-  }
+:root{
+  --bg1:#0f172a; --bg2:#1e293b;
+  --card-bg: rgba(255,255,255,0.06);
+  --accent-500:#2563eb;
+  --accent-400:#3b82f6;
+  --muted:#9aa6c0;
+  --success:#10b981;
+  --danger:#ef4444;
+  --card-radius:16px;
+}
 
-  .stage{width:100%;max-width:980px;}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:#e6eef8;
+  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+}
 
-  header{
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-    margin-bottom:18px;
-  }
+.stage{width:100%;max-width:980px;}
 
-  .hero{
-    flex:1;
-    background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
-    border-radius:12px;
-    padding:18px;
-    box-shadow: 0 6px 20px rgba(2,6,23,.06);
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-  .logo{
-    width:56px;height:56px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
-    color:white;font-weight:700;font-size:20px;
-    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
-    flex:0 0 56px;
-  }
-  .hero h1{margin:0;font-size:1.15rem}
-  .hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
+header{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
 
-  main {
-    margin-top:6px;
-    display:block;
-  }
+.hero{
+  flex:1;
+  background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
+  border-radius:12px;
+  padding:18px;
+  box-shadow: 0 6px 20px rgba(2,6,23,.06);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
 
-  .card{
-    background:var(--card-bg);
-    border-radius:var(--card-radius);
-    padding:18px;
-    box-shadow: 0 12px 40px rgba(2,6,23,.28);
-    border: 1px solid rgba(255,255,255,0.03);
-  }
+.logo{
+  width:56px;height:56px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
+  color:white;font-weight:700;font-size:20px;
+  box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+  flex:0 0 56px;
+}
 
-  .question{
-    margin-bottom:14px;
-    padding:12px;
-    border-radius:12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.02);
-  }
+.hero h1{margin:0;font-size:1.15rem}
+.hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
 
-  .question h3{margin:0 0 8px;font-size:0.98rem;color:#e6f0ff}
-  .hint{margin:0 0 8px;color:var(--muted);font-size:.92rem}
+main {
+  margin-top:6px;
+  display:block;
+}
 
-  p.desc{line-height:1.6;color:#e6eef8;font-size:.98rem;margin:0;word-break:break-word}
+.card{
+  background:var(--card-bg);
+  border-radius:var(--card-radius);
+  padding:18px;
+  box-shadow: 0 12px 40px rgba(2,6,23,.28);
+  border: 1px solid rgba(255,255,255,0.03);
+}
 
-  /* blank input style (no visible underscores) */
-  input.blank{
-    min-width:84px;
-    border-radius:6px;
-    border:0;
-    border-bottom:2px solid rgba(255,255,255,0.06);
-    background: transparent;
-    padding:6px 8px;
-    margin:0 6px;
-    font-weight:600;
-    color:#fff;
-    outline:none;
-    transition: box-shadow .15s, border-color .15s, transform .08s;
-    display:inline-block;
-    font-size:.95rem;
-    text-align:left;
-  }
-  input.blank:focus{
-    border-bottom-color: rgba(59,130,246,0.9);
-    box-shadow: 0 8px 18px rgba(59,130,246,0.06);
-    transform: translateY(-2px);
-  }
-  input.blank.correct{
-    border-bottom-color: rgba(16,185,129,0.6) !important;
-    box-shadow: 0 8px 18px rgba(16,185,129,0.06);
-  }
-  input.blank.wrong{
-    border-bottom-color: rgba(239,68,68,0.6) !important;
-    box-shadow: 0 8px 18px rgba(239,68,68,0.04);
-  }
+.question{
+  margin-bottom:14px;
+  padding:12px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.02);
+}
 
-  .controls{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    margin-top:14px;
-    flex-wrap:wrap;
-  }
-  .btn{
-    background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
-    color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
-    display:inline-flex;align-items:center;gap:8px;
-    box-shadow: 0 8px 22px rgba(37,99,235,0.12);
-  }
-  .btn.ghost{
-    background:transparent;color:var(--accent-500);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:9px 12px;
-  }
-  .stats{margin-left:auto;color:var(--muted);font-weight:600;}
+.question h3{margin:0 0 8px;font-size:0.98rem;color:#e6f0ff}
+.hint{margin:0 0 8px;color:var(--muted);font-size:.92rem}
 
-  /* modal + confetti */
-  #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
-  .overlay{
-    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;
-  }
-  .overlay.show{display:flex}
-  .modal{
-    width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);
-    border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);
-    transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
-  }
-  .overlay.show .modal{transform:translateY(0);opacity:1}
-  .modal h3{margin:0;font-size:1.18rem;color:#ffd166}
-  .modal p{color:var(--muted);margin-top:8px}
-  .modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
+p.desc{line-height:1.6;color:#e6eef8;font-size:.98rem;margin:0;word-break:break-word}
 
-  /* small helpers */
-  .note{color:var(--muted);font-size:.92rem;margin-top:12px}
-  @media (max-width:640px){
-    .hero{flex-direction:row;align-items:center}
-    .logo{width:48px;height:48px}
-    input.blank{min-width:72px}
-  }
+input.blank{
+  min-width:84px;
+  border-radius:6px;
+  border:0;
+  border-bottom:2px solid rgba(255,255,255,0.06);
+  background: transparent;
+  padding:6px 8px;
+  margin:0 6px;
+  font-weight:600;
+  color:#fff;
+  outline:none;
+  transition: box-shadow .15s, border-color .15s, transform .08s;
+  display:inline-block;
+  font-size:.95rem;
+  text-align:left;
+}
+
+input.blank:focus{
+  border-bottom-color: rgba(59,130,246,0.9);
+  box-shadow: 0 8px 18px rgba(59,130,246,0.06);
+  transform: translateY(-2px);
+}
+
+input.blank.correct{
+  border-bottom-color: rgba(16,185,129,0.6) !important;
+  box-shadow: 0 8px 18px rgba(16,185,129,0.06);
+}
+
+input.blank.wrong{
+  border-bottom-color: rgba(239,68,68,0.6) !important;
+  box-shadow: 0 8px 18px rgba(239,68,68,0.04);
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
+  color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow: 0 8px 22px rgba(37,99,235,0.12);
+}
+
+.btn.ghost{
+  background:transparent;color:var(--accent-500);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:9px 12px;
+}
+
+.stats{margin-left:auto;color:var(--muted);font-weight:600;}
+
+#confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
+
+.overlay{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;
+}
+
+.overlay.show{display:flex}
+.modal{
+  width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);
+  border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);
+  transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
+}
+.overlay.show .modal{transform:translateY(0);opacity:1}
+.modal h3{margin:0;font-size:1.18rem;color:#ffd166}
+.modal p{color:var(--muted);margin-top:8px}
+.modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
+
+.note{color:var(--muted);font-size:.92rem;margin-top:12px}
+
+/* =========================
+   RESPONSIVE ADJUSTMENTS
+========================= */
+@media (max-width:780px){
+  header {flex-direction:column;align-items:flex-start;}
+  .hero {flex-direction:column;align-items:flex-start;}
+  .controls {flex-direction:column;align-items:stretch;}
+  .stats {margin-left:0;margin-top:6px;}
+  input.blank {min-width:80%; margin:6px 0; font-size:1rem;}
+}
+
+@media (max-width:480px){
+  body {padding:12px;}
+  .hero h1 {font-size:1.05rem;}
+  .modal {width:90%;padding:16px;}
+  input.blank {min-width:95%;}
+}
 </style>
 </head>
 <body>
@@ -203,11 +226,6 @@
 </div>
 
 <script>
-/* =========================
-   QUESTIONS — customize here
-   The script replaces the FIRST whole-word occurrence of each blank.
-   Add or edit question objects as needed.
-   ========================= */
 const questions = [
   {
     title: "Advanced & Digital Manufacturing — 3D printing",
@@ -236,9 +254,6 @@ const questions = [
   }
 ];
 
-/* =========================
-   DOM refs & state
-   ========================= */
 const container = document.getElementById('questionsContainer');
 const submitBtn = document.getElementById('submitBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -249,12 +264,8 @@ const confettiCanvas = document.getElementById('confetti');
 
 let attempts = 0;
 
-/* utility */
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
-/* build UI dynamically (first whole-word occurrence replaced) */
 function buildQuestions(){
   container.innerHTML = '';
   questions.forEach((q, qi) => {
@@ -271,20 +282,13 @@ function buildQuestions(){
     hint.textContent = 'Refer to the printed description on the wall to complete the blanks.';
     node.appendChild(hint);
 
-    // replace blanks with token (prefer whole word)
     let html = q.fullText;
     q.blanks.forEach((blank, bi) => {
       const token = `@@BLANK_${qi}_${bi}@@`;
       const reWord = new RegExp('\\b' + escapeRegExp(blank) + '\\b', 'i');
-      if (reWord.test(html)) {
-        html = html.replace(reWord, token);
-      } else {
-        // fallback to non-boundary match (handles punctuation-adjacent)
-        html = html.replace(new RegExp(escapeRegExp(blank), 'i'), token);
-      }
+      html = reWord.test(html) ? html.replace(reWord, token) : html.replace(new RegExp(escapeRegExp(blank), 'i'), token);
     });
 
-    // split into parts and create nodes
     const parts = html.split(/(@@BLANK_\d+_\d+@@)/g);
     const p = document.createElement('p');
     p.className = 'desc';
@@ -293,12 +297,10 @@ function buildQuestions(){
       const m = part.match(/^@@BLANK_(\d+)_(\d+)@@$/);
       if (m) {
         const [_, qIdxStr, bIdxStr] = m;
-        const id = `input_${qIdxStr}_${bIdxStr}`;
         const input = document.createElement('input');
         input.className = 'blank';
         input.type = 'text';
-        input.id = id;
-        // no visible underscores; blank looks clean
+        input.id = `input_${qIdxStr}_${bIdxStr}`;
         input.placeholder = '';
         input.autocapitalize = 'off';
         input.spellcheck = false;
@@ -306,24 +308,15 @@ function buildQuestions(){
         input.dataset.b = bIdxStr;
         input.setAttribute('aria-label', `Blank ${Number(qIdxStr)+1}-${Number(bIdxStr)+1}`);
         p.appendChild(input);
-      } else {
-        p.appendChild(document.createTextNode(part));
-      }
+      } else { p.appendChild(document.createTextNode(part)); }
     });
-
     node.appendChild(p);
     container.appendChild(node);
   });
-
   attemptsEl.textContent = attempts;
-  // focus first input for convenience
-  setTimeout(()=> {
-    const first = container.querySelector('input.blank');
-    if (first) first.focus();
-  }, 200);
+  setTimeout(()=> { const first = container.querySelector('input.blank'); if(first) first.focus(); }, 200);
 }
 
-/* validation */
 function validateAnswers(){
   const inputs = Array.from(container.querySelectorAll('input.blank'));
   let allCorrect = true;
@@ -333,25 +326,18 @@ function validateAnswers(){
     const bIdx = Number(inp.dataset.b);
     const expected = questions[qIdx].blanks[bIdx];
     const value = (inp.value || '').trim();
-    if (!value) {
+    if (!value || value.toLowerCase() !== expected.toLowerCase()) {
       allCorrect = false;
       inp.classList.add('wrong');
-    } else if (value.toLowerCase() === expected.toLowerCase()) {
-      inp.classList.add('correct');
-    } else {
-      allCorrect = false;
-      inp.classList.add('wrong');
-    }
+    } else { inp.classList.add('correct'); }
   });
   return allCorrect;
 }
 
-/* small shake for feedback */
 function shake(el){
   el.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240,iterations:1});
 }
 
-/* confetti simple burst */
 function fireConfetti(){
   const ctx = confettiCanvas.getContext('2d');
   const w = confettiCanvas.width = window.innerWidth;
@@ -377,17 +363,12 @@ function fireConfetti(){
     const dt = t - t0; t0 = t;
     ctx.clearRect(0,0,w,h);
     for(let p of pieces){
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.speed*30;
+      p.x += p.vx; p.y += p.vy; p.rot += p.speed*30;
       ctx.save();
-      ctx.translate(p.x,p.y);
-      ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     }
-    // stop after ~2400ms
     if ((t - startTime) < 2400) requestAnimationFrame(render);
     else { confettiCanvas.style.display='none'; ctx.clearRect(0,0,w,h); }
   }
@@ -395,54 +376,24 @@ function fireConfetti(){
   requestAnimationFrame(render);
 }
 
-/* submit handler */
 submitBtn.addEventListener('click', ()=>{
   attempts++;
   attemptsEl.textContent = attempts;
   const inputs = Array.from(container.querySelectorAll('input.blank'));
-  if (inputs.length === 0) return;
-
-  // empty check
+  if(inputs.length === 0) return;
   const anyEmpty = inputs.some(i => !i.value.trim());
-  if (anyEmpty) {
-    inputs.filter(i=>!i.value.trim()).forEach(i=>i.classList.add('wrong'));
-    shake(container);
-    return;
-  }
-
-  const ok = validateAnswers();
-  if (ok){
-    // show modal + confetti
-    overlay.classList.add('show');
-    overlay.setAttribute('aria-hidden','false');
-    fireConfetti();
-  } else {
-    shake(container);
-  }
+  if(anyEmpty){ inputs.filter(i=>!i.value.trim()).forEach(i=>i.classList.add('wrong')); shake(container); return; }
+  if(validateAnswers()){ overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); fireConfetti(); } 
+  else { shake(container); }
 });
 
-/* reset */
-resetBtn.addEventListener('click', ()=>{
-  attempts = 0;
-  buildQuestions();
-});
+resetBtn.addEventListener('click', ()=>{ attempts=0; buildQuestions(); });
 
-/* modal buttons */
-closeModal.addEventListener('click', ()=>{
-  overlay.classList.remove('show');
-  overlay.setAttribute('aria-hidden','true');
-});
+closeModal.addEventListener('click', ()=>{ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); });
 
-/* init */
 buildQuestions();
 
-/* accessibility: keep canvas sized */
-window.addEventListener('resize', ()=> {
-  if (confettiCanvas.style.display !== 'none'){
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-  }
-});
+window.addEventListener('resize', ()=>{ if(confettiCanvas.style.display !== 'none'){ confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight; } });
 </script>
 </body>
 </html>
