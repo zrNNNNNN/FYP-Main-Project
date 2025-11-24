@@ -4,84 +4,179 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Matching Puzzle — Match Courses to Jobs</title>
+
+<!-- Google font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
   :root{
-    --bg:#f7fafc; --card:#ffffff; --accent:#0f62fe; --muted:#6b7280;
-    --success:#10b981; --danger:#ef4444;
+    --bg1:#0f172a; --bg2:#1e293b;
+    --card-bg: rgba(255,255,255,0.04);
+    --accent-500:#2563eb;
+    --accent-400:#3b82f6;
+    --muted:#9aa6c0;
+    --success:#10b981;
+    --danger:#ef4444;
+    --card-radius:16px;
   }
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:var(--bg);color:#111;}
-  .wrap{max-width:980px;margin:20px auto;padding:16px;}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  h1{font-size:1.4rem;margin:.2rem 0;}
-  p.lead{margin:.2rem 0 .6rem;color:var(--muted);font-size:.95rem;}
-  .board{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
-  @media (max-width:700px){ .board{grid-template-columns:1fr;} }
-  .pane{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(15,23,42,.06);}
-  .pane h2{margin:0 0 10px;font-size:1rem;}
-  .list{display:flex;flex-direction:column;gap:8px;}
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    color:#e6eef8;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:24px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .stage{width:100%;max-width:980px;}
+
+  header{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    margin-bottom:18px;
+  }
+
+  .hero{
+    flex:1;
+    background: linear-gradient(90deg, rgba(59,130,246,0.05), rgba(37,99,235,0.03));
+    border-radius:12px;
+    padding:18px;
+    box-shadow: 0 8px 26px rgba(2,6,23,.06);
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .logo{
+    width:56px;height:56px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
+    color:white;font-weight:700;font-size:20px;
+    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+    flex:0 0 56px;
+  }
+  .hero h1{margin:0;font-size:1.15rem}
+  .hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
+
+  main {
+    margin-top:6px;
+    display:block;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--card-radius);
+    padding:18px;
+    box-shadow: 0 14px 44px rgba(2,6,23,.28);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+  @media (max-width:780px){ .board{grid-template-columns:1fr;} }
+
+  .pane{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);
+  }
+  .pane h2{margin:0 0 10px;font-size:1rem;color:#e6f0ff;}
+  .list{display:flex;flex-direction:column;gap:10px;}
+
   .item{
     display:flex;align-items:center;justify-content:space-between;
-    padding:10px;border-radius:10px;border:1px solid #edf2f7;background:linear-gradient(180deg, #fff, #fcfcff);
-    user-select:none;cursor:pointer;
+    padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    user-select:none;cursor:pointer;color:#e6eef8;
   }
-  .item.selected{outline:3px solid rgba(15,98,254,.12);box-shadow:0 6px 12px rgba(15,98,254,.06);}
-  .item.matched{background:linear-gradient(90deg,#f0fff4,#ecfdf5);border-color:rgba(16,185,129,.2);color:#065f46;}
+  .item[selected="true"], .item.selected{outline:3px solid rgba(59,130,246,.12);box-shadow:0 8px 18px rgba(59,130,246,.06);}
+  .item.matched{background:linear-gradient(90deg, rgba(16,185,129,0.08), rgba(236,253,245,0.02));border-color:rgba(16,185,129,.16);color:#dff7ea;}
   .pair-indicator{font-size:.88rem;color:var(--muted);min-width:26px;text-align:center;}
+
   .controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;}
-  button{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600;}
-  button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(15,98,254,.12);}
-  .stats{margin-left:auto;color:var(--muted);font-size:.9rem;}
-  .message{margin-top:12px;padding:10px;border-radius:10px;background:#fff;font-size:.95rem;color:var(--muted);border:1px solid #eee;}
-  /* popup */
-  .overlay{position:fixed;inset:0;background:rgba(2,6,23,.45);display:none;align-items:center;justify-content:center;z-index:40;backdrop-filter:blur(2px);}
-  .modal{background:var(--card);padding:20px;border-radius:14px;max-width:420px;width:94%;text-align:center;box-shadow:0 18px 40px rgba(2,6,23,.32);}
-  .modal h3{margin:0 0 8px;}
-  .keysvg{width:92px;height:92px;margin:8px auto;display:block;}
-  .small{font-size:.9rem;color:var(--muted);}
-  .tryagain{margin-top:8px;background:transparent;border:1px solid #eee;color:var(--muted);padding:8px 10px;border-radius:8px;cursor:pointer;}
+  .btn{
+    background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
+    color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 22px rgba(37,99,235,0.12);
+  }
+  .btn.ghost{background:transparent;color:var(--accent-400);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:8px 12px;}
+  .stats{margin-left:auto;color:var(--muted);font-size:.95rem;font-weight:600;}
+  .message{margin-top:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));font-size:.95rem;color:var(--muted);border:1px solid rgba(255,255,255,0.02);}
+
+  /* modal + confetti */
+  #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
+  .overlay{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;
+  }
+  .overlay.show{display:flex}
+  .modal{
+    width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);
+    border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);
+    transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
+  }
+  .overlay.show .modal{transform:translateY(0);opacity:1}
+  .modal h3{margin:0;font-size:1.18rem;color:#ffd166}
+  .modal p{color:var(--muted);margin-top:8px}
+  .modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
+
+  .note{color:var(--muted);font-size:.92rem;margin-top:12px}
+  @media (max-width:640px){
+    .logo{width:48px;height:48px}
+  }
 </style>
 </head>
 <body>
-<div class="wrap" role="main">
+<div class="stage">
   <header>
-    <div>
-      <h1>Match the SEG Course to a future job prospect</h1>
-      <p class="lead">Tap a course (left) then a job (right) to make a match. Match all 5 to receive <strong>Key #1</strong>.</p>
+    <div class="hero" aria-hidden="false">
+      <div class="logo">SEG</div>
+      <div>
+        <h1>Match the SEG Course to a future job prospect</h1>
+        <p class="lead" style="margin:4px 0 0;color:var(--muted)">Tap a course (left) then a job (right) to make a match. Match all 5 to receive <strong>Key #1</strong>.</p>
+      </div>
     </div>
-    <div class="stats" aria-live="polite">Matches: <span id="matchedCount">0</span>/5 &nbsp;•&nbsp; Attempts: <span id="attempts">0</span></div>
   </header>
 
-  <section class="board" aria-label="Matching board">
-    <div class="pane" id="coursesPane" aria-labelledby="coursesTitle">
-      <h2 id="coursesTitle">Courses</h2>
-      <div class="list" id="coursesList" aria-live="polite"></div>
-    </div>
+  <main>
+    <section class="card" aria-labelledby="gameTitle">
+      <div class="board" aria-label="Matching board">
+        <div class="pane" id="coursesPane" aria-labelledby="coursesTitle">
+          <h2 id="coursesTitle">Courses</h2>
+          <div class="list" id="coursesList" aria-live="polite"></div>
+        </div>
 
-    <div class="pane" id="jobsPane" aria-labelledby="jobsTitle">
-      <h2 id="jobsTitle">Jobs</h2>
-      <div class="list" id="jobsList" aria-live="polite"></div>
-    </div>
-  </section>
+        <div class="pane" id="jobsPane" aria-labelledby="jobsTitle">
+          <h2 id="jobsTitle">Jobs</h2>
+          <div class="list" id="jobsList" aria-live="polite"></div>
+        </div>
+      </div>
 
-  <div class="controls">
-    <button id="resetBtn" class="ghost" aria-label="Reset game">Reset</button>
-    <div class="message small" id="hint">Tip: Tap a Course then a Job. Correct matches will lock in.</div>
-  </div>
+      <div class="controls">
+        <button id="resetBtn" class="btn ghost" aria-label="Reset game">Reset</button>
+        <div class="message small" id="hint">Tip: Tap a Course then a Job. Correct matches will lock in.</div>
+        <div class="stats" aria-live="polite" style="margin-left:auto">Matches: <span id="matchedCount">0</span>/5 &nbsp;•&nbsp; Attempts: <span id="attempts">0</span></div>
+      </div>
+
+      <p class="note">Tip: Use Enter to select if using keyboard. Correct matches lock and turn green.</p>
+    </section>
+  </main>
 </div>
+
+<canvas id="confetti"></canvas>
 
 <!-- Key popup (hidden until success) -->
 <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
+    <div class="key" aria-hidden="true">
+      <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="k" x1="0" x2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs><path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k)"/></svg>
+    </div>
     <h3 id="modalTitle">Key #1 Received!</h3>
-    <!-- Inline SVG key -->
-    <svg class="keysvg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs>
-      <path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#g)"/>
-      <circle cx="44" cy="24" r="4" fill="#fff" opacity=".6"/>
-    </svg>
     <p class="small">Screenshot this page to claim your prize later at Level 1!</p>
     <div style="margin-top:12px;">
-      <button id="closeModal" class="tryagain">Close</button>
+      <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
     </div>
   </div>
 </div>
@@ -252,4 +347,3 @@ resetGame();
 </script>
 </body>
 </html>
-
