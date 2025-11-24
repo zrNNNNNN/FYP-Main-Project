@@ -238,7 +238,8 @@ function resetGame() {
   state.attempts = 0;
   attemptsEl.textContent = 0;
   matchedCountEl.textContent = 0;
-  overlay.style.display = 'none';
+  // hide modal by removing show class
+  overlay.classList.remove('show');
   renderLists();
 }
 
@@ -321,7 +322,8 @@ function tryMatch(){
     state.selectedJobIndex = null;
     renderLists();
     if (Object.keys(state.matchedPairs).length === courses.length) {
-      overlay.style.display = 'flex';
+      // show modal by adding show class
+      overlay.classList.add('show');
     }
   } else {
     const cEl = coursesList.querySelector(`[data-index="${state.selectedCourseIndex}"]`);
@@ -340,7 +342,7 @@ function tryMatch(){
 
 /* Event bindings */
 resetBtn.addEventListener('click', resetGame);
-closeModalBtn.addEventListener('click', ()=>{ overlay.style.display = 'none'; });
+closeModalBtn.addEventListener('click', ()=>{ overlay.classList.remove('show'); });
 
 /* Start */
 resetGame();
