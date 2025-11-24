@@ -198,7 +198,6 @@
     <p>Great! Screenshot this page to claim your prize at Level 1.</p>
     <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
       <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
-      <button id="claimBtn" class="btn" aria-label="Claim">Claim</button>
     </div>
   </div>
 </div>
@@ -246,7 +245,6 @@ const resetBtn = document.getElementById('resetBtn');
 const attemptsEl = document.getElementById('attempts');
 const overlay = document.getElementById('overlay');
 const closeModal = document.getElementById('closeModal');
-const claimBtn = document.getElementById('claimBtn');
 const confettiCanvas = document.getElementById('confetti');
 
 let attempts = 0;
@@ -431,12 +429,6 @@ resetBtn.addEventListener('click', ()=>{
 
 /* modal buttons */
 closeModal.addEventListener('click', ()=>{
-  overlay.classList.remove('show');
-  overlay.setAttribute('aria-hidden','true');
-});
-claimBtn.addEventListener('click', ()=>{
-  // placeholder: log claim locally. Replace with fetch to endpoint if needed.
-  alert('Successfully Claimed!');
   overlay.classList.remove('show');
   overlay.setAttribute('aria-hidden','true');
 });
