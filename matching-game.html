@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Matching Puzzle — Match Courses to Jobs</title>
+<title>Matching Puzzle — SEG Open House</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -28,59 +28,404 @@
     background: linear-gradient(135deg,var(--bg1),var(--bg2));
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
-    padding:24px;
+    padding:20px;
     display:flex;
     justify-content:center;
   }
 
   .stage{width:100%;max-width:980px;}
-  header{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px;}
-  .hero{flex:1;background: linear-gradient(90deg, rgba(59,130,246,0.05), rgba(37,99,235,0.03));border-radius:12px;padding:18px;box-shadow: 0 8px 26px rgba(2,6,23,.06);display:flex;align-items:center;gap:14px;}
-  .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-500),var(--accent-400));color:white;font-weight:700;font-size:20px;box-shadow: 0 6px 18px rgba(59,130,246,0.18);flex:0 0 56px;}
-  .hero h1{margin:0;font-size:1.15rem}
-  .hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
-  main {margin-top:6px;display:block;}
-  .card{background:var(--card-bg);border-radius:var(--card-radius);padding:18px;box-shadow: 0 14px 44px rgba(2,6,23,.28);border: 1px solid rgba(255,255,255,0.03);}
-  .board{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
-  @media (max-width:780px){ .board{grid-template-columns:1fr;} }
-  .pane{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);}
-  .pane h2{margin:0 0 10px;font-size:1rem;color:#e6f0ff;}
-  .list{display:flex;flex-direction:column;gap:10px;}
-  .item{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));user-select:none;cursor:pointer;color:#e6eef8;}
-  .item[selected="true"], .item.selected{outline:3px solid rgba(59,130,246,.12);box-shadow:0 8px 18px rgba(59,130,246,.06);}
-  .item.matched{background:linear-gradient(90deg, rgba(16,185,129,0.08), rgba(236,253,245,0.02));border-color:rgba(16,185,129,.16);color:#dff7ea;}
-  .pair-indicator{font-size:.88rem;color:var(--muted);min-width:26px;text-align:center;}
-  .controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;}
-  .btn{background:linear-gradient(180deg,var(--accent-400),var(--accent-500));color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 22px rgba(37,99,235,0.12);}
-  .btn.ghost{background:transparent;color:var(--accent-400);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:8px 12px;}
-  .stats{margin-left:auto;color:var(--muted);font-size:.95rem;font-weight:600;}
-  .message{margin-top:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));font-size:.95rem;color:var(--muted);border:1px solid rgba(255,255,255,0.02);}
+
+  /* Header with hero + timer */
+  header{
+    display:flex;
+    gap:16px;
+    align-items:stretch;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    justify-content:space-between;
+  }
+
+  .hero{
+    flex:1;
+    background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
+    border-radius:12px;
+    padding:16px;
+    box-shadow: 0 6px 20px rgba(2,6,23,.06);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+  }
+
+  .logo{
+    width:56px;height:56px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
+    color:white;font-weight:700;font-size:20px;
+    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+    flex:0 0 56px;
+  }
+
+  .hero-text h1{margin:0;font-size:1.1rem}
+  .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+
+  /* Timer box top-right */
+  #timerBox{
+    background: rgba(15,23,42,0.85);
+    border-radius:12px;
+    padding:10px 14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    min-width:130px;
+    box-shadow:0 8px 26px rgba(2,6,23,0.6);
+    border:1px solid rgba(148,163,184,0.2);
+  }
+  #timerLabel{font-size:.8rem;color:var(--muted);}
+  #timer{
+    font-size:1.3rem;
+    font-weight:700;
+    color:#22c55e;
+  }
+  #timerBox.warning #timer{color:#facc15;}
+  #timerBox.danger #timer{color:#fb7185;}
+
+  main{margin-top:4px;display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--card-radius);
+    padding:16px;
+    box-shadow: 0 14px 44px rgba(2,6,23,.28);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  #levelLabel{font-size:.95rem;color:var(--muted);}
+  #streakBadge{
+    font-size:.85rem;
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(34,197,94,0.12);
+    color:#bbf7d0;
+    border:1px solid rgba(34,197,94,0.3);
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  #streakBadge.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .board{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:6px;
+  }
+  @media (max-width:780px){
+    .board{grid-template-columns:1fr;}
+    header{flex-direction:column;}
+    #timerBox{align-self:flex-start;}
+  }
+
+  .pane{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:12px;
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .pane h2{margin:0 0 8px;font-size:.98rem;color:#e6f0ff;}
+  .list{display:flex;flex-direction:column;gap:8px;}
+
+  .item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(148,163,184,0.25);
+    background: radial-gradient(circle at top left, rgba(148,163,184,0.16), rgba(15,23,42,0.9));
+    user-select:none;
+    cursor:pointer;
+    color:#e5edff;
+    font-size:.92rem;
+    transition: transform .1s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .item:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(15,23,42,0.4);
+  }
+  .item.selected{
+    outline:2px solid rgba(59,130,246,.6);
+    box-shadow:0 8px 18px rgba(59,130,246,.3);
+  }
+  .item.matched{
+    background:linear-gradient(90deg, rgba(16,185,129,0.22), rgba(6,95,70,0.9));
+    border-color:rgba(16,185,129,.8);
+    color:#ecfdf5;
+    box-shadow:0 6px 18px rgba(16,185,129,0.4);
+    cursor:default;
+  }
+  .item.disabled{
+    opacity:.45;
+    cursor:default;
+  }
+
+  .item.correctFlash{
+    animation:correctFlash .35s ease-out;
+  }
+  .item.wrongFlash{
+    animation:wrongFlash .3s ease-out;
+  }
+  @keyframes correctFlash{
+    0%{transform:scale(1);box-shadow:0 0 0 rgba(16,185,129,0);}
+    50%{transform:scale(1.03);box-shadow:0 0 18px rgba(16,185,129,0.7);}
+    100%{transform:scale(1);}
+  }
+  @keyframes wrongFlash{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-4px);}
+    50%{transform:translateX(4px);}
+    75%{transform:translateX(-2px);}
+    100%{transform:translateX(0);}
+  }
+
+  .course-label{font-weight:600;}
+  .job-main{display:flex;flex-direction:column;gap:2px;}
+  .job-title{font-weight:600;font-size:.92rem;}
+  .job-sub{font-size:.78rem;color:var(--muted);}
+
+  .pill{
+    font-size: .78rem;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(15,23,42,0.85);
+    border: 1px solid rgba(148,163,184,0.55);
+    color: #cbd5f5;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
+    color:white;
+    padding:8px 12px;
+    border-radius:8px;
+    border:0;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow:0 8px 22px rgba(37,99,235,0.18);
+    font-size:.9rem;
+  }
+  .btn.ghost{
+    background:transparent;
+    color:var(--accent-400);
+    border:1px solid rgba(59,130,246,0.3);
+    box-shadow:none;
+  }
+
+  .stats{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:.85rem;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  .stats-line{white-space:nowrap;}
+  #scoreValue.bump{
+    animation:scoreBump .25s ease-out;
+  }
+  @keyframes scoreBump{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+  }
+  #scoreDelta{
+    font-size:.8rem;
+    margin-left:4px;
+    opacity:0;
+    transform:translateY(-4px);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  #scoreDelta.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+  #scoreDelta.positive{color:#4ade80;}
+  #scoreDelta.negative{color:#fb7185;}
+
+  .note{
+    color:var(--muted);
+    font-size:.85rem;
+    margin-top:10px;
+  }
+
   #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
-  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;}
-  .overlay.show{display:flex}
-  .modal{width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;}
-  .overlay.show .modal{transform:translateY(0);opacity:1}
-  .modal h3{margin:0;font-size:1.18rem;color:#ffd166}
-  .modal p{color:var(--muted);margin-top:8px}
-  .modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
-  .note{color:var(--muted);font-size:.92rem;margin-top:12px}
-  @media (max-width:640px){ .logo{width:48px;height:48px} }
+
+  /* Time up / restart bar */
+  #timeUpBar{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:16px;
+    background:linear-gradient(90deg,#b91c1c,#ef4444);
+    color:white;
+    padding:10px 16px;
+    border-radius:999px;
+    display:none;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 10px 30px rgba(127,29,29,0.6);
+    z-index:80;
+    font-size:.9rem;
+  }
+  #timeUpBar button{
+    background:white;
+    color:#b91c1c;
+    border:none;
+    border-radius:999px;
+    padding:6px 12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  /* Final key modal + forging */
+  .overlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));
+    z-index:70;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    width:100%;
+    max-width:460px;
+    background:linear-gradient(180deg,#0b1220,#071029);
+    border-radius:14px;
+    padding:22px;
+    text-align:center;
+    box-shadow:0 30px 80px rgba(2,6,23,.6);
+    border:1px solid rgba(255,255,255,0.03);
+    transform:translateY(8px);
+    opacity:0;
+    transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
+  }
+  .overlay.show .modal{
+    transform:translateY(0);
+    opacity:1;
+  }
+  .modal h3{
+    margin:0;
+    font-size:1.18rem;
+    color:#ffd166;
+  }
+  .modal p{
+    color:var(--muted);
+    margin-top:8px;
+  }
+  .modal .key{
+    width:96px;height:96px;
+    margin:16px auto 8px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#ffd166,#f4a261);
+    box-shadow:0 12px 28px rgba(244,162,97,0.12);
+  }
+
+  #forging{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:75;
+    pointer-events:none;
+  }
+  #forging .box{
+    width:320px;
+    max-width:92%;
+    background:linear-gradient(180deg,#071029,#081424);
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 14px 40px rgba(2,6,23,.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .forge-bar{
+    height:10px;
+    background: rgba(255,255,255,0.06);
+    border-radius:999px;
+    overflow:hidden;
+    margin-top:12px;
+  }
+  .forge-fill{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg,#ffd166,#f4a261);
+    transition: width 1.2s ease;
+  }
+
+  @media (max-width:640px){
+    body{padding:14px;}
+    .logo{width:48px;height:48px;}
+    .hero-text h1{font-size:1rem;}
+    .hero-text p{font-size:.85rem;}
+    .stats{align-items:flex-start;margin-left:0;}
+  }
 </style>
 </head>
 <body>
 <div class="stage">
   <header>
-    <div class="hero" aria-hidden="false">
+    <div class="hero">
       <div class="logo">SEG</div>
-      <div>
-        <h1>Match the SEG Course to a future job prospect</h1>
-        <p class="lead" style="margin:4px 0 0;color:var(--muted)">Tap a course (left) then a job (right) to make a match. Match all 5 to receive <strong>Key #1</strong>.</p>
+      <div class="hero-text">
+        <h1 id="headerTitle">Match the Courses to Its Future Job Prospects (Level 1)</h1>
+        <p>Complete all 3 levels within 4 minutes to collect <strong>Key #1</strong>.</p>
       </div>
+    </div>
+    <div id="timerBox">
+      <span id="timerLabel">Time Left</span>
+      <span id="timer">4:00</span>
     </div>
   </header>
 
   <main>
     <section class="card" aria-labelledby="gameTitle">
+      <div class="top-bar">
+        <div id="levelLabel">Level 1 of 3</div>
+        <div id="streakBadge">Streak bonus active!</div>
+      </div>
+
       <div class="board" aria-label="Matching board">
         <div class="pane" id="coursesPane" aria-labelledby="coursesTitle">
           <h2 id="coursesTitle">Courses</h2>
@@ -88,219 +433,705 @@
         </div>
 
         <div class="pane" id="jobsPane" aria-labelledby="jobsTitle">
-          <h2 id="jobsTitle">Jobs</h2>
+          <h2 id="jobsTitle">Future Job Prospects</h2>
           <div class="list" id="jobsList" aria-live="polite"></div>
         </div>
       </div>
 
       <div class="controls">
         <button id="resetBtn" class="btn ghost" aria-label="Reset game">Reset</button>
-        <div class="message small" id="hint">Tip: Tap a Course then a Job. Correct matches will lock in.</div>
-        <div class="stats" aria-live="polite" style="margin-left:auto">Matches: <span id="matchedCount">0</span>/5 &nbsp;•&nbsp; Attempts: <span id="attempts">0</span></div>
+        <div class="message small" id="hint">Tap a course (left) then a job (right) to try a match.</div>
+        <div class="stats" aria-live="polite">
+          <div class="stats-line">
+            <strong>Score:</strong>
+            <span id="scoreValue">0</span>
+            <span id="scoreDelta"></span>
+          </div>
+          <div class="stats-line">
+            Streak: <span id="streakValue">0</span> &nbsp;•&nbsp;
+            Matches: <span id="matchedCount">0</span>/<span id="matchesTotal">0</span>
+          </div>
+          <div class="stats-line">
+            Attempts: <span id="attempts">0</span>
+          </div>
+        </div>
       </div>
 
-      <p class="note">Tip: Use Enter to select if using keyboard. Correct matches lock and turn green.</p>
+      <!-- Dynamic scoring note; filled by JS per level -->
+      <p class="note" id="scoringNote"></p>
     </section>
   </main>
 </div>
 
 <canvas id="confetti"></canvas>
 
-<div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div id="timeUpBar">
+  <span>Time's up! Restart from Level 1 to try again.</span>
+  <button id="restartBtn">Restart</button>
+</div>
+
+<!-- Forging overlay -->
+<div id="forging" aria-hidden="true">
+  <div class="box">
+    <div style="font-weight:700;color:#ffd166;">Forging Key #1...</div>
+    <div class="small" style="margin-top:6px;color:#9aa6c0;">Hang on — almost done</div>
+    <div class="forge-bar"><div class="forge-fill" id="forgeFill"></div></div>
+  </div>
+</div>
+
+<!-- Final key popup -->
+<div id="finalOverlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal" role="document">
     <div class="key" aria-hidden="true">
-      <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="k" x1="0" x2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs><path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k)"/></svg>
+      <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="k1" x1="0" x2="1">
+            <stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/>
+          </linearGradient>
+        </defs>
+        <path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k1)"/>
+      </svg>
     </div>
-    <h3 id="modalTitle">Key #1 Received!</h3>
+    <h3>Key #1 Received!</h3>
+    <p>Your final score is <strong><span id="finalScore">0</span></strong>.</p>
+    <p>Your longest streak was <strong><span id="finalStreak">0</span></strong> correct in a row.</p>
     <p>Great! Screenshot this page to claim your prize at Level 1.</p>
     <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
-      <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
+      <button id="finalClose" class="btn ghost" aria-label="Close">Close</button>
     </div>
   </div>
 </div>
 
 <script>
-const courses = [
-  "Aerospace Engineering",
-  "Cloud Engineering",
-  "Biomedical Engineering",
-  "Advanced & Digital Manufacturing",
-  "AI & Data Engineering"
+/* =========================
+   LEVEL DATA
+   ========================= */
+const levels = [
+  {
+    id: 1,
+    titleSuffix: "(Level 1)",
+    courses: [
+      "Advanced & Digital Manufacturing",
+      "Aerospace Engineering"
+    ],
+    jobs: [
+      {
+        title: "Cybersecurity & IT Infrastructure Specialists",
+        sub: "Safeguarding smart factories & connected systems."
+      },
+      {
+        title: "Data-Analytics Specialists",
+        sub: "Turning production data into optimisation insights."
+      },
+      {
+        title: "Autonomous Aircraft Systems Engineer",
+        sub: "Designing control systems for self-guided aircraft."
+      },
+      {
+        title: "Aircraft Propulsion & Systems Specialist",
+        sub: "Working on engines and critical flight systems."
+      }
+    ],
+    matches: [
+      { course: 0, job: 0 },
+      { course: 0, job: 1 },
+      { course: 1, job: 2 },
+      { course: 1, job: 3 }
+    ]
+  },
+  {
+    id: 2,
+    titleSuffix: "(Level 2)",
+    courses: [
+      "Biomedical Engineering",
+      "Cloud Engineering",
+      "Robotics & Mechatronics"
+    ],
+    jobs: [
+      {
+        title: "Medical Robotics Engineer",
+        sub: "Building surgical robots and assistive devices."
+      },
+      {
+        title: "Biomedical AI & Imaging Engineer",
+        sub: "Using AI to enhance diagnostics and imaging."
+      },
+      {
+        title: "AI-Optimized Cloud Architect",
+        sub: "Designing cloud systems tuned for AI workloads."
+      },
+      {
+        title: "Cloud Security Engineer",
+        sub: "Protecting cloud platforms from cyber threats."
+      },
+      {
+        title: "Autonomous Robotics Engineer",
+        sub: "Developing self-navigating robots for industry."
+      },
+      {
+        title: "Human–Robot Interaction Designer",
+        sub: "Designing intuitive interfaces between people and robots."
+      }
+    ],
+    matches: [
+      { course: 0, job: 0 },
+      { course: 0, job: 1 },
+      { course: 1, job: 2 },
+      { course: 1, job: 3 },
+      { course: 2, job: 4 },
+      { course: 2, job: 5 }
+    ]
+  },
+  {
+    id: 3,
+    titleSuffix: "(Level 3)",
+    courses: [
+      "Electric & Computer Engineering",
+      "AI & Data Engineering",
+      "Engineering With Business"
+    ],
+    jobs: [
+      {
+        title: "AI Hardware Engineer",
+        sub: "Designing chips and hardware accelerators for AI workloads."
+      },
+      {
+        title: "Embedded Systems Engineer",
+        sub: "Building firmware and real-time control for devices."
+      },
+      {
+        title: "AI Model Engineer",
+        sub: "Training and tuning AI models for real-world use."
+      },
+      {
+        title: "Data Infrastructure Architect",
+        sub: "Designing data platforms and pipelines at scale."
+      },
+      {
+        title: "Real-Time AI Systems Engineer",
+        sub: "Integrating AI models into fast, responsive systems."
+      },
+      {
+        title: "Operations Optimization Engineer",
+        sub: "Using analytics to streamline processes and resources."
+      },
+      {
+        title: "Innovation & Strategy Analyst",
+        sub: "Identifying new tech opportunities and roadmaps."
+      },
+      {
+        title: "Technology Venture Analyst",
+        sub: "Evaluating startups and emerging technologies."
+      }
+    ],
+    matches: [
+      { course: 0, job: 0 },
+      { course: 0, job: 1 },
+      { course: 1, job: 2 },
+      { course: 1, job: 3 },
+      { course: 1, job: 4 },
+      { course: 2, job: 5 },
+      { course: 2, job: 6 },
+      { course: 2, job: 7 }
+    ]
+  }
 ];
 
-const jobs = [
-  "Aerospace Systems Engineer",
-  "Cloud Infrastructure Engineer",
-  "Medical Device Engineer",
-  "Advanced Manufacturing Systems Engineer",
-  "Machine Learning Engineer"
-];
+const TOTAL_LEVELS = 3;
 
+/* =========================
+   DOM ELEMENTS
+   ========================= */
 const coursesList = document.getElementById('coursesList');
 const jobsList = document.getElementById('jobsList');
 const matchedCountEl = document.getElementById('matchedCount');
+const matchesTotalEl = document.getElementById('matchesTotal');
 const attemptsEl = document.getElementById('attempts');
-const overlay = document.getElementById('overlay');
+const scoreEl = document.getElementById('scoreValue');
+const scoreDeltaEl = document.getElementById('scoreDelta');
+const streakEl = document.getElementById('streakValue');
+const levelLabelEl = document.getElementById('levelLabel');
+const headerTitleEl = document.getElementById('headerTitle');
+const streakBadge = document.getElementById('streakBadge');
+const scoringNoteEl = document.getElementById('scoringNote');
+
 const resetBtn = document.getElementById('resetBtn');
-const closeModalBtn = document.getElementById('closeModal');
 const confettiCanvas = document.getElementById('confetti');
+const timeUpBar = document.getElementById('timeUpBar');
+const restartBtn = document.getElementById('restartBtn');
 
-let state = {
-  shuffledCourses: [],
-  shuffledJobs: [],
-  courseMap: [],
-  jobMap: [],
-  selectedCourseIndex: null,
-  selectedJobIndex: null,
-  matchedPairs: {},
-  attempts: 0
-};
+const timerBox = document.getElementById('timerBox');
+const timerDisplay = document.getElementById('timer');
 
-function shuffleWithIndex(array){ return array.map((v,i)=>({v,i})).sort(()=>Math.random()-0.5); }
+/* forging + final */
+const forging = document.getElementById('forging');
+const forgeFill = document.getElementById('forgeFill');
+const finalOverlay = document.getElementById('finalOverlay');
+const finalCloseBtn = document.getElementById('finalClose');
+const finalScoreSpan = document.getElementById('finalScore');
+const finalStreakSpan = document.getElementById('finalStreak');
 
-function resetGame(){
-  state.shuffledCourses = shuffleWithIndex(courses);
-  state.shuffledJobs = shuffleWithIndex(jobs);
-  state.courseMap = state.shuffledCourses.map(x=>x.i);
-  state.jobMap = state.shuffledJobs.map(x=>x.i);
-  state.selectedCourseIndex = null;
-  state.selectedJobIndex = null;
-  state.matchedPairs = {};
-  state.attempts = 0;
-  attemptsEl.textContent = 0;
-  matchedCountEl.textContent = 0;
-  overlay.classList.remove('show');
-  overlay.setAttribute('aria-hidden','true');
-  renderLists();
+/* =========================
+   GAME STATE
+   ========================= */
+let currentLevelIndex = 0;
+let selectedCourseIndex = null;
+let selectedJobIndex = null;
+let jobMatched = [];
+let matchesThisLevel = 0;
+
+let attempts = 0;
+let score = 0;
+let streak = 0;
+let longestStreak = 0;
+let streakBoostApplied = false;  // per-level
+
+let gameLocked = false;
+
+/* Timer */
+const TOTAL_TIME_SECONDS = 240; // 4 minutes
+let timeLeft = TOTAL_TIME_SECONDS;
+let timerStarted = false;
+let timerInterval = null;
+
+/* =========================
+   TIMER
+   ========================= */
+function formatTime(sec){
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2,'0')}`;
 }
 
-function renderLists(){
-  coursesList.innerHTML = '';
-  jobsList.innerHTML = '';
+function updateTimerUI(){
+  timerDisplay.textContent = formatTime(timeLeft);
+  timerBox.classList.remove('warning','danger');
+  if (timeLeft <= 60 && timeLeft > 20){
+    timerBox.classList.add('warning');
+  } else if (timeLeft <= 20){
+    timerBox.classList.add('danger');
+  }
+}
 
-  state.shuffledCourses.forEach((entry, i)=>{
+function startTimerIfNeeded(){
+  if (timerStarted) return;
+  timerStarted = true;
+  timerInterval = setInterval(()=> {
+    if (timeLeft <= 0){
+      timeLeft = 0;
+      updateTimerUI();
+      clearInterval(timerInterval);
+      handleTimeUp();
+      return;
+    }
+    timeLeft--;
+    updateTimerUI();
+  },1000);
+}
+
+function handleTimeUp(){
+  gameLocked = true;
+  timeUpBar.style.display = 'flex';
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerStarted = false;
+  timeLeft = TOTAL_TIME_SECONDS;
+  updateTimerUI();
+  timerBox.classList.remove('warning','danger');
+}
+
+/* =========================
+   CONFETTI
+   ========================= */
+const confettiCtx = confettiCanvas.getContext('2d');
+function fireConfetti(){
+  const ctx = confettiCtx;
+  const w = confettiCanvas.width = window.innerWidth;
+  const h = confettiCanvas.height = window.innerHeight;
+  confettiCanvas.style.display = 'block';
+
+  const pieces = [];
+  const count = Math.floor(Math.min(140, w/5));
+  for(let i=0;i<count;i++){
+    pieces.push({
+      x: Math.random()*w,
+      y: Math.random()*-h*0.4,
+      w: 6 + Math.random()*10,
+      h: 6 + Math.random()*10,
+      vx: -2 + Math.random()*4,
+      vy: 2 + Math.random()*6,
+      rot: Math.random()*360,
+      speed: 0.02 + Math.random()*0.06,
+      color: ['#2563eb','#ef4444','#10b981','#f59e0b','#7c3aed'][Math.floor(Math.random()*5)]
+    });
+  }
+
+  let t0 = performance.now();
+  const start = t0;
+  function render(t){
+    const dt = t - t0; t0 = t;
+    ctx.clearRect(0,0,w,h);
+    for(let p of pieces){
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.speed*30;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+    if ((t - start) < 2600) requestAnimationFrame(render);
+    else {
+      confettiCanvas.style.display = 'none';
+      ctx.clearRect(0,0,w,h);
+    }
+  }
+  requestAnimationFrame(render);
+}
+
+window.addEventListener('resize', ()=> {
+  if (confettiCanvas.style.display !== 'none'){
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+});
+
+/* =========================
+   SCORING NOTE (per level)
+   ========================= */
+function updateScoringNote(levelId){
+  if (levelId === 1){
+    scoringNoteEl.innerHTML = `
+      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
+      Get <strong>4 correct in a row</strong> to trigger a <strong>1.5× score boost!</strong>
+    `;
+  } else if (levelId === 2){
+    scoringNoteEl.innerHTML = `
+      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
+      Get <strong>10 correct in a row</strong> to trigger a <strong>2× streak bonus!</strong>
+    `;
+  } else if (levelId === 3){
+    scoringNoteEl.innerHTML = `
+      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
+      Get <strong>18 correct in a row</strong> to trigger a <strong>3× streak bonus!</strong>
+    `;
+  } else {
+    scoringNoteEl.innerHTML = `
+      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
+    `;
+  }
+}
+
+/* =========================
+   BUILD LEVEL UI
+   ========================= */
+function loadLevel(levelIndex){
+  const level = levels[levelIndex];
+  currentLevelIndex = levelIndex;
+
+  selectedCourseIndex = null;
+  selectedJobIndex = null;
+  jobMatched = Array(level.jobs.length).fill(false);
+  matchesThisLevel = 0;
+
+  // allow a new streak bonus per level
+  streakBoostApplied = false;
+
+  headerTitleEl.textContent =
+    `Match the Courses to Its Future Job Prospects ${level.titleSuffix}`;
+  levelLabelEl.textContent = `Level ${level.id} of ${TOTAL_LEVELS}`;
+
+  updateScoringNote(level.id);
+
+  matchedCountEl.textContent = '0';
+  matchesTotalEl.textContent = String(level.matches.length);
+
+  coursesList.innerHTML = '';
+  level.courses.forEach((courseName, idx) => {
     const div = document.createElement('div');
-    div.className='item';
-    div.setAttribute('role','button'); div.tabIndex=0; div.dataset.index=i;
-    div.innerHTML=`<div>${entry.v}</div><div class="pair-indicator" aria-hidden="true">☰</div>`;
-    if (Object.values(state.matchedPairs).includes(String(i))) div.classList.add('matched');
-    div.addEventListener('click',()=>selectCourse(i));
-    div.addEventListener('keydown',(e)=>{ if(e.key==='Enter') selectCourse(i); });
+    div.className = 'item';
+    div.dataset.type = 'course';
+    div.dataset.index = idx;
+    div.innerHTML = `
+      <div class="course-label">${courseName}</div>
+      <div class="pill">Course</div>
+    `;
+    div.addEventListener('click', ()=> onCourseClick(idx));
     coursesList.appendChild(div);
   });
 
-  state.shuffledJobs.forEach((entry,j)=>{
+  jobsList.innerHTML = '';
+  level.jobs.forEach((job, idx) => {
     const div = document.createElement('div');
-    div.className='item';
-    div.setAttribute('role','button'); div.tabIndex=0; div.dataset.index=j;
-    div.innerHTML=`<div style="text-align:left">${entry.v}</div><div class="pair-indicator" aria-hidden="true">?</div>`;
-    if(state.matchedPairs[j]!==undefined) div.classList.add('matched');
-    div.addEventListener('click',()=>selectJob(j));
-    div.addEventListener('keydown',(e)=>{ if(e.key==='Enter') selectJob(j); });
+    div.className = 'item';
+    div.dataset.type = 'job';
+    div.dataset.index = idx;
+    div.innerHTML = `
+      <div class="job-main">
+        <div class="job-title">${job.title}</div>
+        <div class="job-sub">${job.sub || ''}</div>
+      </div>
+      <div class="pill">Tap to match</div>
+    `;
+    div.addEventListener('click', ()=> onJobClick(idx));
     jobsList.appendChild(div);
   });
 
   updateSelectionStyles();
 }
 
+/* =========================
+   SELECTION / MATCHING
+   ========================= */
 function updateSelectionStyles(){
-  document.querySelectorAll('.item').forEach(el=>el.classList.remove('selected'));
-  if(state.selectedCourseIndex!==null){
-    const el=coursesList.querySelector(`[data-index="${state.selectedCourseIndex}"]`);
-    if(el) el.classList.add('selected');
+  document.querySelectorAll('.item').forEach(el => el.classList.remove('selected'));
+
+  if (selectedCourseIndex !== null){
+    const el = coursesList.querySelector(`.item[data-index="${selectedCourseIndex}"]`);
+    if (el) el.classList.add('selected');
   }
-  if(state.selectedJobIndex!==null){
-    const el=jobsList.querySelector(`[data-index="${state.selectedJobIndex}"]`);
-    if(el) el.classList.add('selected');
+  if (selectedJobIndex !== null){
+    const el = jobsList.querySelector(`.item[data-index="${selectedJobIndex}"]`);
+    if (el) el.classList.add('selected');
   }
 }
 
-function selectCourse(i){
-  if(Object.values(state.matchedPairs).includes(String(i))) return;
-  state.selectedCourseIndex=i;
-  if(state.selectedJobIndex!==null){ tryMatch(); } else updateSelectionStyles();
+function onCourseClick(courseIdx){
+  if (gameLocked) return;
+  startTimerIfNeeded();
+  selectedCourseIndex = courseIdx;
+  updateSelectionStyles();
 }
 
-function selectJob(j){
-  if(state.matchedPairs[j]!==undefined) return;
-  state.selectedJobIndex=j;
-  if(state.selectedCourseIndex!==null){ tryMatch(); } else updateSelectionStyles();
+function onJobClick(jobIdx){
+  if (gameLocked) return;
+  startTimerIfNeeded();
+
+  const level = levels[currentLevelIndex];
+  if (jobMatched[jobIdx]) return;
+
+  if (selectedCourseIndex === null){
+    selectedJobIndex = jobIdx;
+    updateSelectionStyles();
+    return;
+  }
+
+  attemptMatch(selectedCourseIndex, jobIdx);
 }
 
-function tryMatch(){
-  const courseOriginalIndex=state.courseMap[state.selectedCourseIndex];
-  const jobOriginalIndex=state.jobMap[state.selectedJobIndex];
-  state.attempts++;
-  attemptsEl.textContent=state.attempts;
+function attemptMatch(courseIdx, jobIdx){
+  const level = levels[currentLevelIndex];
+  attempts++;
+  attemptsEl.textContent = attempts;
 
-  if(courseOriginalIndex===jobOriginalIndex){
-    state.matchedPairs[state.selectedJobIndex]=String(state.selectedCourseIndex);
-    matchedCountEl.textContent=Object.keys(state.matchedPairs).length;
-    state.selectedCourseIndex=null; state.selectedJobIndex=null;
-    renderLists();
-    if(Object.keys(state.matchedPairs).length===courses.length){
-      overlay.classList.add('show');
-      overlay.setAttribute('aria-hidden','false');
-      fireConfetti();
+  const jobEl = jobsList.querySelector(`.item[data-index="${jobIdx}"]`);
+  const courseEl = coursesList.querySelector(`.item[data-index="${courseIdx}"]`);
+
+  const isCorrect = level.matches.some(m => m.course === courseIdx && m.job === jobIdx);
+
+  if (isCorrect && !jobMatched[jobIdx]){
+    jobMatched[jobIdx] = true;
+    matchesThisLevel++;
+    matchedCountEl.textContent = String(matchesThisLevel);
+
+    applyScoreChange(+10);
+
+    if (jobEl){
+      jobEl.classList.add('matched','correctFlash');
+      const pill = jobEl.querySelector('.pill');
+      if (pill) pill.textContent = 'Matched';
+      setTimeout(()=> jobEl.classList.remove('correctFlash'), 350);
     }
-  } else{
-    const cEl=coursesList.querySelector(`[data-index="${state.selectedCourseIndex}"]`);
-    const jEl=jobsList.querySelector(`[data-index="${state.selectedJobIndex}"]`);
-    if(cEl) cEl.style.borderColor='rgba(239,68,68,.25)';
-    if(jEl) jEl.style.borderColor='rgba(239,68,68,.25)';
-    setTimeout(()=>{
-      if(cEl) cEl.style.borderColor=''; if(jEl) jEl.style.borderColor='';
-      state.selectedCourseIndex=null; state.selectedJobIndex=null;
-      updateSelectionStyles();
-    },650);
-  }
-}
-
-/* ----------------- Confetti ----------------- */
-function fireConfetti(){
-  const ctx = confettiCanvas.getContext('2d');
-  const w = confettiCanvas.width = window.innerWidth;
-  const h = confettiCanvas.height = window.innerHeight;
-  confettiCanvas.style.display='block';
-  const pieces=[];
-  const count=Math.floor(Math.min(80,w/10));
-  for(let i=0;i<count;i++){
-    pieces.push({
-      x:Math.random()*w,
-      y:Math.random()*-h*0.2,
-      w:6+Math.random()*10,
-      h:6+Math.random()*10,
-      vx:-2+Math.random()*4,
-      vy:2+Math.random()*6,
-      rot:Math.random()*360,
-      speed:0.02+Math.random()*0.06,
-      color:['#2563eb','#ef4444','#10b981','#f59e0b','#7c3aed'][Math.floor(Math.random()*5)]
-    });
-  }
-  let t0=performance.now();
-  const startTime=performance.now();
-  function render(t){
-    const dt=t-t0; t0=t;
-    ctx.clearRect(0,0,w,h);
-    for(let p of pieces){
-      p.x+=p.vx; p.y+=p.vy; p.rot+=p.speed*30;
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    if (courseEl){
+      courseEl.classList.add('correctFlash');
+      setTimeout(()=> courseEl.classList.remove('correctFlash'), 350);
     }
-    if((t-startTime)<2400) requestAnimationFrame(render);
-    else { confettiCanvas.style.display='none'; ctx.clearRect(0,0,w,h); }
+
+    streak++;
+    if (streak > longestStreak) longestStreak = streak;
+    streakEl.textContent = streak;
+
+    // Level-dependent streak bonus:
+    // L1: 4 in a row -> 1.5×
+    // L2: 10 in a row -> 2×
+    // L3: 18 in a row -> 3×
+    const levelId = levels[currentLevelIndex].id;
+    let streakTarget, multiplier;
+    if (levelId === 1){
+      streakTarget = 4;
+      multiplier = 1.5;
+    } else if (levelId === 2){
+      streakTarget = 10;
+      multiplier = 2.0;
+    } else if (levelId === 3){
+      streakTarget = 18;
+      multiplier = 3.0;
+    } else {
+      streakTarget = Infinity;
+      multiplier   = 1;
+    }
+
+    if (streak >= streakTarget && !streakBoostApplied){
+      streakBoostApplied = true;
+      score = Math.round(score * multiplier);
+      scoreEl.textContent = score;
+      scoreEl.classList.add('bump');
+      streakBadge.textContent = `Streak bonus! x${multiplier.toFixed(1)} applied`;
+      showStreakBadge();
+      setTimeout(()=> scoreEl.classList.remove('bump'), 260);
+    }
+
+    // Completed current level?
+    if (matchesThisLevel === level.matches.length){
+      if (currentLevelIndex < levels.length - 1){
+        setTimeout(()=> {
+          loadLevel(currentLevelIndex + 1);
+        }, 600);
+      } else {
+        // Finished final level – forging + final popup
+        showForgingThenFinalModal();
+      }
+    }
+
+  } else {
+    // Wrong answer resets streak + bonus eligibility for this level
+    streak = 0;
+    streakBoostApplied = false;
+    streakEl.textContent = streak;
+
+    applyScoreChange(-5);
+
+    if (jobEl){
+      jobEl.classList.add('wrongFlash');
+      setTimeout(()=> jobEl.classList.remove('wrongFlash'), 320);
+    }
+    if (courseEl){
+      courseEl.classList.add('wrongFlash');
+      setTimeout(()=> courseEl.classList.remove('wrongFlash'), 320);
+    }
   }
-  requestAnimationFrame(render);
+
+  selectedCourseIndex = null;
+  selectedJobIndex = null;
+  updateSelectionStyles();
 }
 
-window.addEventListener('resize',()=>{ if(confettiCanvas.style.display!=='none'){ confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight; } });
+/* =========================
+   SCORING
+   ========================= */
+function applyScoreChange(delta){
+  if (delta > 0){
+    score += delta;
+  } else {
+    score = Math.max(0, score + delta);
+  }
 
-/* ----------------- Events ----------------- */
-resetBtn.addEventListener('click', resetGame);
-closeModalBtn.addEventListener('click', ()=>{ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); });
+  scoreEl.textContent = score;
+  scoreEl.classList.add('bump');
 
-/* ----------------- Init ----------------- */
-resetGame();
+  scoreDeltaEl.className = '';
+  scoreDeltaEl.textContent = (delta > 0 ? `+${delta}` : `${delta}`);
+  scoreDeltaEl.classList.add('show', delta > 0 ? 'positive' : 'negative');
+
+  setTimeout(()=> {
+    scoreEl.classList.remove('bump');
+  }, 260);
+
+  setTimeout(()=> {
+    scoreDeltaEl.classList.remove('show','positive','negative');
+  }, 700);
+}
+
+/* =========================
+   STREAK BADGE DISPLAY
+   ========================= */
+function showStreakBadge(){
+  streakBadge.classList.add('show');
+  setTimeout(()=> streakBadge.classList.remove('show'), 2000);
+}
+
+/* =========================
+   FORGING + FINAL MODAL
+   ========================= */
+function showForgingThenFinalModal(){
+  // show forging
+  forging.style.display = 'flex';
+  forging.setAttribute('aria-hidden','false');
+  forgeFill.style.width = '0%';
+
+  setTimeout(()=> {
+    forgeFill.style.width = '100%';
+  }, 50);
+
+  // after short delay, hide forging & show final popup
+  setTimeout(()=> {
+    forging.style.display = 'none';
+    forging.setAttribute('aria-hidden','true');
+
+    // freeze game
+    gameLocked = true;
+
+    // confetti & stats
+    fireConfetti();
+    finalScoreSpan.textContent = score;
+    finalStreakSpan.textContent = longestStreak;
+
+    finalOverlay.classList.add('show');
+    finalOverlay.setAttribute('aria-hidden','false');
+  }, 1600);
+}
+
+/* =========================
+   RESET & RESTART
+   ========================= */
+function hardResetToLevel1(){
+  attempts = 0;
+  score = 0;
+  streak = 0;
+  longestStreak = 0;
+  streakBoostApplied = false;
+  gameLocked = false;
+
+  attemptsEl.textContent = attempts;
+  scoreEl.textContent = score;
+  streakEl.textContent = streak;
+  matchedCountEl.textContent = '0';
+
+  resetTimer();
+  timeUpBar.style.display = 'none';
+
+  finalOverlay.classList.remove('show');
+  finalOverlay.setAttribute('aria-hidden','true');
+  forging.style.display = 'none';
+  forging.setAttribute('aria-hidden','true');
+  forgeFill.style.width = '0%';
+
+  loadLevel(0);
+}
+
+resetBtn.addEventListener('click', ()=> {
+  hardResetToLevel1();
+});
+
+restartBtn.addEventListener('click', ()=> {
+  hardResetToLevel1();
+});
+
+finalCloseBtn.addEventListener('click', ()=> {
+  finalOverlay.classList.remove('show');
+  finalOverlay.setAttribute('aria-hidden','true');
+});
+
+/* =========================
+   INIT
+   ========================= */
+updateTimerUI();
+hardResetToLevel1();
 </script>
 </body>
 </html>
