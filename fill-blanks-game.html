@@ -9,14 +9,10 @@
 :root{
   --bg1:#0f172a; --bg2:#1e293b;
   --card-bg: rgba(255,255,255,0.06);
-  --accent-500:#2563eb;
-  --accent-400:#3b82f6;
-  --muted:#9aa6c0;
-  --success:#10b981;
-  --danger:#ef4444;
+  --accent-500:#2563eb; --accent-400:#3b82f6;
+  --muted:#9aa6c0; --success:#10b981; --danger:#ef4444;
   --card-radius:16px;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -27,160 +23,116 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding:20px;
-  display:flex;
-  justify-content:center;
+  display:flex; justify-content:center;
 }
 
-.stage{width:100%;max-width:980px;}
+/* stage */
+.stage{width:100%;max-width:980px}
 
-header{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
-  margin-bottom:18px;
-  flex-wrap:wrap;
-}
-
-.hero{
-  flex:1;
-  background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
-  border-radius:12px;
-  padding:18px;
-  box-shadow: 0 6px 20px rgba(2,6,23,.06);
-  display:flex;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.logo{
-  width:56px;height:56px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
-  color:white;font-weight:700;font-size:20px;
-  box-shadow: 0 6px 18px rgba(59,130,246,0.18);
-  flex:0 0 56px;
-}
-
+/* header/hero */
+header{ display:flex; gap:16px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; }
+.hero{ flex:1; background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03)); border-radius:12px; padding:14px; box-shadow: 0 6px 20px rgba(2,6,23,.06); display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.logo{ width:56px;height:56px;border-radius:12px; display:flex;align-items:center;justify-content:center; background:linear-gradient(135deg,var(--accent-500),var(--accent-400)); color:white;font-weight:700;font-size:20px; box-shadow: 0 6px 18px rgba(59,130,246,0.18); }
 .hero h1{margin:0;font-size:1.15rem}
 .hero p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
 
-main {
-  margin-top:6px;
-  display:block;
-}
+/* card */
+.card{ background:var(--card-bg); border-radius:var(--card-radius); padding:16px; box-shadow: 0 12px 40px rgba(2,6,23,.28); border: 1px solid rgba(255,255,255,0.03); }
 
-.card{
-  background:var(--card-bg);
-  border-radius:var(--card-radius);
-  padding:18px;
-  box-shadow: 0 12px 40px rgba(2,6,23,.28);
-  border: 1px solid rgba(255,255,255,0.03);
-}
+/* progress bar */
+.progress-wrap{margin-bottom:12px; display:flex; align-items:center; gap:12px;}
+#progressContainer{flex:1; height:12px; background: rgba(255,255,255,0.06); border-radius:999px; overflow:hidden; box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);}
+#progressBar{height:100%; width:0%; transition: width .28s ease, box-shadow .28s ease; background: linear-gradient(90deg,#3b82f6,#2563eb);}
 
-.question{
-  margin-bottom:14px;
-  padding:12px;
-  border-radius:12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border:1px solid rgba(255,255,255,0.02);
-}
-
-.question h3{margin:0 0 8px;font-size:0.98rem;color:#e6f0ff}
+/* question */
+.question{ margin-bottom:14px; padding:10px; border-radius:12px; background:transparent; word-break:break-word; }
+.question h3{margin:0 0 6px;font-size:0.98rem;color:#e6f0ff}
 .hint{margin:0 0 8px;color:var(--muted);font-size:.92rem}
-
 p.desc{line-height:1.6;color:#e6eef8;font-size:.98rem;margin:0;word-break:break-word}
 
-input.blank{
-  min-width:84px;
-  border-radius:6px;
-  border:0;
-  border-bottom:2px solid rgba(255,255,255,0.06);
-  background: transparent;
-  padding:6px 8px;
-  margin:0 6px;
-  font-weight:600;
-  color:#fff;
-  outline:none;
-  transition: box-shadow .15s, border-color .15s, transform .08s;
-  display:inline-block;
-  font-size:.95rem;
-  text-align:left;
-}
+/* input */
+input.blank{ min-width:84px; border-radius:6px; border:0; border-bottom:2px solid rgba(255,255,255,0.06); background: transparent; padding:6px 8px; margin:0 6px; font-weight:600; color:#fff; outline:none; transition: box-shadow .15s, border-color .15s, transform .08s; display:inline-block; font-size:.95rem; text-align:left; }
+input.blank:focus{ border-bottom-color: rgba(59,130,246,0.9); box-shadow: 0 8px 18px rgba(59,130,246,0.06); transform: translateY(-2px); }
+input.blank.correct{ border-bottom-color: rgba(16,185,129,0.6) !important; box-shadow: 0 8px 18px rgba(16,185,129,0.06); }
+input.blank.wrong{ border-bottom-color: rgba(239,68,68,0.6) !important; box-shadow: 0 8px 18px rgba(239,68,68,0.04); }
 
-input.blank:focus{
-  border-bottom-color: rgba(59,130,246,0.9);
-  box-shadow: 0 8px 18px rgba(59,130,246,0.06);
-  transform: translateY(-2px);
-}
-
-input.blank.correct{
-  border-bottom-color: rgba(16,185,129,0.6) !important;
-  box-shadow: 0 8px 18px rgba(16,185,129,0.06);
-}
-
-input.blank.wrong{
-  border-bottom-color: rgba(239,68,68,0.6) !important;
-  box-shadow: 0 8px 18px rgba(239,68,68,0.04);
-}
-
-.controls{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  margin-top:14px;
-  flex-wrap:wrap;
-}
-
-.btn{
-  background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
-  color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;
-  box-shadow: 0 8px 22px rgba(37,99,235,0.12);
-}
-
-.btn.ghost{
-  background:transparent;color:var(--accent-500);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:9px 12px;
-}
-
+/* controls */
+.controls{ display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+.btn{ background:linear-gradient(180deg,var(--accent-400),var(--accent-500)); color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer; display:inline-flex;align-items:center;gap:8px; box-shadow: 0 8px 22px rgba(37,99,235,0.12); }
+.btn.ghost{ background:transparent;color:var(--accent-500);border:1px solid rgba(59,130,246,0.12);box-shadow:none;padding:9px 12px; }
 .stats{margin-left:auto;color:var(--muted);font-weight:600;}
 
-#confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
+/* confetti canvas */
+#confetti{ position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
 
-.overlay{
-  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(3,7,18,0.55),rgba(3,7,18,0.55));z-index:50;
-}
+/* overlay/modal */
+.overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background: linear-gradient(rgba(3,7,18,0.55), rgba(3,7,18,0.55)); z-index:70; }
+.overlay.show{ display:flex; }
+.modal{ width:100%; max-width:460px; background:linear-gradient(180deg,#0b1220,#071029); border-radius:14px; padding:22px; text-align:center; box-shadow:0 30px 80px rgba(2,6,23,.6); border:1px solid rgba(255,255,255,0.03); transform:translateY(8px); opacity:0; transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s; }
+.overlay.show .modal{ transform:translateY(0); opacity:1; }
+.modal h3{ margin:0; font-size:1.18rem; color:#ffd166; }
+.modal p{ color:var(--muted); margin-top:8px; }
+.modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12); }
 
-.overlay.show{display:flex}
-.modal{
-  width:100%;max-width:460px;background:linear-gradient(180deg,#0b1220,#071029);
-  border-radius:14px;padding:22px;text-align:center;box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03);
-  transform:translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
-}
-.overlay.show .modal{transform:translateY(0);opacity:1}
-.modal h3{margin:0;font-size:1.18rem;color:#ffd166}
-.modal p{color:var(--muted);margin-top:8px}
-.modal .key{ width:96px;height:96px;margin:16px auto 8px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffd166,#f4a261);box-shadow:0 12px 28px rgba(244,162,97,0.12);}
+/* forging overlay (small) */
+#forging { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:75; pointer-events:none; }
+#forging .box{ width:320px; max-width:92%; background:linear-gradient(180deg,#071029,#081424); color:white; padding:18px; border-radius:12px; text-align:center; box-shadow:0 14px 40px rgba(2,6,23,.6); border:1px solid rgba(255,255,255,0.03); }
+.forge-bar{ height:10px; background: rgba(255,255,255,0.06); border-radius:999px; overflow:hidden; margin-top:12px; }
+.forge-fill{ height:100%; width:0%; background: linear-gradient(90deg,#ffd166,#f4a261); transition: width 1.2s ease; }
 
-.note{color:var(--muted);font-size:.92rem;margin-top:12px}
+/* mascot */
+#mascot{ position:fixed; left:14px; bottom:14px; background: rgba(255,255,255,0.06); padding:10px 12px; border-radius:14px; display:flex; gap:10px; align-items:center; z-index:80; color:#eaf2ff; box-shadow:0 8px 26px rgba(2,6,23,0.48); transform:translateY(18px); opacity:0; transition: all .3s ease; max-width:260px; }
+#mascot.show{ transform:translateY(0); opacity:1; }
+#mascot img{ width:40px; height:40px; border-radius:50%; }
 
-/* =========================
-   RESPONSIVE ADJUSTMENTS
-========================= */
+/* small util */
+.small{ font-size:.95rem; color:var(--muted); }
+
 @media (max-width:780px){
-  header {flex-direction:column;align-items:flex-start;}
-  .hero {flex-direction:column;align-items:flex-start;}
-  .controls {flex-direction:column;align-items:stretch;}
-  .stats {margin-left:0;margin-top:6px;}
-  input.blank {min-width:80%; margin:6px 0; font-size:1rem;}
+  header { flex-direction:column; align-items:flex-start; }
+  .hero { flex-direction:column; align-items:flex-start; }
+  .controls { flex-direction:column; align-items:stretch; }
+  .stats { margin-left:0; margin-top:6px; }
+  input.blank { min-width:80%; margin:6px 0; font-size:1rem; }
+  #mascot{ left:10px; bottom:10px; max-width:200px; }
+}
+/* ---------------- Timer ---------------- */
+#timerBox {
+  background: rgba(255,255,255,0.08);
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-@media (max-width:480px){
-  body {padding:12px;}
-  .hero h1 {font-size:1.05rem;}
-  .modal {width:90%;padding:16px;}
-  input.blank {min-width:95%;}
+#timer {
+  font-size: 1.2rem;
+  color: var(--accent-400);
 }
+
+#timer.warning {
+  color: #ffcc00;
+}
+
+#timer.danger {
+  color: #ff4d4d;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 rgba(59,130,246,0.4); }
+  50% { box-shadow: 0 0 18px rgba(59,130,246,0.9); }
+  100% { box-shadow: 0 0 0 rgba(59,130,246,0.4); }
+}
+
+.progress-bar-warning {
+  animation: pulse 1s infinite;
+}
+
 </style>
 </head>
 <body>
@@ -190,35 +142,62 @@ input.blank.wrong{
       <div class="logo">SEG</div>
       <div>
         <h1>Fill In The Missing Words</h1>
-        <p class="lead" style="margin:4px 0 0;color:var(--muted)">Read the full descriptions on the wall. Fill in all blanks to collect <strong>Key #2</strong>.</p>
+        <p class="lead small" style="margin:4px 0 0;color:var(--muted)">Read the full descriptions on the wall. Fill in all blanks to collect <strong>Key #2</strong>.</p>
       </div>
+    </div>
+    <div id="timerBox">
+      <span id="timerLabel">Time Left:</span>
+      <span id="timer">120</span>s
     </div>
   </header>
 
   <main>
     <section class="card" aria-labelledby="gameTitle">
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div id="progressContainer" aria-hidden="true"><div id="progressBar"></div></div>
+        <div class="small" id="progressText">0 / 0</div>
+      </div>
+
       <div id="questionsContainer" role="list" aria-live="polite"></div>
 
       <div class="controls" style="margin-top:12px;">
         <button id="submitBtn" class="btn" aria-label="Submit answers">Submit Answers</button>
         <button id="resetBtn" class="btn ghost" aria-label="Reset">Reset</button>
-        <div class="stats" aria-live="polite">Attempts: <span id="attempts">0</span></div>
+        <div class="stats small" aria-live="polite">Attempts: <span id="attempts">0</span></div>
       </div>
 
-      <p class="note">Tip: Answers are case-insensitive. Each blank replaces the first occurrence of the word in the description.</p>
+      <p class="note small">Tip: Answers are case-insensitive. Each blank replaces the first occurrence of the word in the description.</p>
     </section>
   </main>
 </div>
 
+<!-- confetti canvas -->
 <canvas id="confetti"></canvas>
 
+<!-- forging animation -->
+<div id="forging" aria-hidden="true">
+  <div class="box">
+    <div style="font-weight:700;color:#ffd166;">Forging Key #2...</div>
+    <div class="small" style="margin-top:6px;color:var(--muted);">Hang on — almost done</div>
+    <div class="forge-bar"><div class="forge-fill" id="forgeFill"></div></div>
+  </div>
+</div>
+
+<!-- mascot -->
+<div id="mascot" aria-hidden="true">
+  <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='24' r='14' fill='%232563eb'/><rect x='12' y='38' width='40' height='18' rx='6' fill='%231e293b'/></svg>" alt="mascot"/>
+  <div id="mascotText" class="small">Welcome! Fill the blanks to earn Key #2.</div>
+</div>
+
+<!-- Key modal (final) -->
 <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal" role="document" aria-labelledby="modalTitle">
     <div class="key" aria-hidden="true">
       <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="k" x1="0" x2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/></linearGradient></defs><path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k)"/></svg>
     </div>
     <h3 id="modalTitle">Key #2 Received!</h3>
-    <p>Great! Screenshot this page to claim your prize at Level 1.</p>
+    <p class="small">Great! Screenshot this page to claim your prize at Level 1.</p>
     <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
       <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
     </div>
@@ -226,6 +205,9 @@ input.blank.wrong{
 </div>
 
 <script>
+/* =========================
+   Questions — your original data
+   ========================= */
 const questions = [
   {
     title: "Advanced & Digital Manufacturing — 3D printing",
@@ -254,6 +236,9 @@ const questions = [
   }
 ];
 
+/* =========================
+   DOM refs & state
+   ========================= */
 const container = document.getElementById('questionsContainer');
 const submitBtn = document.getElementById('submitBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -261,16 +246,92 @@ const attemptsEl = document.getElementById('attempts');
 const overlay = document.getElementById('overlay');
 const closeModal = document.getElementById('closeModal');
 const confettiCanvas = document.getElementById('confetti');
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const forging = document.getElementById('forging');
+const forgeFill = document.getElementById('forgeFill');
+const mascot = document.getElementById('mascot');
+const mascotText = document.getElementById('mascotText');
 
 let attempts = 0;
+let totalBlanks = 0;
 
+/* -------------------------
+   Audio (WebAudio short tones)
+   ------------------------- */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function playTone(freq, time=0.06, type='sine', gain=0.06) {
+  try {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.value = gain;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
+    setTimeout(()=> o.stop(), time*1000 + 20);
+  } catch(e){ /* ignore audio errors */ }
+}
+function playClick(){ playTone(880, 0.045, 'sine', 0.02); }
+function playCorrect(){ playTone(1100, 0.11, 'triangle', 0.06); }
+function playWrong(){ playTone(200, 0.08, 'sine', 0.03); }
+function playSuccess(){ playTone(720, 0.22, 'sine', 0.08); setTimeout(()=> playTone(980,0.16,'sine',0.06), 120); }
+
+/* =========================
+   Helpers
+   ========================= */
 function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
+function updateProgress() {
+  const inputs = Array.from(container.querySelectorAll('input.blank'));
+  const correctCount = inputs.reduce((acc, inp) => {
+    const qIdx = Number(inp.dataset.q);
+    const bIdx = Number(inp.dataset.b);
+    if (!isNaN(qIdx) && !isNaN(bIdx)) {
+      const expected = questions[qIdx].blanks[bIdx];
+      if ((inp.value || '').trim().toLowerCase() === expected.toLowerCase()) return acc + 1;
+    }
+    return acc;
+  }, 0);
+  const pct = totalBlanks === 0 ? 0 : Math.round((correctCount/totalBlanks)*100);
+  progressBar.style.width = pct + '%';
+  progressText.textContent = `${correctCount} / ${totalBlanks}`;
+  // glow when near complete
+  if (pct === 100) progressBar.style.boxShadow = '0 6px 20px rgba(37,99,235,0.18), 0 0 18px rgba(37,99,235,0.12)';
+  else progressBar.style.boxShadow = '';
+  // mascot hints
+  if (pct === 0) showMascotOnce("Start filling the blanks — you're off to a good start!");
+  else if (pct > 0 && pct < 40) showMascotOnce("Nice! Keep going — you're making progress.");
+  else if (pct >= 40 && pct < 80) showMascotOnce("Great job — you're almost halfway!");
+  else if (pct >= 80 && pct < 100) showMascotOnce("So close! Just a few more.");
+}
+
+/* small one-time mascot message (debounced) */
+let mascotTimer = null;
+function showMascotOnce(text, duration=2200) {
+  clearTimeout(mascotTimer);
+  mascotText.textContent = text;
+  mascot.classList.add('show');
+  mascot.setAttribute('aria-hidden','false');
+  mascotTimer = setTimeout(()=> {
+    mascot.classList.remove('show');
+    mascot.setAttribute('aria-hidden','true');
+  }, duration);
+}
+
+/* =========================
+   Build questions UI
+   ========================= */
 function buildQuestions(){
   container.innerHTML = '';
+  totalBlanks = 0;
   questions.forEach((q, qi) => {
     const node = document.createElement('article');
     node.className = 'question';
+    node.id = `q${qi}`;
     node.setAttribute('role','listitem');
 
     const header = document.createElement('h3');
@@ -282,11 +343,14 @@ function buildQuestions(){
     hint.textContent = 'Refer to the printed description on the wall to complete the blanks.';
     node.appendChild(hint);
 
+    // replace first whole-word occurrences
     let html = q.fullText;
     q.blanks.forEach((blank, bi) => {
       const token = `@@BLANK_${qi}_${bi}@@`;
       const reWord = new RegExp('\\b' + escapeRegExp(blank) + '\\b', 'i');
-      html = reWord.test(html) ? html.replace(reWord, token) : html.replace(new RegExp(escapeRegExp(blank), 'i'), token);
+      if (reWord.test(html)) html = html.replace(reWord, token);
+      else html = html.replace(new RegExp(escapeRegExp(blank), 'i'), token);
+      totalBlanks++;
     });
 
     const parts = html.split(/(@@BLANK_\d+_\d+@@)/g);
@@ -296,7 +360,7 @@ function buildQuestions(){
       if (!part) return;
       const m = part.match(/^@@BLANK_(\d+)_(\d+)@@$/);
       if (m) {
-        const [_, qIdxStr, bIdxStr] = m;
+        const qIdxStr = m[1], bIdxStr = m[2];
         const input = document.createElement('input');
         input.className = 'blank';
         input.type = 'text';
@@ -307,16 +371,56 @@ function buildQuestions(){
         input.dataset.q = qIdxStr;
         input.dataset.b = bIdxStr;
         input.setAttribute('aria-label', `Blank ${Number(qIdxStr)+1}-${Number(bIdxStr)+1}`);
+        // events
+        input.addEventListener('input', (e) => {
+          playClick();
+          // live-check to mark correct/incorrect
+          const expected = questions[Number(qIdxStr)].blanks[Number(bIdxStr)];
+          const val = (e.target.value || '').trim();
+          e.target.classList.remove('correct','wrong');
+          if (val.length === 0) { /* no class */ }
+          else if (val.toLowerCase() === expected.toLowerCase()) {
+            e.target.classList.add('correct');
+            playCorrect();
+          } else {
+            e.target.classList.add('wrong');
+            // a gentle wrong sound but only for non-empty
+            playWrong();
+          }
+          updateProgress();
+        });
+        // on Enter, move focus to next blank
+        input.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') {
+            ev.preventDefault();
+            const all = Array.from(container.querySelectorAll('input.blank'));
+            const idx = all.indexOf(ev.target);
+            if (idx >= 0 && idx < all.length - 1) all[idx+1].focus();
+          }
+        });
         p.appendChild(input);
-      } else { p.appendChild(document.createTextNode(part)); }
+      } else {
+        p.appendChild(document.createTextNode(part));
+      }
     });
+
     node.appendChild(p);
     container.appendChild(node);
   });
+
   attemptsEl.textContent = attempts;
-  setTimeout(()=> { const first = container.querySelector('input.blank'); if(first) first.focus(); }, 200);
+  progressText.textContent = `0 / ${totalBlanks}`;
+  progressBar.style.width = '0%';
+  // focus first input
+  setTimeout(()=> {
+    const first = container.querySelector('input.blank');
+    if (first) first.focus();
+  }, 160);
 }
 
+/* =========================
+   Validation & Submit
+   ========================= */
 function validateAnswers(){
   const inputs = Array.from(container.querySelectorAll('input.blank'));
   let allCorrect = true;
@@ -326,29 +430,40 @@ function validateAnswers(){
     const bIdx = Number(inp.dataset.b);
     const expected = questions[qIdx].blanks[bIdx];
     const value = (inp.value || '').trim();
-    if (!value || value.toLowerCase() !== expected.toLowerCase()) {
+    if (!value) {
       allCorrect = false;
       inp.classList.add('wrong');
-    } else { inp.classList.add('correct'); }
+    } else if (value.toLowerCase() === expected.toLowerCase()) {
+      inp.classList.add('correct');
+    } else {
+      allCorrect = false;
+      inp.classList.add('wrong');
+    }
   });
+  updateProgress();
   return allCorrect;
 }
 
-function shake(el){
+/* small shake animation */
+function shake(el) {
   el.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240,iterations:1});
 }
 
+/* =========================
+   Confetti (same as before)
+   ========================= */
+const confettiCtx = confettiCanvas.getContext('2d');
 function fireConfetti(){
-  const ctx = confettiCanvas.getContext('2d');
+  const ctx = confettiCtx;
   const w = confettiCanvas.width = window.innerWidth;
   const h = confettiCanvas.height = window.innerHeight;
   confettiCanvas.style.display = 'block';
   const pieces = [];
-  const count = Math.floor(Math.min(80, w/10));
+  const count = Math.floor(Math.min(120, w/6));
   for(let i=0;i<count;i++){
     pieces.push({
       x: Math.random()*w,
-      y: Math.random()*-h*0.2,
+      y: Math.random()*-h*0.4,
       w: 6 + Math.random()*10,
       h: 6 + Math.random()*10,
       vx: -2 + Math.random()*4,
@@ -359,41 +474,186 @@ function fireConfetti(){
     });
   }
   let t0 = performance.now();
+  const startTime = performance.now();
   function render(t){
     const dt = t - t0; t0 = t;
     ctx.clearRect(0,0,w,h);
     for(let p of pieces){
       p.x += p.vx; p.y += p.vy; p.rot += p.speed*30;
-      ctx.save();
-      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-      ctx.restore();
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
     }
-    if ((t - startTime) < 2400) requestAnimationFrame(render);
-    else { confettiCanvas.style.display='none'; ctx.clearRect(0,0,w,h); }
+    if ((t - startTime) < 2600) requestAnimationFrame(render);
+    else { confettiCanvas.style.display = 'none'; ctx.clearRect(0,0,w,h); }
   }
-  const startTime = performance.now();
   requestAnimationFrame(render);
 }
 
+/* =========================
+   Key forging animation + modal show
+   ========================= */
+function showForgingThenModal() {
+  // show forging UI
+  forgeFill.style.width = '0%';
+  forging.style.display = 'flex';
+  forging.setAttribute('aria-hidden','false');
+  // animate fill
+  setTimeout(()=> forgeFill.style.width = '100%', 60);
+  // after 1.35s show modal, fire confetti and success chime
+  setTimeout(()=> {
+    forging.style.display = 'none';
+    forging.setAttribute('aria-hidden','true');
+    // play success sound & confetti
+    playSuccess();
+    fireConfetti();
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+  }, 1400);
+}
+
+/* =========================
+   Event bindings
+   ========================= */
 submitBtn.addEventListener('click', ()=>{
   attempts++;
   attemptsEl.textContent = attempts;
   const inputs = Array.from(container.querySelectorAll('input.blank'));
-  if(inputs.length === 0) return;
+  if (inputs.length === 0) return;
+
+  // quick empty check
   const anyEmpty = inputs.some(i => !i.value.trim());
-  if(anyEmpty){ inputs.filter(i=>!i.value.trim()).forEach(i=>i.classList.add('wrong')); shake(container); return; }
-  if(validateAnswers()){ overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); fireConfetti(); } 
-  else { shake(container); }
+  if (anyEmpty) {
+    inputs.filter(i=>!i.value.trim()).forEach(i=>i.classList.add('wrong'));
+    playWrong();
+    shake(container);
+    updateProgress();
+    return;
+  }
+
+  const ok = validateAnswers();
+  if (ok) {
+    // show forging animation then modal
+    showForgingThenModal();
+  } else {
+    // wrong feedback
+    playWrong();
+    shake(container);
+    showMascotOnce("A few are incorrect — double-check and try again!", 2000);
+  }
 });
 
-resetBtn.addEventListener('click', ()=>{ attempts=0; buildQuestions(); });
+resetBtn.addEventListener('click', ()=>{
+  attempts = 0;
+  attemptsEl.textContent = attempts;
+  buildQuestions();
+  updateProgress();
+});
 
-closeModal.addEventListener('click', ()=>{ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); });
+closeModal.addEventListener('click', ()=>{
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+});
 
+/* accessibility: resize canvas on window change */
+window.addEventListener('resize', ()=> {
+  if (confettiCanvas.style.display !== 'none') {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+});
+/* ---------- TIMER SYSTEM ---------- */
+let timeLeft = 120;       // total duration in seconds
+let timerInterval = null;
+let timerStarted = false;
+const timerDisplay = document.getElementById("timer");
+
+// Start timer
+function startTimer() {
+  if (timerStarted) return;
+  timerStarted = true;
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+
+    // Warning color
+    if (timeLeft <= 20 && timeLeft > 10) {
+      timerDisplay.classList.add("warning");
+      timerDisplay.classList.remove("danger");
+    }
+
+    // Danger color + shake
+    if (timeLeft <= 10) {
+      timerDisplay.classList.add("danger");
+      timerDisplay.classList.remove("warning");
+      timerDisplay.style.transform = "scale(1.15)";
+      setTimeout(() => (timerDisplay.style.transform = "scale(1)"), 150);
+    }
+
+    // Time's up
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      disableAllInputs();
+      showBottomMessage("Time's up! Try again.", "#ef4444");
+    }
+  }, 1000);
+}
+
+// Stop timer
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerStarted = false;
+}
+
+// Reset timer
+function resetTimer() {
+  stopTimer();
+  timeLeft = 120;
+  timerDisplay.textContent = timeLeft;
+  timerDisplay.classList.remove("warning","danger");
+}
+
+// Disable inputs on time up
+function disableAllInputs() {
+  document.querySelectorAll("input.blank").forEach(inp => {
+    inp.disabled = true;
+    inp.style.opacity = "0.5";
+  });
+  document.getElementById("submitBtn").disabled = true;
+}
+
+// Optional: show bottom message (like mascot)
+function showBottomMessage(msg, color="#fff") {
+  showMascotOnce(msg, 2500);
+  mascotText.style.color = color;
+}
+
+// Start timer when user types in any blank
+document.addEventListener("input", e => {
+  if (e.target.matches("input.blank")) startTimer();
+});
+
+// Reset timer when Reset button is clicked
+resetBtn.addEventListener("click", resetTimer);
+
+// Stop timer on successful submit
+submitBtn.addEventListener("click", () => {
+  const allCorrect = validateAnswers();
+  if (allCorrect) stopTimer();
+});
+
+function disableAllInputs() {
+  document.querySelectorAll("input.blank").forEach(inp => {
+    inp.disabled = true;
+    inp.style.opacity = "0.5";
+  });
+
+  document.getElementById("submitBtn").disabled = true;
+}
+
+
+/* init */
 buildQuestions();
-
-window.addEventListener('resize', ()=>{ if(confettiCanvas.style.display !== 'none'){ confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight; } });
+updateProgress();
 </script>
 </body>
 </html>
