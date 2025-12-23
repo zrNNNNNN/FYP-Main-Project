@@ -33,10 +33,8 @@
     display:flex;
     justify-content:center;
   }
-
   .stage{width:100%;max-width:980px;}
 
-  /* Header with hero + timer */
   header{
     display:flex;
     gap:16px;
@@ -45,7 +43,6 @@
     flex-wrap:wrap;
     justify-content:space-between;
   }
-
   .hero{
     flex:1;
     background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
@@ -57,7 +54,6 @@
     gap:14px;
     min-width:0;
   }
-
   .logo{
     width:56px;height:56px;border-radius:12px;
     display:flex;align-items:center;justify-content:center;
@@ -66,11 +62,9 @@
     box-shadow: 0 6px 18px rgba(59,130,246,0.18);
     flex:0 0 56px;
   }
-
   .hero-text h1{margin:0;font-size:1.05rem}
   .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
 
-  /* Timer box top-right */
   #timerBox{
     background: rgba(15,23,42,0.85);
     border-radius:12px;
@@ -84,15 +78,11 @@
     border:1px solid rgba(148,163,184,0.2);
   }
   #timerLabel{font-size:.8rem;color:var(--muted);}
-  #timer{
-    font-size:1.3rem;
-    font-weight:700;
-    color:#22c55e;
-  }
+  #timer{font-size:1.3rem;font-weight:700;color:#22c55e;}
   #timerBox.warning #timer{color:var(--warn);}
   #timerBox.danger #timer{color:#fb7185;}
 
-  main{margin-top:4px;display:block;}
+  main{margin-top:4px;}
 
   .card{
     background:var(--card-bg);
@@ -136,25 +126,40 @@
     transform:translateY(6px);
     transition:opacity .2s ease, transform .2s ease;
   }
-  #streakBadge.show{
-    opacity:1;
-    transform:translateY(0);
-  }
+  #streakBadge.show{opacity:1; transform:translateY(0);}
 
-  .round-title{
-    margin:6px 0 0;
-    font-size:1.02rem;
-    color:#e6f0ff;
-    font-weight:700;
+  .round-title{margin:6px 0 0;font-size:1.02rem;color:#e6f0ff;font-weight:700;}
+  .round-desc{margin:6px 0 0;color:var(--muted);font-size:.92rem;line-height:1.5;}
+
+  /* Rules callout */
+  .rules{
+    margin-top:10px;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid rgba(59,130,246,0.25);
+    background:linear-gradient(90deg, rgba(59,130,246,0.08), rgba(15,23,42,0.35));
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
   }
-  .round-desc{
-    margin:6px 0 0;
-    color:var(--muted);
-    font-size:.9rem;
+  .rules .badge{
+    flex:0 0 auto;
+    font-weight:800;
+    color:#dbeafe;
+    background:rgba(59,130,246,0.22);
+    border:1px solid rgba(59,130,246,0.35);
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:.85rem;
+  }
+  .rules .text{
+    color:#e6eef8;
+    font-size:.92rem;
     line-height:1.5;
   }
+  .rules .text b{color:#ffffff}
+  .rules .mini{color:var(--muted);font-size:.85rem;margin-top:4px;}
 
-  /* Tracks */
   #tracksArea{margin-top:14px;}
 
   .trackWrap{
@@ -163,20 +168,17 @@
     border-radius:12px;
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     border:1px solid rgba(255,255,255,0.04);
+    will-change: transform;
   }
-
   .trackLabel{
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:12px;
-    font-size:.92rem;
+    font-size:.95rem;
     margin-bottom:10px;
   }
-  .lockState{
-    color:var(--muted);
-    font-size:.85rem;
-  }
+  .lockState{color:var(--muted); font-size:.85rem;}
 
   .track{
     position:relative;
@@ -186,7 +188,6 @@
     overflow:hidden;
     box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
   }
-
   .zone{
     position:absolute;
     top:0; height:100%;
@@ -197,12 +198,7 @@
     border:1px solid rgba(16,185,129,0.45);
     box-shadow:0 0 18px rgba(16,185,129,0.22);
   }
-
-  /* Round 3 smaller zone (still visible even though logic uses it too) */
-  .round3 .zone{
-    left:44%;
-    width:12%;
-  }
+  .round3 .zone{ left:44%; width:12%; }
 
   .needle{
     position:absolute;
@@ -213,6 +209,7 @@
     border-radius:10px;
     background: linear-gradient(180deg,#e2e8f0,#94a3b8);
     box-shadow:0 10px 26px rgba(2,6,23,0.55);
+    will-change: left;
   }
 
   .trackWrap.locked .track{
@@ -227,7 +224,34 @@
     border:1px solid rgba(239,68,68,0.22);
   }
 
-  /* Controls */
+  /* Per-system action row (Rounds 1 & 2) */
+  .trackActions{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .sysBtn{
+    background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
+    color:white;
+    padding:10px 14px;
+    border-radius:12px;
+    border:0;
+    cursor:pointer;
+    font-weight:900;
+    box-shadow:0 10px 28px rgba(37,99,235,0.22);
+    font-size:.95rem;
+    letter-spacing:.4px;
+    min-height:44px; /* thumb-friendly */
+  }
+  .sysBtn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;}
+  .sysHint{
+    color:var(--muted);
+    font-size:.85rem;
+  }
+
+  /* Bottom controls */
   .controls{
     display:flex;
     gap:10px;
@@ -235,27 +259,31 @@
     margin-top:14px;
     flex-wrap:wrap;
   }
-  .btn{
+  .actionBtn{
     background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
     color:white;
-    padding:10px 14px;
-    border-radius:10px;
+    padding:12px 16px;
+    border-radius:12px;
     border:0;
     cursor:pointer;
-    font-weight:700;
-    box-shadow:0 8px 22px rgba(37,99,235,0.18);
-    font-size:.92rem;
+    font-weight:900;
+    box-shadow:0 10px 28px rgba(37,99,235,0.22);
+    font-size:1rem;
+    letter-spacing:.5px;
+    min-height:48px;
   }
   .btn.ghost{
     background:transparent;
     color:var(--accent-400);
     border:1px solid rgba(59,130,246,0.3);
     box-shadow:none;
+    padding:12px 16px;
+    border-radius:12px;
+    font-weight:900;
+    cursor:pointer;
+    min-height:48px;
   }
-  .btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-  }
+  .actionBtn:disabled, .btn.ghost:disabled{opacity:.5; cursor:not-allowed;}
 
   .stats{
     margin-left:auto;
@@ -269,11 +297,7 @@
   .stats-line{white-space:nowrap;}
 
   #scoreValue.bump{ animation:scoreBump .25s ease-out; }
-  @keyframes scoreBump{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.2);}
-    100%{transform:scale(1);}
-  }
+  @keyframes scoreBump{0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
   #scoreDelta{
     font-size:.8rem;
     margin-left:6px;
@@ -285,31 +309,13 @@
   #scoreDelta.positive{color:#4ade80;}
   #scoreDelta.negative{color:#fb7185;}
 
-  .note{
-    color:var(--muted);
-    font-size:.85rem;
-    margin-top:12px;
-    line-height:1.5;
-  }
+  .note{color:var(--muted);font-size:.85rem;margin-top:12px;line-height:1.5;}
 
-  /* Feedback animations */
   .flashGood{ animation:flashGood .35s ease-out; }
   .flashBad{ animation:flashBad .3s ease-out; }
+  @keyframes flashGood{0%{transform:scale(1); box-shadow:0 0 0 rgba(16,185,129,0);}50%{transform:scale(1.01); box-shadow:0 0 18px rgba(16,185,129,0.55);}100%{transform:scale(1);}}
+  @keyframes flashBad{0%{transform:translateX(0);}25%{transform:translateX(-4px);}50%{transform:translateX(4px);}75%{transform:translateX(-2px);}100%{transform:translateX(0);}}
 
-  @keyframes flashGood{
-    0%{transform:scale(1); box-shadow:0 0 0 rgba(16,185,129,0);}
-    50%{transform:scale(1.01); box-shadow:0 0 18px rgba(16,185,129,0.55);}
-    100%{transform:scale(1);}
-  }
-  @keyframes flashBad{
-    0%{transform:translateX(0);}
-    25%{transform:translateX(-4px);}
-    50%{transform:translateX(4px);}
-    75%{transform:translateX(-2px);}
-    100%{transform:translateX(0);}
-  }
-
-  /* Toast */
   #toast{
     position:fixed;
     left:50%;
@@ -331,10 +337,8 @@
   }
   #toast.show{opacity:1; transform:translateX(-50%) translateY(-4px);}
 
-  /* Confetti */
   #confetti{ position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
 
-  /* Time up bar */
   #timeUpBar{
     position:fixed;
     left:50%;
@@ -357,11 +361,10 @@
     border:none;
     border-radius:999px;
     padding:6px 12px;
-    font-weight:700;
+    font-weight:900;
     cursor:pointer;
   }
 
-  /* Forging overlay */
   #forging{
     position:fixed; inset:0;
     display:none;
@@ -380,21 +383,9 @@
     box-shadow:0 14px 40px rgba(2,6,23,.6);
     border:1px solid rgba(255,255,255,0.03);
   }
-  .forge-bar{
-    height:10px;
-    background: rgba(255,255,255,0.06);
-    border-radius:999px;
-    overflow:hidden;
-    margin-top:12px;
-  }
-  .forge-fill{
-    height:100%;
-    width:0%;
-    background: linear-gradient(90deg,#ffd166,#f4a261);
-    transition: width 1.2s ease;
-  }
+  .forge-bar{height:10px;background: rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;margin-top:12px;}
+  .forge-fill{height:100%;width:0%;background: linear-gradient(90deg,#ffd166,#f4a261);transition: width 1.2s ease;}
 
-  /* Final modal */
   #overlay{
     position:fixed; inset:0;
     display:none;
@@ -432,7 +423,7 @@
     gap:10px;
     flex-wrap:wrap;
     color:#e6eef8;
-    font-weight:700;
+    font-weight:900;
   }
   .modal .scoreline span{
     background:rgba(15,23,42,0.65);
@@ -442,6 +433,7 @@
     font-size:.92rem;
   }
 
+  /* ===== Mobile-first tweaks ===== */
   @media (max-width:780px){
     header{flex-direction:column;}
     #timerBox{align-self:flex-start;}
@@ -450,11 +442,41 @@
     body{padding:14px;}
     .logo{width:48px;height:48px;}
     .hero-text h1{font-size:1rem;}
-    .hero-text p{font-size:.85rem;}
-    .stats{align-items:flex-start;margin-left:0;}
+    .hero-text p{font-size:.9rem;}
+
+    .stats{align-items:flex-start;margin-left:0;width:100%;}
+    .controls{
+      position:sticky;
+      bottom:10px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.02), rgba(15,23,42,0.92));
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,0.18);
+      box-shadow:0 14px 40px rgba(2,6,23,.55);
+      z-index:50;
+      gap:12px;
+    }
+    .controls .stats{order:-1;}
+
+    .actionBtn, .btn.ghost{
+      width:100%;
+      border-radius:14px;
+      font-size:1.05rem;
+      padding:16px 16px;
+    }
+
+    .sysBtn{
+      width:100%;
+      border-radius:14px;
+      font-size:1.05rem;
+      padding:14px 14px;
+    }
+    .trackActions{flex-direction:column;align-items:stretch;}
+    .sysHint{font-size:.88rem;}
   }
 </style>
 </head>
+
 <body>
 <div class="stage">
   <header>
@@ -462,7 +484,7 @@
       <div class="logo">SEG</div>
       <div class="hero-text">
         <h1 id="headerTitle">System Calibration Challenge</h1>
-        <p>Skill-based — tap <strong>LOCK</strong> when the needle is inside the green zone. Clear all rounds to collect <strong>Key #3</strong>.</p>
+        <p>Skill-based — lock systems when the needle is inside the green zone. Clear all rounds to collect <strong>Key #3</strong>.</p>
       </div>
     </div>
     <div id="timerBox">
@@ -479,14 +501,19 @@
       </div>
 
       <div class="round-title" id="roundTitle">Round 1 — Warmup Locks</div>
-      <div class="round-desc" id="roundDesc">
-        Lock each system by tapping <strong>LOCK</strong> when the needle is inside the green zone.
+      <div class="round-desc" id="roundDesc"></div>
+
+      <div class="rules">
+        <div class="badge">How to Play</div>
+        <div class="text" id="rulesText"></div>
       </div>
 
       <div id="tracksArea" aria-live="polite"></div>
 
       <div class="controls">
-        <button id="actionBtn" class="btn" aria-label="Lock">LOCK</button>
+        <!-- Visible ONLY in Round 3 -->
+        <button id="actionBtn" class="actionBtn" aria-label="Lock Target">LOCK TARGET</button>
+
         <button id="resetBtn" class="btn ghost" aria-label="Reset game">Reset</button>
 
         <div class="stats" aria-live="polite">
@@ -505,16 +532,12 @@
         </div>
       </div>
 
-      <p class="note" id="scoringNote">
-        Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0).
-        Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!
-      </p>
+      <p class="note" id="scoringNote"></p>
     </section>
   </main>
 </div>
 
 <canvas id="confetti"></canvas>
-
 <div id="toast"></div>
 
 <div id="timeUpBar">
@@ -522,7 +545,6 @@
   <button id="restartBtn">Restart</button>
 </div>
 
-<!-- Forging overlay -->
 <div id="forging" aria-hidden="true">
   <div class="box">
     <div style="font-weight:800;color:#ffd166;">Forging Key #3…</div>
@@ -531,7 +553,6 @@
   </div>
 </div>
 
-<!-- Final popup -->
 <div id="overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="key" aria-hidden="true">
@@ -544,7 +565,7 @@
     <p>Screenshot this page to claim your prize.</p>
     <div class="scoreline">
       <span>Final Score: <span id="finalScore">0</span></span>
-      <span>Final Streak: <span id="finalStreak">0</span></span>
+      <span>Longest Streak: <span id="finalStreak">0</span></span>
     </div>
     <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
       <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
@@ -558,29 +579,20 @@
    ========================= */
 const SCORE_CORRECT = 10;
 const SCORE_WRONG = -5;
-
-// Overall timer (starts on first interaction)
 const TOTAL_TIME_SECONDS = 240; // 4 minutes
 
-// Tick rate for needle animation
-const TICK_MS = 16; // ~60fps
-
-// Round definitions
-const ROUND_COUNT = 3;
-
-// Round 1 (slightly slower)
 const ROUND1_SYSTEMS = 2;
 const ROUND1_SPEEDS = [0.85, 1.05];
 
-// Round 2 (faster + more systems)
 const ROUND2_SYSTEMS = 2;
 const ROUND2_SPEEDS = [1.25, 1.45];
 
-// Round 3 (hard mode)
 const ROUND3_SYSTEMS = 3;
-const ROUND3_SPEEDS = [1.65, 1.85, 2.05];
-const ROUND3_ZONE_LEFT = 44;   // smaller zone
-const ROUND3_ZONE_RIGHT = 56;  // smaller zone
+// Slower than before (more playable)
+const ROUND3_SPEEDS = [1.15, 1.30, 1.45];
+
+const ROUND3_ZONE_LEFT = 44;
+const ROUND3_ZONE_RIGHT = 56;
 
 /* =========================
    DOM
@@ -590,6 +602,8 @@ const roundPillEl = document.getElementById('roundPill');
 const roundTitleEl = document.getElementById('roundTitle');
 const roundDescEl = document.getElementById('roundDesc');
 const scoringNoteEl = document.getElementById('scoringNote');
+
+const rulesTextEl = document.getElementById('rulesText');
 
 const tracksArea = document.getElementById('tracksArea');
 const actionBtn = document.getElementById('actionBtn');
@@ -612,7 +626,6 @@ const timeUpBar = document.getElementById('timeUpBar');
 const restartBtn = document.getElementById('restartBtn');
 
 const confettiCanvas = document.getElementById('confetti');
-
 const forging = document.getElementById('forging');
 const forgeFill = document.getElementById('forgeFill');
 
@@ -627,17 +640,24 @@ const finalStreakEl = document.getElementById('finalStreak');
 let round = 1;
 let attempts = 0;
 let score = 0;
+
 let streak = 0;
+let longestStreak = 0;
 let streakBoostApplied = false;
 
-let trackState = [];
-let trackTimers = [];
 let gameLocked = false;
 
 // Timer
 let timeLeft = TOTAL_TIME_SECONDS;
 let timerStarted = false;
 let timerInterval = null;
+
+/* Tracks (1 RAF loop) */
+let tracks = []; // {pos,dir,speed,locked,overheated,consecOk,wrapEl,needleEl,lockStateEl,btnEl}
+let rafId = null;
+let lastFrameTs = 0;
+
+window.__targetIdx = 0;
 
 /* =========================
    TIMER
@@ -684,7 +704,9 @@ function resetTimer(){
 function handleTimeUp(){
   gameLocked = true;
   actionBtn.disabled = true;
-  stopAllTracks();
+  // disable per-system buttons
+  tracks.forEach(t => { if (t.btnEl) t.btnEl.disabled = true; });
+  stopTracksAnimation();
   timeUpBar.style.display = 'flex';
 }
 
@@ -708,30 +730,42 @@ function isInGreenZone(pos){
 }
 
 /* =========================
-   TRACK ANIMATION
+   TRACK ANIMATION (RAF)
+   speed is "% per 16ms"
    ========================= */
-function tickTrack(i){
-  const t = trackState[i];
-  if (!t || t.locked) return;
+function startTracksAnimation(){
+  stopTracksAnimation();
+  lastFrameTs = performance.now();
+  const loop = (ts)=>{
+    rafId = requestAnimationFrame(loop);
+    const dt = Math.min(48, ts - lastFrameTs);
+    lastFrameTs = ts;
+    const scale = dt / 16;
 
-  t.pos += t.dir * t.speed;
-  if (t.pos >= 100){ t.pos = 100; t.dir = -1; }
-  if (t.pos <= 0){ t.pos = 0; t.dir = 1; }
+    for (let i=0;i<tracks.length;i++){
+      const t = tracks[i];
+      if (!t || t.locked) continue;
 
-  if (t.needleEl){
-    t.needleEl.style.left = `${t.pos}%`;
-  }
+      t.pos += t.dir * t.speed * scale;
+      if (t.pos >= 100){ t.pos = 100; t.dir = -1; }
+      if (t.pos <= 0){ t.pos = 0; t.dir = 1; }
+
+      t.needleEl.style.left = `${t.pos}%`;
+    }
+  };
+  rafId = requestAnimationFrame(loop);
 }
-function stopAllTracks(){
-  trackTimers.forEach(id => clearInterval(id));
-  trackTimers = [];
+function stopTracksAnimation(){
+  if (rafId){
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
 }
 
 /* =========================
    SCORING / STREAK
    ========================= */
 function bumpScore(delta){
-  const prev = score;
   if (delta > 0) score += delta;
   else score = Math.max(0, score + delta);
 
@@ -762,6 +796,11 @@ function applyStreakBonusIfNeeded(){
     setTimeout(()=> scoreEl.classList.remove('bump'), 260);
   }
 }
+function addStreak(){
+  streak++;
+  if (streak > longestStreak) longestStreak = streak;
+  streakEl.textContent = streak;
+}
 function handleWrong(){
   streak = 0;
   streakBoostApplied = false;
@@ -786,116 +825,19 @@ function applyWrongVisual(el){
 }
 
 /* =========================
-   BUILD ROUNDS
+   UI BUILD HELPERS
    ========================= */
-function buildRound1(){
-  document.body.classList.remove('round3');
-  stopAllTracks();
-  trackState = [];
-
-  headerTitleEl.textContent = 'System Calibration Challenge';
-  roundPillEl.textContent = 'Round 1 / 3';
-  roundTitleEl.textContent = 'Round 1 — Warmup Locks';
-  roundDescEl.innerHTML = 'Lock each system by tapping <strong>LOCK</strong> when the needle is inside the green zone. (Slightly slower)';
-  scoringNoteEl.innerHTML =
-    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
-    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
-
-  tracksArea.innerHTML = '';
-  for (let i=0;i<ROUND1_SYSTEMS;i++){
-    tracksArea.insertAdjacentHTML('beforeend', trackHTML(i));
-  }
-
-  for (let i=0;i<ROUND1_SYSTEMS;i++){
-    initTrack(i, ROUND1_SPEEDS[i]);
-  }
-
-  totalEl.textContent = String(ROUND1_SYSTEMS);
-  doneEl.textContent = '0';
-  actionBtn.disabled = false;
-  actionBtn.textContent = 'LOCK';
-}
-
-function buildRound2(){
-  document.body.classList.remove('round3');
-  stopAllTracks();
-  trackState = [];
-
-  roundPillEl.textContent = 'Round 2 / 3';
-  roundTitleEl.textContent = 'Round 2 — Dual Systems';
-  roundDescEl.innerHTML = 'Systems run faster. Keep your streak and score — tap <strong>LOCK</strong> precisely.';
-  scoringNoteEl.innerHTML =
-    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
-    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
-
-  tracksArea.innerHTML = '';
-  for (let i=0;i<ROUND2_SYSTEMS;i++){
-    tracksArea.insertAdjacentHTML('beforeend', trackHTML(i));
-  }
-
-  for (let i=0;i<ROUND2_SYSTEMS;i++){
-    initTrack(i, ROUND2_SPEEDS[i]);
-  }
-
-  totalEl.textContent = String(ROUND2_SYSTEMS);
-  doneEl.textContent = '0';
-  actionBtn.disabled = false;
-  actionBtn.textContent = 'LOCK';
-}
-
-function buildRound3(){
-  document.body.classList.add('round3');
-  stopAllTracks();
-  trackState = [];
-
-  roundPillEl.textContent = 'Round 3 / 3';
-  roundTitleEl.textContent = 'Round 3 — Overheat Protocol';
-  roundDescEl.innerHTML =
-    'Pick a system (A/B/C) then tap <strong>LOCK TARGET</strong> inside the (smaller) green zone. '+
-    'Misses cause <strong>overheat</strong>: you must land <strong>two successful locks in a row</strong> on that system to recover.';
-  scoringNoteEl.innerHTML =
-    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
-    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
-
-  // Target picker
-  tracksArea.innerHTML = `
-    <div class="controls" style="margin-top:0;margin-bottom:10px;">
-      <button class="btn ghost" id="pickA" type="button">Target: A</button>
-      <button class="btn ghost" id="pickB" type="button">Target: B</button>
-      <button class="btn ghost" id="pickC" type="button">Target: C</button>
-      <span class="pill" id="targetPill" style="min-width:auto;">Target: A</span>
-    </div>
-  `;
-
-  let html = '';
-  for (let i=0;i<ROUND3_SYSTEMS;i++){
-    html += trackHTML(i, true);
-  }
-  tracksArea.insertAdjacentHTML('beforeend', html);
-
-  // Default target
-  window.__targetIdx = 0;
-  const targetPill = document.getElementById('targetPill');
-  const setTarget = (idx)=>{
-    window.__targetIdx = idx;
-    targetPill.textContent = `Target: ${String.fromCharCode(65+idx)}`;
-  };
-  document.getElementById('pickA').addEventListener('click', ()=>setTarget(0));
-  document.getElementById('pickB').addEventListener('click', ()=>setTarget(1));
-  document.getElementById('pickC').addEventListener('click', ()=>setTarget(2));
-
-  for (let i=0;i<ROUND3_SYSTEMS;i++){
-    initTrack(i, ROUND3_SPEEDS[i], true);
-  }
-
-  totalEl.textContent = String(ROUND3_SYSTEMS);
-  doneEl.textContent = '0';
-  actionBtn.disabled = false;
-  actionBtn.textContent = 'LOCK TARGET';
-}
-
-function trackHTML(i, includeState=false){
+function trackHTML(i, perSystemButton){
   const sysLabel = round === 3 ? `System ${String.fromCharCode(65+i)}` : `System ${i+1}`;
+  const btn = perSystemButton ? `
+    <div class="trackActions">
+      <button class="sysBtn" id="sysBtn${i}" type="button" aria-label="Lock ${sysLabel}">
+        LOCK ${round === 3 ? 'TARGET' : (i+1)}
+      </button>
+      <div class="sysHint">Tap when the needle is inside the <b style="color:#bbf7d0">green zone</b>.</div>
+    </div>
+  ` : ``;
+
   return `
     <div class="trackWrap" id="wrap${i}">
       <div class="trackLabel">
@@ -906,50 +848,219 @@ function trackHTML(i, includeState=false){
         <div class="zone"></div>
         <div class="needle" id="needle${i}" style="left:50%"></div>
       </div>
+      ${btn}
     </div>
   `;
 }
 
-function initTrack(i, speed, isRound3=false){
-  const wrapEl = document.getElementById(`wrap${i}`);
-  const trackEl = document.getElementById(`track${i}`);
-  const needleEl = document.getElementById(`needle${i}`);
+function initTracks(count, speeds, perSystemButtons){
+  tracks = [];
+  tracksArea.innerHTML = '';
 
-  trackState.push({
-    pos: Math.random()*100,
-    dir: Math.random() > 0.5 ? 1 : -1,
-    locked: false,
-    speed,
-    wrapEl,
-    trackEl,
-    needleEl,
-    overheated: false,
-    consecOk: 0
-  });
+  for (let i=0;i<count;i++){
+    tracksArea.insertAdjacentHTML('beforeend', trackHTML(i, perSystemButtons));
+  }
 
-  trackTimers.push(setInterval(()=>tickTrack(i), TICK_MS));
+  for (let i=0;i<count;i++){
+    const wrapEl = document.getElementById(`wrap${i}`);
+    const needleEl = document.getElementById(`needle${i}`);
+    const lockStateEl = document.getElementById(`lockState${i}`);
+    const btnEl = perSystemButtons ? document.getElementById(`sysBtn${i}`) : null;
+
+    const t = {
+      pos: Math.random()*100,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      locked: false,
+      speed: speeds[i],
+      wrapEl,
+      needleEl,
+      lockStateEl,
+      btnEl,
+      overheated: false,
+      consecOk: 0
+    };
+    tracks.push(t);
+
+    needleEl.style.left = `${t.pos}%`;
+
+    if (btnEl){
+      btnEl.textContent = `LOCK ${round === 3 ? 'TARGET' : (i+1)}`;
+      btnEl.addEventListener('click', ()=>{
+        if (gameLocked) return;
+        startTimerIfNeeded();
+        if (tracks[i].locked){
+          showToast('That system is already locked.');
+          return;
+        }
+        const result = attemptLockAtIndex(i);
+        if (result && result.done){
+          // Advance rounds if all done
+          setTimeout(()=> {
+            if (round === 1){
+              buildRound2();
+              showToast('Round 2 started!');
+            } else if (round === 2){
+              buildRound3();
+              showToast('Round 3 started!');
+            } else {
+              finishGame();
+            }
+          }, 650);
+        }
+      });
+    }
+  }
+
+  totalEl.textContent = String(count);
+  doneEl.textContent = '0';
+
+  startTracksAnimation();
+}
+
+/* =========================
+   RULES TEXT
+   ========================= */
+function setRulesForRound(){
+  if (round === 1){
+    rulesTextEl.innerHTML = `
+      <b>Round 1:</b> Each system has its own <b>LOCK</b> button.<br/>
+      Tap <b>LOCK</b> when the needle is inside the <b>green zone</b>.
+      <div class="mini">+10 success • -5 miss • 4 streak = 1.5× bonus.</div>
+    `;
+  } else if (round === 2){
+    rulesTextEl.innerHTML = `
+      <b>Round 2:</b> Same rule, faster needles.<br/>
+      Tap each system’s <b>LOCK</b> button inside the <b>green zone</b>.
+      <div class="mini">+10 success • -5 miss • 4 streak = 1.5× bonus.</div>
+    `;
+  } else {
+    rulesTextEl.innerHTML = `
+      <b>Round 3:</b> Pick a target (A/B/C) then tap <b>LOCK TARGET</b> inside the green zone.<br/>
+      <div class="mini">Miss = <b>Overheat</b> 🔥. Land <b>2 successes in a row</b> on that system to recover.</div>
+    `;
+  }
+}
+
+/* =========================
+   ROUND BUILDERS
+   ========================= */
+function buildRound1(){
+  document.body.classList.remove('round3');
+  round = 1;
+
+  headerTitleEl.textContent = 'System Calibration Challenge';
+  roundPillEl.textContent = 'Round 1 / 3';
+  roundTitleEl.textContent = 'Round 1 — Warmup Locks';
+  roundDescEl.innerHTML = 'Each system has its own <strong>LOCK</strong> button. Tap when the needle is inside the green zone. (Slower)';
+  scoringNoteEl.innerHTML =
+    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
+    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
+
+  // Round 1/2: hide global action button (use per-system buttons)
+  actionBtn.style.display = 'none';
+  actionBtn.disabled = true;
+
+  setRulesForRound();
+  initTracks(ROUND1_SYSTEMS, ROUND1_SPEEDS, true);
+}
+
+function buildRound2(){
+  document.body.classList.remove('round3');
+  round = 2;
+
+  roundPillEl.textContent = 'Round 2 / 3';
+  roundTitleEl.textContent = 'Round 2 — Dual Systems';
+  roundDescEl.innerHTML = 'Faster needles. Each system has its own <strong>LOCK</strong> button — be precise!';
+  scoringNoteEl.innerHTML =
+    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
+    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
+
+  actionBtn.style.display = 'none';
+  actionBtn.disabled = true;
+
+  setRulesForRound();
+  initTracks(ROUND2_SYSTEMS, ROUND2_SPEEDS, true);
+}
+
+function buildRound3(){
+  document.body.classList.add('round3');
+  round = 3;
+
+  roundPillEl.textContent = 'Round 3 / 3';
+  roundTitleEl.textContent = 'Round 3 — Overheat Protocol';
+  roundDescEl.innerHTML =
+    'Pick a system (A/B/C), then tap <strong>LOCK TARGET</strong> when the needle is inside the (smaller) green zone. '+
+    'Misses cause <strong>overheat</strong>: land <strong>two successful locks in a row</strong> on that system to recover.';
+  scoringNoteEl.innerHTML =
+    'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
+    'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
+
+  setRulesForRound();
+
+  // Show global action button for Round 3
+  actionBtn.style.display = '';
+  actionBtn.disabled = false;
+  actionBtn.textContent = 'LOCK TARGET';
+
+  // Target picker + tracks
+  tracksArea.innerHTML = `
+    <div class="controls" style="margin-top:0;margin-bottom:10px;">
+      <button class="btn ghost" id="pickA" type="button">Target: A</button>
+      <button class="btn ghost" id="pickB" type="button">Target: B</button>
+      <button class="btn ghost" id="pickC" type="button">Target: C</button>
+      <span class="pill" id="targetPill" style="min-width:auto;">Target: A</span>
+    </div>
+  `;
+
+  const holder = document.createElement('div');
+  holder.innerHTML = Array.from({length: ROUND3_SYSTEMS}, (_,i)=>trackHTML(i, false)).join('');
+  tracksArea.appendChild(holder);
+
+  window.__targetIdx = 0;
+  const targetPill = document.getElementById('targetPill');
+  const setTarget = (idx)=>{
+    window.__targetIdx = idx;
+    targetPill.textContent = `Target: ${String.fromCharCode(65+idx)}`;
+    showToast(`Target set: ${String.fromCharCode(65+idx)}`);
+  };
+  document.getElementById('pickA').addEventListener('click', ()=>setTarget(0));
+  document.getElementById('pickB').addEventListener('click', ()=>setTarget(1));
+  document.getElementById('pickC').addEventListener('click', ()=>setTarget(2));
+
+  // Init track objects
+  tracks = [];
+  for (let i=0;i<ROUND3_SYSTEMS;i++){
+    const wrapEl = document.getElementById(`wrap${i}`);
+    const needleEl = document.getElementById(`needle${i}`);
+    const lockStateEl = document.getElementById(`lockState${i}`);
+
+    const t = {
+      pos: Math.random()*100,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      locked: false,
+      speed: ROUND3_SPEEDS[i],
+      wrapEl,
+      needleEl,
+      lockStateEl,
+      btnEl: null,
+      overheated: false,
+      consecOk: 0
+    };
+    tracks.push(t);
+    needleEl.style.left = `${t.pos}%`;
+  }
+
+  totalEl.textContent = String(ROUND3_SYSTEMS);
+  doneEl.textContent = '0';
+
+  startTracksAnimation();
 }
 
 /* =========================
    LOCK LOGIC
    ========================= */
-function lockFirstUnlockedTrack(){
-  if (round !== 3){
-    const idx = trackState.findIndex(t => !t.locked);
-    if (idx === -1) return {done:true};
-    return attemptLockAtIndex(idx);
-  }
-
-  const idx = window.__targetIdx ?? 0;
-  if (!trackState[idx] || trackState[idx].locked){
-    showToast('That system is already locked.');
-    return {done:false};
-  }
-  return attemptLockAtIndex(idx);
-}
-
 function attemptLockAtIndex(idx){
-  const s = trackState[idx];
+  const s = tracks[idx];
   const ok = isInGreenZone(s.pos);
 
   attempts++;
@@ -962,7 +1073,7 @@ function attemptLockAtIndex(idx){
       applyCorrectVisual(s.wrapEl);
       bumpScore(SCORE_CORRECT);
 
-      streak++; streakEl.textContent = streak;
+      addStreak();
       applyStreakBonusIfNeeded();
 
       showToast(`Successful lock! +10 (cooling ${s.consecOk}/2)`);
@@ -971,7 +1082,7 @@ function attemptLockAtIndex(idx){
         s.overheated = false;
         s.consecOk = 0;
         s.wrapEl.classList.remove('overheated');
-        document.getElementById(`lockState${idx}`).textContent = 'Recovered ✅';
+        s.lockStateEl.textContent = 'Recovered ✅';
       }
       return {done:false, correct:true};
     }
@@ -979,19 +1090,23 @@ function attemptLockAtIndex(idx){
     // Normal success: lock it
     s.locked = true;
     s.wrapEl.classList.add('locked');
-    document.getElementById(`lockState${idx}`).textContent = 'Locked ✅';
+    s.lockStateEl.textContent = 'Locked ✅';
+    if (s.btnEl){
+      s.btnEl.disabled = true;
+      s.btnEl.textContent = 'LOCKED ✅';
+    }
 
     bumpScore(SCORE_CORRECT);
-    streak++; streakEl.textContent = streak;
+    addStreak();
     applyStreakBonusIfNeeded();
 
     applyCorrectVisual(s.wrapEl);
     showToast('Successful lock! +10');
 
-    const done = trackState.filter(t => t.locked).length;
+    const done = tracks.filter(t => t.locked).length;
     doneEl.textContent = String(done);
 
-    if (done === trackState.length) return {done:true, correct:true};
+    if (done === tracks.length) return {done:true, correct:true};
     return {done:false, correct:true};
   }
 
@@ -1000,7 +1115,7 @@ function attemptLockAtIndex(idx){
     s.overheated = true;
     s.consecOk = 0;
     s.wrapEl.classList.add('overheated');
-    document.getElementById(`lockState${idx}`).textContent = 'Overheated 🔥';
+    s.lockStateEl.textContent = 'Overheated 🔥';
   }
 
   handleWrong();
@@ -1009,14 +1124,24 @@ function attemptLockAtIndex(idx){
   return {done:false, correct:false};
 }
 
+function lockTargetRound3(){
+  const idx = window.__targetIdx ?? 0;
+  if (!tracks[idx] || tracks[idx].locked){
+    showToast('That system is already locked.');
+    return {done:false};
+  }
+  return attemptLockAtIndex(idx);
+}
+
 /* =========================
-   ROUND FLOW
+   FINISH
    ========================= */
 function finishGame(){
   gameLocked = true;
   actionBtn.disabled = true;
-  stopAllTracks();
-  stopTimer(); // ✅ stop timer on completion
+  tracks.forEach(t => { if (t.btnEl) t.btnEl.disabled = true; });
+  stopTracksAnimation();
+  stopTimer();
   showForgingThenPopup();
 }
 
@@ -1024,10 +1149,8 @@ function finishGame(){
    FORGING + POPUP
    ========================= */
 function showForgingThenPopup(){
-  // optional confetti
   fireConfetti();
 
-  // forging
   forgeFill.style.width = '0%';
   forging.style.display = 'flex';
   forging.setAttribute('aria-hidden','false');
@@ -1038,7 +1161,7 @@ function showForgingThenPopup(){
     forging.setAttribute('aria-hidden','true');
 
     finalScoreEl.textContent = score;
-    finalStreakEl.textContent = streak;
+    finalStreakEl.textContent = longestStreak;
 
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
@@ -1051,17 +1174,20 @@ closeModal.addEventListener('click', ()=>{
 });
 
 /* =========================
-   CONFETTI
+   CONFETTI (lighter)
    ========================= */
 const confettiCtx = confettiCanvas.getContext('2d');
 function fireConfetti(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
   const ctx = confettiCtx;
   const w = confettiCanvas.width = window.innerWidth;
   const h = confettiCanvas.height = window.innerHeight;
   confettiCanvas.style.display = 'block';
 
   const pieces = [];
-  const count = Math.floor(Math.min(140, w/5));
+  const count = Math.floor(Math.min(90, w/10));
   for(let i=0;i<count;i++){
     pieces.push({
       x: Math.random()*w,
@@ -1076,10 +1202,8 @@ function fireConfetti(){
     });
   }
 
-  let t0 = performance.now();
-  const start = t0;
+  const start = performance.now();
   function render(t){
-    t0 = t;
     ctx.clearRect(0,0,w,h);
     for(let p of pieces){
       p.x += p.vx;
@@ -1092,7 +1216,7 @@ function fireConfetti(){
       ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     }
-    if ((t - start) < 2600) requestAnimationFrame(render);
+    if ((t - start) < 2000) requestAnimationFrame(render);
     else {
       confettiCanvas.style.display = 'none';
       ctx.clearRect(0,0,w,h);
@@ -1112,61 +1236,44 @@ window.addEventListener('resize', ()=> {
    RESET / RESTART
    ========================= */
 function hardReset(){
-  // core state
   gameLocked = false;
-  round = 1;
 
   attempts = 0;
   score = 0;
   streak = 0;
+  longestStreak = 0;
   streakBoostApplied = false;
 
   attemptsEl.textContent = attempts;
   scoreEl.textContent = score;
   streakEl.textContent = streak;
 
-  // UI
   timeUpBar.style.display = 'none';
   overlay.classList.remove('show');
   forging.style.display = 'none';
 
-  // timer
   resetTimer();
+  stopTracksAnimation();
 
-  // tracks
   buildRound1();
-
-  showToast('Ready! Tap LOCK to start the timer.');
+  showToast('Ready! Tap any LOCK button to start.');
 }
 
 resetBtn.addEventListener('click', hardReset);
 restartBtn.addEventListener('click', hardReset);
 
 /* =========================
-   EVENTS
+   ROUND 3 GLOBAL ACTION
    ========================= */
 actionBtn.addEventListener('click', ()=>{
   if (gameLocked) return;
+  if (round !== 3) return; // only works in round 3
   startTimerIfNeeded();
 
-  const result = lockFirstUnlockedTrack();
+  const result = lockTargetRound3();
   if (result && result.done){
     actionBtn.disabled = true;
-    setTimeout(()=> {
-      actionBtn.disabled = false;
-
-      if (round === 1){
-        round = 2;
-        buildRound2();
-        showToast('Round 2 started!');
-      } else if (round === 2){
-        round = 3;
-        buildRound3();
-        showToast('Round 3 started!');
-      } else {
-        finishGame();
-      }
-    }, 650);
+    setTimeout(()=> finishGame(), 650);
   }
 });
 
