@@ -35,7 +35,6 @@
 
   .stage{width:100%;max-width:980px;}
 
-  /* Header with hero + timer */
   header{
     display:flex;
     gap:16px;
@@ -69,7 +68,6 @@
   .hero-text h1{margin:0;font-size:1.1rem}
   .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
 
-  /* Timer box top-right */
   #timerBox{
     background: rgba(15,23,42,0.85);
     border-radius:12px;
@@ -159,11 +157,15 @@
     color:#e5edff;
     font-size:.92rem;
     transition: transform .1s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+    touch-action: manipulation;
   }
-  .item:hover{
-    transform:translateY(-1px);
-    box-shadow:0 6px 16px rgba(15,23,42,0.4);
+  @media (hover:hover){
+    .item:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 16px rgba(15,23,42,0.4);
+    }
   }
+
   .item.selected{
     outline:2px solid rgba(59,130,246,.6);
     box-shadow:0 8px 18px rgba(59,130,246,.3);
@@ -175,17 +177,10 @@
     box-shadow:0 6px 18px rgba(16,185,129,0.4);
     cursor:default;
   }
-  .item.disabled{
-    opacity:.45;
-    cursor:default;
-  }
 
-  .item.correctFlash{
-    animation:correctFlash .35s ease-out;
-  }
-  .item.wrongFlash{
-    animation:wrongFlash .3s ease-out;
-  }
+  .item.correctFlash{ animation:correctFlash .35s ease-out; }
+  .item.wrongFlash{ animation:wrongFlash .3s ease-out; }
+
   @keyframes correctFlash{
     0%{transform:scale(1);box-shadow:0 0 0 rgba(16,185,129,0);}
     50%{transform:scale(1.03);box-shadow:0 0 18px rgba(16,185,129,0.7);}
@@ -255,9 +250,7 @@
     gap:2px;
   }
   .stats-line{white-space:nowrap;}
-  #scoreValue.bump{
-    animation:scoreBump .25s ease-out;
-  }
+  #scoreValue.bump{ animation:scoreBump .25s ease-out; }
   @keyframes scoreBump{
     0%{transform:scale(1);}
     50%{transform:scale(1.2);}
@@ -285,7 +278,6 @@
 
   #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
 
-  /* Time up / restart bar */
   #timeUpBar{
     position:fixed;
     left:50%;
@@ -312,7 +304,6 @@
     cursor:pointer;
   }
 
-  /* Final key modal + forging */
   .overlay{
     position:fixed;
     inset:0;
@@ -410,7 +401,7 @@
       <div class="logo">SEG</div>
       <div class="hero-text">
         <h1 id="headerTitle">Match the Courses to Its Future Job Prospects (Level 1)</h1>
-        <p>Complete all 3 levels within 4 minutes to collect <strong>Key #1</strong>.</p>
+        <p>Complete all <strong>2 levels</strong> within 4 minutes to collect <strong>Key #1</strong>.</p>
       </div>
     </div>
     <div id="timerBox">
@@ -420,19 +411,19 @@
   </header>
 
   <main>
-    <section class="card" aria-labelledby="gameTitle">
+    <section class="card">
       <div class="top-bar">
-        <div id="levelLabel">Level 1 of 3</div>
+        <div id="levelLabel">Level 1 of 2</div>
         <div id="streakBadge">Streak bonus active!</div>
       </div>
 
       <div class="board" aria-label="Matching board">
-        <div class="pane" id="coursesPane" aria-labelledby="coursesTitle">
+        <div class="pane" id="coursesPane">
           <h2 id="coursesTitle">Courses</h2>
           <div class="list" id="coursesList" aria-live="polite"></div>
         </div>
 
-        <div class="pane" id="jobsPane" aria-labelledby="jobsTitle">
+        <div class="pane" id="jobsPane">
           <h2 id="jobsTitle">Future Job Prospects</h2>
           <div class="list" id="jobsList" aria-live="polite"></div>
         </div>
@@ -457,7 +448,6 @@
         </div>
       </div>
 
-      <!-- Dynamic scoring note; filled by JS per level -->
       <p class="note" id="scoringNote"></p>
     </section>
   </main>
@@ -470,7 +460,6 @@
   <button id="restartBtn">Restart</button>
 </div>
 
-<!-- Forging overlay -->
 <div id="forging" aria-hidden="true">
   <div class="box">
     <div style="font-weight:700;color:#ffd166;">Forging Key #1...</div>
@@ -479,7 +468,6 @@
   </div>
 </div>
 
-<!-- Final key popup -->
 <div id="finalOverlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal" role="document">
     <div class="key" aria-hidden="true">
@@ -504,140 +492,135 @@
 
 <script>
 /* =========================
-   LEVEL DATA
+   COURSE BANK (from your list)
+   Each course has exactly 2 correct jobs
    ========================= */
-const levels = [
+const courseBank = [
   {
-    id: 1,
-    titleSuffix: "(Level 1)",
-    courses: [
-      "Advanced & Digital Manufacturing",
-      "Aerospace Engineering"
-    ],
+    name: "Advanced & Digital Manufacturing",
     jobs: [
-      {
-        title: "Cybersecurity & IT Infrastructure Specialists",
-        sub: "Safeguarding smart factories & connected systems."
-      },
-      {
-        title: "Data-Analytics Specialists",
-        sub: "Turning production data into optimisation insights."
-      },
-      {
-        title: "Autonomous Aircraft Systems Engineer",
-        sub: "Designing control systems for self-guided aircraft."
-      },
-      {
-        title: "Aircraft Propulsion & Systems Specialist",
-        sub: "Working on engines and critical flight systems."
-      }
-    ],
-    matches: [
-      { course: 0, job: 0 },
-      { course: 0, job: 1 },
-      { course: 1, job: 2 },
-      { course: 1, job: 3 }
+      { title: "Assistant Software Engineer", sub: "" },
+      { title: "Automation Test Engineer", sub: "" }
     ]
   },
   {
-    id: 2,
-    titleSuffix: "(Level 2)",
-    courses: [
-      "Biomedical Engineering",
-      "Cloud Engineering",
-      "Robotics & Mechatronics"
-    ],
+    name: "Aerospace Engineering",
     jobs: [
-      {
-        title: "Medical Robotics Engineer",
-        sub: "Building surgical robots and assistive devices."
-      },
-      {
-        title: "Biomedical AI & Imaging Engineer",
-        sub: "Using AI to enhance diagnostics and imaging."
-      },
-      {
-        title: "AI-Optimized Cloud Architect",
-        sub: "Designing cloud systems tuned for AI workloads."
-      },
-      {
-        title: "Cloud Security Engineer",
-        sub: "Protecting cloud platforms from cyber threats."
-      },
-      {
-        title: "Autonomous Robotics Engineer",
-        sub: "Developing self-navigating robots for industry."
-      },
-      {
-        title: "Human–Robot Interaction Designer",
-        sub: "Designing intuitive interfaces between people and robots."
-      }
-    ],
-    matches: [
-      { course: 0, job: 0 },
-      { course: 0, job: 1 },
-      { course: 1, job: 2 },
-      { course: 1, job: 3 },
-      { course: 2, job: 4 },
-      { course: 2, job: 5 }
+      { title: "Unmanned Aerial Systems Engineer", sub: "" },
+      { title: "Avionics Systems Development", sub: "" }
     ]
   },
   {
-    id: 3,
-    titleSuffix: "(Level 3)",
-    courses: [
-      "Electric & Computer Engineering",
-      "AI & Data Engineering",
-      "Engineering With Business"
-    ],
+    name: "Biomedical Engineering",
     jobs: [
-      {
-        title: "AI Hardware Engineer",
-        sub: "Designing chips and hardware accelerators for AI workloads."
-      },
-      {
-        title: "Embedded Systems Engineer",
-        sub: "Building firmware and real-time control for devices."
-      },
-      {
-        title: "AI Model Engineer",
-        sub: "Training and tuning AI models for real-world use."
-      },
-      {
-        title: "Data Infrastructure Architect",
-        sub: "Designing data platforms and pipelines at scale."
-      },
-      {
-        title: "Real-Time AI Systems Engineer",
-        sub: "Integrating AI models into fast, responsive systems."
-      },
-      {
-        title: "Operations Optimization Engineer",
-        sub: "Using analytics to streamline processes and resources."
-      },
-      {
-        title: "Innovation & Strategy Analyst",
-        sub: "Identifying new tech opportunities and roadmaps."
-      },
-      {
-        title: "Technology Venture Analyst",
-        sub: "Evaluating startups and emerging technologies."
-      }
-    ],
-    matches: [
-      { course: 0, job: 0 },
-      { course: 0, job: 1 },
-      { course: 1, job: 2 },
-      { course: 1, job: 3 },
-      { course: 1, job: 4 },
-      { course: 2, job: 5 },
-      { course: 2, job: 6 },
-      { course: 2, job: 7 }
+      { title: "QA Technical Specialist", sub: "" },
+      { title: "Laboratory Technologist", sub: "" }
+    ]
+  },
+  {
+    name: "Cloud Engineering",
+    jobs: [
+      { title: "Network Engineer", sub: "" },
+      { title: "Software/DevOps Engineer", sub: "" }
+    ]
+  },
+  {
+    name: "Robotics & Mechatronics",
+    jobs: [
+      { title: "R&D Associate Engineer", sub: "" },
+      { title: "System Development Engineer", sub: "" }
+    ]
+  },
+  {
+    name: "Electric & Computer Engineering",
+    jobs: [
+      { title: "Cybersecurity Specialist", sub: "" },
+      { title: "Hardware/Software Engineer", sub: "" }
+    ]
+  },
+  {
+    name: "AI & Data Engineering",
+    jobs: [
+      { title: "Data Engineer/Technician", sub: "" },
+      { title: "AI Application Developer", sub: "" }
+    ]
+  },
+  {
+    name: "Engineering With Business",
+    jobs: [
+      { title: "Operations Integration Specialist", sub: "" },
+      { title: "Business Process Excellence Engineer", sub: "" }
     ]
   }
 ];
 
-const TOTAL_LEVELS = 3;
+const TOTAL_LEVELS = 2;
+
+/* =========================
+   UTIL
+   ========================= */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* =========================
+   BUILD 2 RANDOM LEVELS
+   - Pick 5 courses randomly each new play
+   - Level 1: 2 courses -> 4 jobs (2 jobs per course)
+   - Level 2: 3 courses -> 6 jobs (2 jobs per course)
+   ========================= */
+function generateLevels(){
+  const picked = shuffle(courseBank).slice(0, 5);
+  const level1Courses = picked.slice(0, 2);
+  const level2Courses = picked.slice(2, 5);
+
+  const L1 = buildLevel({
+    levelId: 1,
+    coursesRaw: level1Courses,
+    streakTarget: 4,
+    multiplier: 1.5
+  });
+
+  const L2 = buildLevel({
+    levelId: 2,
+    coursesRaw: level2Courses,
+    streakTarget: 6,
+    multiplier: 2.0
+  });
+
+  return [L1, L2];
+}
+
+function buildLevel({ levelId, coursesRaw, streakTarget, multiplier }){
+  const courseObjs = coursesRaw.map((c, i) => ({
+    id: `L${levelId}_C${i}_${Math.random().toString(16).slice(2)}`,
+    name: c.name,
+    jobs: c.jobs.map((j, k) => ({
+      id: `L${levelId}_J${i}${k}_${Math.random().toString(16).slice(2)}`,
+      title: j.title,
+      sub: j.sub || ""
+    }))
+  }));
+
+  const matchPairs = [];
+  courseObjs.forEach(c => c.jobs.forEach(j => matchPairs.push(`${c.id}|${j.id}`)));
+
+  return {
+    id: levelId,
+    titleSuffix: `(Level ${levelId})`,
+    courses: shuffle(courseObjs),
+    jobs: shuffle(courseObjs.flatMap(c => c.jobs)),
+    matchSet: new Set(matchPairs),
+    totalMatches: matchPairs.length,
+    streakTarget,
+    multiplier
+  };
+}
 
 /* =========================
    DOM ELEMENTS
@@ -663,7 +646,6 @@ const restartBtn = document.getElementById('restartBtn');
 const timerBox = document.getElementById('timerBox');
 const timerDisplay = document.getElementById('timer');
 
-/* forging + final */
 const forging = document.getElementById('forging');
 const forgeFill = document.getElementById('forgeFill');
 const finalOverlay = document.getElementById('finalOverlay');
@@ -674,22 +656,25 @@ const finalStreakSpan = document.getElementById('finalStreak');
 /* =========================
    GAME STATE
    ========================= */
+let levels = [];
 let currentLevelIndex = 0;
-let selectedCourseIndex = null;
-let selectedJobIndex = null;
-let jobMatched = [];
+
+let selectedCourseId = null;
+let selectedCourseEl = null;
+
+let jobMatchedById = new Set();
 let matchesThisLevel = 0;
 
 let attempts = 0;
 let score = 0;
 let streak = 0;
 let longestStreak = 0;
-let streakBoostApplied = false;  // per-level
 
+let streakBoostApplied = false;
 let gameLocked = false;
 
 /* Timer */
-const TOTAL_TIME_SECONDS = 240; // 4 minutes
+const TOTAL_TIME_SECONDS = 240;
 let timeLeft = TOTAL_TIME_SECONDS;
 let timerStarted = false;
 let timerInterval = null;
@@ -702,17 +687,12 @@ function formatTime(sec){
   const s = sec % 60;
   return `${m}:${String(s).padStart(2,'0')}`;
 }
-
 function updateTimerUI(){
   timerDisplay.textContent = formatTime(timeLeft);
   timerBox.classList.remove('warning','danger');
-  if (timeLeft <= 60 && timeLeft > 20){
-    timerBox.classList.add('warning');
-  } else if (timeLeft <= 20){
-    timerBox.classList.add('danger');
-  }
+  if (timeLeft <= 60 && timeLeft > 20) timerBox.classList.add('warning');
+  else if (timeLeft <= 20) timerBox.classList.add('danger');
 }
-
 function startTimerIfNeeded(){
   if (timerStarted) return;
   timerStarted = true;
@@ -721,6 +701,7 @@ function startTimerIfNeeded(){
       timeLeft = 0;
       updateTimerUI();
       clearInterval(timerInterval);
+      timerInterval = null;
       handleTimeUp();
       return;
     }
@@ -728,15 +709,18 @@ function startTimerIfNeeded(){
     updateTimerUI();
   },1000);
 }
-
+function stopTimer(){
+  if (timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
 function handleTimeUp(){
   gameLocked = true;
   timeUpBar.style.display = 'flex';
 }
-
 function resetTimer(){
-  clearInterval(timerInterval);
-  timerInterval = null;
+  stopTimer();
   timerStarted = false;
   timeLeft = TOTAL_TIME_SECONDS;
   updateTimerUI();
@@ -744,17 +728,20 @@ function resetTimer(){
 }
 
 /* =========================
-   CONFETTI
+   CONFETTI (lighter)
    ========================= */
 const confettiCtx = confettiCanvas.getContext('2d');
 function fireConfetti(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
   const ctx = confettiCtx;
   const w = confettiCanvas.width = window.innerWidth;
   const h = confettiCanvas.height = window.innerHeight;
   confettiCanvas.style.display = 'block';
 
   const pieces = [];
-  const count = Math.floor(Math.min(140, w/5));
+  const count = Math.floor(Math.min(90, w/10));
   for(let i=0;i<count;i++){
     pieces.push({
       x: Math.random()*w,
@@ -769,10 +756,8 @@ function fireConfetti(){
     });
   }
 
-  let t0 = performance.now();
-  const start = t0;
+  const start = performance.now();
   function render(t){
-    const dt = t - t0; t0 = t;
     ctx.clearRect(0,0,w,h);
     for(let p of pieces){
       p.x += p.vx;
@@ -785,7 +770,7 @@ function fireConfetti(){
       ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     }
-    if ((t - start) < 2600) requestAnimationFrame(render);
+    if ((t - start) < 2000) requestAnimationFrame(render);
     else {
       confettiCanvas.style.display = 'none';
       ctx.clearRect(0,0,w,h);
@@ -802,75 +787,59 @@ window.addEventListener('resize', ()=> {
 });
 
 /* =========================
-   SCORING NOTE (per level)
+   SCORING NOTE
    ========================= */
-function updateScoringNote(levelId){
-  if (levelId === 1){
-    scoringNoteEl.innerHTML = `
-      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
-      Get <strong>4 correct in a row</strong> to trigger a <strong>1.5× score boost!</strong>
-    `;
-  } else if (levelId === 2){
-    scoringNoteEl.innerHTML = `
-      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
-      Get <strong>10 correct in a row</strong> to trigger a <strong>2× streak bonus!</strong>
-    `;
-  } else if (levelId === 3){
-    scoringNoteEl.innerHTML = `
-      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
-      Get <strong>18 correct in a row</strong> to trigger a <strong>3× streak bonus!</strong>
-    `;
-  } else {
-    scoringNoteEl.innerHTML = `
-      Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
-    `;
-  }
+function updateScoringNote(level){
+  scoringNoteEl.innerHTML = `
+    Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
+    Get <strong>${level.streakTarget}</strong> correct in a row to trigger a <strong>${level.multiplier.toFixed(1)}×</strong> boost!
+  `;
 }
 
 /* =========================
-   BUILD LEVEL UI
+   LEVEL UI
    ========================= */
+function clearSelections(){
+  if (selectedCourseEl) selectedCourseEl.classList.remove('selected');
+  selectedCourseEl = null;
+  selectedCourseId = null;
+}
+
 function loadLevel(levelIndex){
   const level = levels[levelIndex];
   currentLevelIndex = levelIndex;
 
-  selectedCourseIndex = null;
-  selectedJobIndex = null;
-  jobMatched = Array(level.jobs.length).fill(false);
+  clearSelections();
+  jobMatchedById = new Set();
   matchesThisLevel = 0;
-
-  // allow a new streak bonus per level
   streakBoostApplied = false;
 
-  headerTitleEl.textContent =
-    `Match the Courses to Its Future Job Prospects ${level.titleSuffix}`;
+  headerTitleEl.textContent = `Match the Courses to Its Future Job Prospects ${level.titleSuffix}`;
   levelLabelEl.textContent = `Level ${level.id} of ${TOTAL_LEVELS}`;
-
-  updateScoringNote(level.id);
+  updateScoringNote(level);
 
   matchedCountEl.textContent = '0';
-  matchesTotalEl.textContent = String(level.matches.length);
+  matchesTotalEl.textContent = String(level.totalMatches);
 
   coursesList.innerHTML = '';
-  level.courses.forEach((courseName, idx) => {
+  level.courses.forEach((course) => {
     const div = document.createElement('div');
     div.className = 'item';
     div.dataset.type = 'course';
-    div.dataset.index = idx;
+    div.dataset.id = course.id;
     div.innerHTML = `
-      <div class="course-label">${courseName}</div>
+      <div class="course-label">${course.name}</div>
       <div class="pill">Course</div>
     `;
-    div.addEventListener('click', ()=> onCourseClick(idx));
     coursesList.appendChild(div);
   });
 
   jobsList.innerHTML = '';
-  level.jobs.forEach((job, idx) => {
+  level.jobs.forEach((job) => {
     const div = document.createElement('div');
     div.className = 'item';
     div.dataset.type = 'job';
-    div.dataset.index = idx;
+    div.dataset.id = job.id;
     div.innerHTML = `
       <div class="job-main">
         <div class="job-title">${job.title}</div>
@@ -878,64 +847,59 @@ function loadLevel(levelIndex){
       </div>
       <div class="pill">Tap to match</div>
     `;
-    div.addEventListener('click', ()=> onJobClick(idx));
     jobsList.appendChild(div);
   });
-
-  updateSelectionStyles();
 }
 
 /* =========================
-   SELECTION / MATCHING
+   INPUT (delegated)
    ========================= */
-function updateSelectionStyles(){
-  document.querySelectorAll('.item').forEach(el => el.classList.remove('selected'));
-
-  if (selectedCourseIndex !== null){
-    const el = coursesList.querySelector(`.item[data-index="${selectedCourseIndex}"]`);
-    if (el) el.classList.add('selected');
-  }
-  if (selectedJobIndex !== null){
-    const el = jobsList.querySelector(`.item[data-index="${selectedJobIndex}"]`);
-    if (el) el.classList.add('selected');
-  }
-}
-
-function onCourseClick(courseIdx){
+coursesList.addEventListener('click', (e) => {
   if (gameLocked) return;
-  startTimerIfNeeded();
-  selectedCourseIndex = courseIdx;
-  updateSelectionStyles();
-}
+  const item = e.target.closest('.item[data-type="course"]');
+  if (!item) return;
 
-function onJobClick(jobIdx){
-  if (gameLocked) return;
   startTimerIfNeeded();
 
-  const level = levels[currentLevelIndex];
-  if (jobMatched[jobIdx]) return;
+  if (selectedCourseEl) selectedCourseEl.classList.remove('selected');
+  selectedCourseEl = item;
+  selectedCourseId = item.dataset.id;
+  selectedCourseEl.classList.add('selected');
+});
 
-  if (selectedCourseIndex === null){
-    selectedJobIndex = jobIdx;
-    updateSelectionStyles();
+jobsList.addEventListener('click', (e) => {
+  if (gameLocked) return;
+  const item = e.target.closest('.item[data-type="job"]');
+  if (!item) return;
+
+  startTimerIfNeeded();
+
+  const jobId = item.dataset.id;
+  if (jobMatchedById.has(jobId)) return;
+
+  if (!selectedCourseId){
+    item.classList.add('selected');
+    setTimeout(()=> item.classList.remove('selected'), 220);
     return;
   }
 
-  attemptMatch(selectedCourseIndex, jobIdx);
-}
+  attemptMatch(selectedCourseId, jobId, item);
+});
 
-function attemptMatch(courseIdx, jobIdx){
+/* =========================
+   MATCHING
+   ========================= */
+function attemptMatch(courseId, jobId, jobEl){
   const level = levels[currentLevelIndex];
+
   attempts++;
   attemptsEl.textContent = attempts;
 
-  const jobEl = jobsList.querySelector(`.item[data-index="${jobIdx}"]`);
-  const courseEl = coursesList.querySelector(`.item[data-index="${courseIdx}"]`);
+  const isCorrect = level.matchSet.has(`${courseId}|${jobId}`);
+  const courseEl = coursesList.querySelector(`.item[data-id="${courseId}"]`);
 
-  const isCorrect = level.matches.some(m => m.course === courseIdx && m.job === jobIdx);
-
-  if (isCorrect && !jobMatched[jobIdx]){
-    jobMatched[jobIdx] = true;
+  if (isCorrect){
+    jobMatchedById.add(jobId);
     matchesThisLevel++;
     matchedCountEl.textContent = String(matchesThisLevel);
 
@@ -956,50 +920,24 @@ function attemptMatch(courseIdx, jobIdx){
     if (streak > longestStreak) longestStreak = streak;
     streakEl.textContent = streak;
 
-    // Level-dependent streak bonus:
-    // L1: 4 in a row -> 1.5×
-    // L2: 10 in a row -> 2×
-    // L3: 18 in a row -> 3×
-    const levelId = levels[currentLevelIndex].id;
-    let streakTarget, multiplier;
-    if (levelId === 1){
-      streakTarget = 4;
-      multiplier = 1.5;
-    } else if (levelId === 2){
-      streakTarget = 10;
-      multiplier = 2.0;
-    } else if (levelId === 3){
-      streakTarget = 18;
-      multiplier = 3.0;
-    } else {
-      streakTarget = Infinity;
-      multiplier   = 1;
-    }
-
-    if (streak >= streakTarget && !streakBoostApplied){
+    if (streak >= level.streakTarget && !streakBoostApplied){
       streakBoostApplied = true;
-      score = Math.round(score * multiplier);
+      score = Math.round(score * level.multiplier);
       scoreEl.textContent = score;
       scoreEl.classList.add('bump');
-      streakBadge.textContent = `Streak bonus! x${multiplier.toFixed(1)} applied`;
+      streakBadge.textContent = `Streak bonus! x${level.multiplier.toFixed(1)} applied`;
       showStreakBadge();
       setTimeout(()=> scoreEl.classList.remove('bump'), 260);
     }
 
-    // Completed current level?
-    if (matchesThisLevel === level.matches.length){
+    if (matchesThisLevel === level.totalMatches){
       if (currentLevelIndex < levels.length - 1){
-        setTimeout(()=> {
-          loadLevel(currentLevelIndex + 1);
-        }, 600);
+        setTimeout(()=> loadLevel(currentLevelIndex + 1), 600);
       } else {
-        // Finished final level – forging + final popup
         showForgingThenFinalModal();
       }
     }
-
   } else {
-    // Wrong answer resets streak + bonus eligibility for this level
     streak = 0;
     streakBoostApplied = false;
     streakEl.textContent = streak;
@@ -1016,20 +954,15 @@ function attemptMatch(courseIdx, jobIdx){
     }
   }
 
-  selectedCourseIndex = null;
-  selectedJobIndex = null;
-  updateSelectionStyles();
+  clearSelections();
 }
 
 /* =========================
    SCORING
    ========================= */
 function applyScoreChange(delta){
-  if (delta > 0){
-    score += delta;
-  } else {
-    score = Math.max(0, score + delta);
-  }
+  if (delta > 0) score += delta;
+  else score = Math.max(0, score + delta);
 
   scoreEl.textContent = score;
   scoreEl.classList.add('bump');
@@ -1038,17 +971,12 @@ function applyScoreChange(delta){
   scoreDeltaEl.textContent = (delta > 0 ? `+${delta}` : `${delta}`);
   scoreDeltaEl.classList.add('show', delta > 0 ? 'positive' : 'negative');
 
-  setTimeout(()=> {
-    scoreEl.classList.remove('bump');
-  }, 260);
-
-  setTimeout(()=> {
-    scoreDeltaEl.classList.remove('show','positive','negative');
-  }, 700);
+  setTimeout(()=> scoreEl.classList.remove('bump'), 260);
+  setTimeout(()=> scoreDeltaEl.classList.remove('show','positive','negative'), 700);
 }
 
 /* =========================
-   STREAK BADGE DISPLAY
+   STREAK BADGE
    ========================= */
 function showStreakBadge(){
   streakBadge.classList.add('show');
@@ -1056,27 +984,23 @@ function showStreakBadge(){
 }
 
 /* =========================
-   FORGING + FINAL MODAL
+   FORGING + FINAL
    ========================= */
 function showForgingThenFinalModal(){
-  // show forging
+  stopTimer();
+  timeUpBar.style.display = 'none';
+  gameLocked = true;
+
   forging.style.display = 'flex';
   forging.setAttribute('aria-hidden','false');
   forgeFill.style.width = '0%';
 
-  setTimeout(()=> {
-    forgeFill.style.width = '100%';
-  }, 50);
+  setTimeout(()=> { forgeFill.style.width = '100%'; }, 50);
 
-  // after short delay, hide forging & show final popup
   setTimeout(()=> {
     forging.style.display = 'none';
     forging.setAttribute('aria-hidden','true');
 
-    // freeze game
-    gameLocked = true;
-
-    // confetti & stats
     fireConfetti();
     finalScoreSpan.textContent = score;
     finalStreakSpan.textContent = longestStreak;
@@ -1087,7 +1011,7 @@ function showForgingThenFinalModal(){
 }
 
 /* =========================
-   RESET & RESTART
+   RESET / RESTART
    ========================= */
 function hardResetToLevel1(){
   attempts = 0;
@@ -1111,16 +1035,12 @@ function hardResetToLevel1(){
   forging.setAttribute('aria-hidden','true');
   forgeFill.style.width = '0%';
 
+  levels = generateLevels();   // randomize every restart/new user
   loadLevel(0);
 }
 
-resetBtn.addEventListener('click', ()=> {
-  hardResetToLevel1();
-});
-
-restartBtn.addEventListener('click', ()=> {
-  hardResetToLevel1();
-});
+resetBtn.addEventListener('click', hardResetToLevel1);
+restartBtn.addEventListener('click', hardResetToLevel1);
 
 finalCloseBtn.addEventListener('click', ()=> {
   finalOverlay.classList.remove('show');
