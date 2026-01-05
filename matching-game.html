@@ -10,7 +10,7 @@
 <style>
   :root{
     --bg1:#0f172a; --bg2:#1e293b;
-    --card-bg: rgba(255,255,255,0.04);
+    --card-bg: rgba(15,23,42,0.92);
     --accent-500:#2563eb;
     --accent-400:#3b82f6;
     --muted:#9aa6c0;
@@ -25,12 +25,35 @@
     margin:0;
     font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     color:#e6eef8;
-    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+
+    /* SAME BACKGROUND AS FILL-IN-THE-BLANKS */
+    background-color:#020617;
+    background-image:url("NYP-FA.webp"); /* change path if image is in a folder */
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     padding:20px;
     display:flex;
     justify-content:center;
+    align-items:flex-start;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* dark overlay so text stays readable */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at top left, rgba(37,99,235,0.35), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(8,47,73,0.55), transparent 60%),
+      rgba(15,23,42,0.82);
+    z-index:-1;
   }
 
   .stage{width:100%;max-width:980px;}
@@ -38,7 +61,7 @@
   header{
     display:flex;
     gap:16px;
-    align-items:stretch;
+    align-items:flex-start;
     margin-bottom:18px;
     flex-wrap:wrap;
     justify-content:space-between;
@@ -46,13 +69,15 @@
 
   .hero{
     flex:1;
-    background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
+    background: rgba(15,23,42,0.9);
     border-radius:12px;
-    padding:16px;
-    box-shadow: 0 6px 20px rgba(2,6,23,.06);
+    padding:14px;
+    box-shadow: 0 10px 30px rgba(2,6,23,.7);
+    border:1px solid rgba(148,163,184,0.25);
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:12px;
+    flex-wrap:wrap;
     min-width:0;
   }
 
@@ -61,28 +86,30 @@
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
     color:white;font-weight:700;font-size:20px;
-    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+    box-shadow: 0 6px 18px rgba(59,130,246,0.35);
     flex:0 0 56px;
   }
 
-  .hero-text h1{margin:0;font-size:1.1rem}
-  .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+  .hero-text h1{margin:0;font-size:1.15rem}
+  .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.96rem}
 
   #timerBox{
-    background: rgba(15,23,42,0.85);
+    background: rgba(15,23,42,0.9);
     border-radius:12px;
-    padding:10px 14px;
+    padding:8px 14px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:flex-start;
     min-width:130px;
-    box-shadow:0 8px 26px rgba(2,6,23,0.6);
-    border:1px solid rgba(148,163,184,0.2);
+    box-shadow:0 4px 16px rgba(0,0,0,0.5);
+    border:1px solid rgba(148,163,184,0.3);
+    white-space:nowrap;
+    font-size:.95rem;
   }
   #timerLabel{font-size:.8rem;color:var(--muted);}
   #timer{
-    font-size:1.3rem;
+    font-size:1.2rem;
     font-weight:700;
     color:#22c55e;
   }
@@ -93,11 +120,32 @@
 
   .card{
     background:var(--card-bg);
+    backdrop-filter:blur(12px);
     border-radius:var(--card-radius);
     padding:16px;
-    box-shadow: 0 14px 44px rgba(2,6,23,.28);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 18px 50px rgba(2,6,23,.8);
+    border:1px solid rgba(148,163,184,0.18);
   }
+
+  /* How to play card */
+  .card.howto{
+    margin-bottom:12px;
+    background:rgba(15,23,42,0.9);
+    border:1px solid rgba(148,163,184,0.4);
+  }
+  .howto-title{
+    font-size:.95rem;
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  .howto-list{
+    margin:0;
+    padding-left:18px;
+    font-size:.85rem;
+    color:var(--muted);
+  }
+  .howto-list li{margin-bottom:4px;}
+  .howto-highlight{color:#e5edff;font-weight:500;}
 
   .top-bar{
     display:flex;
@@ -130,16 +178,11 @@
     gap:14px;
     margin-top:6px;
   }
-  @media (max-width:780px){
-    .board{grid-template-columns:1fr;}
-    header{flex-direction:column;}
-    #timerBox{align-self:flex-start;}
-  }
 
   .pane{
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     border-radius:12px;padding:12px;
-    border:1px solid rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
   }
   .pane h2{margin:0 0 8px;font-size:.98rem;color:#e6f0ff;}
   .list{display:flex;flex-direction:column;gap:8px;}
@@ -151,7 +194,7 @@
     padding:10px 12px;
     border-radius:10px;
     border:1px solid rgba(148,163,184,0.25);
-    background: radial-gradient(circle at top left, rgba(148,163,184,0.16), rgba(15,23,42,0.9));
+    background: radial-gradient(circle at top left, rgba(148,163,184,0.16), rgba(15,23,42,0.95));
     user-select:none;
     cursor:pointer;
     color:#e5edff;
@@ -162,13 +205,13 @@
   @media (hover:hover){
     .item:hover{
       transform:translateY(-1px);
-      box-shadow:0 6px 16px rgba(15,23,42,0.4);
+      box-shadow:0 6px 16px rgba(15,23,42,0.6);
     }
   }
 
   .item.selected{
     outline:2px solid rgba(59,130,246,.6);
-    box-shadow:0 8px 18px rgba(59,130,246,.3);
+    box-shadow:0 8px 18px rgba(59,130,246,.4);
   }
   .item.matched{
     background:linear-gradient(90deg, rgba(16,185,129,0.22), rgba(6,95,70,0.9));
@@ -225,19 +268,23 @@
   .btn{
     background:linear-gradient(180deg,var(--accent-400),var(--accent-500));
     color:white;
-    padding:8px 12px;
-    border-radius:8px;
-    border:0;
-    cursor:pointer;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
     font-weight:700;
-    box-shadow:0 8px 22px rgba(37,99,235,0.18);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    box-shadow: 0 8px 22px rgba(37,99,235,0.22);
     font-size:.9rem;
   }
   .btn.ghost{
     background:transparent;
-    color:var(--accent-400);
-    border:1px solid rgba(59,130,246,0.3);
+    color:var(--accent-500);
+    border:1px solid rgba(59,130,246,0.22);
     box-shadow:none;
+    padding:9px 12px;
   }
 
   .stats{
@@ -274,6 +321,11 @@
     color:var(--muted);
     font-size:.85rem;
     margin-top:10px;
+  }
+
+  .small{
+    font-size:.95rem;
+    color:var(--muted);
   }
 
   #confetti { position:fixed; inset:0; pointer-events:none; z-index:60; display:none; }
@@ -321,8 +373,8 @@
     border-radius:14px;
     padding:22px;
     text-align:center;
-    box-shadow:0 30px 80px rgba(2,6,23,.6);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 30px 80px rgba(2,6,23,.9);
+    border:1px solid rgba(148,163,184,0.35);
     transform:translateY(8px);
     opacity:0;
     transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
@@ -348,7 +400,7 @@
     align-items:center;
     justify-content:center;
     background:linear-gradient(135deg,#ffd166,#f4a261);
-    box-shadow:0 12px 28px rgba(244,162,97,0.12);
+    box-shadow:0 12px 28px rgba(244,162,97,0.28);
   }
 
   #forging{
@@ -368,8 +420,8 @@
     padding:18px;
     border-radius:12px;
     text-align:center;
-    box-shadow:0 14px 40px rgba(2,6,23,.6);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 14px 40px rgba(2,6,23,.9);
+    border:1px solid rgba(148,163,184,0.35);
   }
   .forge-bar{
     height:10px;
@@ -385,12 +437,34 @@
     transition: width 1.2s ease;
   }
 
+  @media (max-width:780px){
+    header{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .hero{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .controls{
+      flex-direction:column;
+      align-items:stretch;
+    }
+    .stats{
+      margin-left:0;
+      margin-top:6px;
+      align-items:flex-start;
+    }
+  }
+
   @media (max-width:640px){
-    body{padding:14px;}
+    body{
+      padding:14px;
+      align-items:flex-start;
+    }
     .logo{width:48px;height:48px;}
     .hero-text h1{font-size:1rem;}
     .hero-text p{font-size:.85rem;}
-    .stats{align-items:flex-start;margin-left:0;}
   }
 </style>
 </head>
@@ -400,8 +474,8 @@
     <div class="hero">
       <div class="logo">SEG</div>
       <div class="hero-text">
-        <h1 id="headerTitle">Match the Courses to Its Future Job Prospects (Level 1)</h1>
-        <p>Complete all <strong>2 levels</strong> within 4 minutes to collect <strong>Key #1</strong>.</p>
+        <h1 id="headerTitle">Match the Course to Its Future Job Prospect (Level 1 of 5)</h1>
+        <p>Complete all <strong>5 levels</strong> within 4 minutes to collect <strong>Key #1</strong>.</p>
       </div>
     </div>
     <div id="timerBox">
@@ -411,15 +485,29 @@
   </header>
 
   <main>
+    <!-- HOW TO PLAY CARD -->
+    <section class="card howto" aria-label="How to play">
+      <h2 class="howto-title">How to Play</h2>
+      <ol class="howto-list">
+        <li>Look at the <span class="howto-highlight">course name on the left</span>.</li>
+        <li>On the right, you’ll see <span class="howto-highlight">4 job options</span>.</li>
+        <li>Tap the <span class="howto-highlight">job that best matches</span> that course.</li>
+        <li>You must clear <span class="howto-highlight">5 levels in total</span> before the timer runs out.</li>
+        <li>Scoring: correct <span class="howto-highlight">+10</span>, wrong <span class="howto-highlight">-5</span> (minimum score is 0).</li>
+      </ol>
+    </section>
+
+    <!-- MAIN GAME CARD -->
     <section class="card">
       <div class="top-bar">
-        <div id="levelLabel">Level 1 of 2</div>
-        <div id="streakBadge">Streak bonus active!</div>
+        <div id="levelLabel">Level 1 of 5</div>
+        <div id="streakBadge">Streak bonus!</div>
       </div>
 
       <div class="board" aria-label="Matching board">
         <div class="pane" id="coursesPane">
-          <h2 id="coursesTitle">Courses</h2>
+          <!-- This header will be replaced with the chosen course name -->
+          <h2 id="coursesTitle">Course</h2>
           <div class="list" id="coursesList" aria-live="polite"></div>
         </div>
 
@@ -431,7 +519,7 @@
 
       <div class="controls">
         <button id="resetBtn" class="btn ghost" aria-label="Reset game">Reset</button>
-        <div class="message small" id="hint">Tap a course (left) then a job (right) to try a match.</div>
+        <div class="message small" id="hint">Tap the correct future job prospect on the right.</div>
         <div class="stats" aria-live="polite">
           <div class="stats-line">
             <strong>Score:</strong>
@@ -440,7 +528,7 @@
           </div>
           <div class="stats-line">
             Streak: <span id="streakValue">0</span> &nbsp;•&nbsp;
-            Matches: <span id="matchedCount">0</span>/<span id="matchesTotal">0</span>
+            Levels cleared: <span id="matchedCount">0</span>/<span id="matchesTotal">5</span>
           </div>
           <div class="stats-line">
             Attempts: <span id="attempts">0</span>
@@ -492,8 +580,8 @@
 
 <script>
 /* =========================
-   COURSE BANK (from your list)
-   Each course has exactly 2 correct jobs
+   COURSE BANK
+   (each course has 2 jobs)
    ========================= */
 const courseBank = [
   {
@@ -554,7 +642,7 @@ const courseBank = [
   }
 ];
 
-const TOTAL_LEVELS = 2;
+const TOTAL_LEVELS = 5;
 
 /* =========================
    UTIL
@@ -569,57 +657,49 @@ function shuffle(arr){
 }
 
 /* =========================
-   BUILD 2 RANDOM LEVELS
-   - Pick 5 courses randomly each new play
-   - Level 1: 2 courses -> 4 jobs (2 jobs per course)
-   - Level 2: 3 courses -> 6 jobs (2 jobs per course)
+   BUILD 5 SINGLE-QUESTION LEVELS
+   - Each level: 1 random course
+   - That course => header on the left
+   - Right side: 4 job options
+     (1 correct from that course, 3 wrong from others)
    ========================= */
 function generateLevels(){
-  const picked = shuffle(courseBank).slice(0, 5);
-  const level1Courses = picked.slice(0, 2);
-  const level2Courses = picked.slice(2, 5);
+  const shuffledCourses = shuffle(courseBank);
+  const selectedCourses = shuffledCourses.slice(0, TOTAL_LEVELS);
 
-  const L1 = buildLevel({
-    levelId: 1,
-    coursesRaw: level1Courses,
-    streakTarget: 4,
-    multiplier: 1.5
-  });
-
-  const L2 = buildLevel({
-    levelId: 2,
-    coursesRaw: level2Courses,
-    streakTarget: 6,
-    multiplier: 2.0
-  });
-
-  return [L1, L2];
-}
-
-function buildLevel({ levelId, coursesRaw, streakTarget, multiplier }){
-  const courseObjs = coursesRaw.map((c, i) => ({
-    id: `L${levelId}_C${i}_${Math.random().toString(16).slice(2)}`,
-    name: c.name,
-    jobs: c.jobs.map((j, k) => ({
-      id: `L${levelId}_J${i}${k}_${Math.random().toString(16).slice(2)}`,
+  const allJobs = courseBank.flatMap(c =>
+    c.jobs.map(j => ({
+      courseName: c.name,
       title: j.title,
       sub: j.sub || ""
     }))
-  }));
+  );
 
-  const matchPairs = [];
-  courseObjs.forEach(c => c.jobs.forEach(j => matchPairs.push(`${c.id}|${j.id}`)));
+  return selectedCourses.map((course, idx) => {
+    // pick 1 correct job from this course
+    const correctJob = course.jobs[Math.floor(Math.random() * course.jobs.length)];
 
-  return {
-    id: levelId,
-    titleSuffix: `(Level ${levelId})`,
-    courses: shuffle(courseObjs),
-    jobs: shuffle(courseObjs.flatMap(c => c.jobs)),
-    matchSet: new Set(matchPairs),
-    totalMatches: matchPairs.length,
-    streakTarget,
-    multiplier
-  };
+    // build wrong options from other courses
+    const wrongPool = allJobs.filter(j =>
+      !(j.courseName === course.name && j.title === correctJob.title)
+    );
+    const wrongJobs = shuffle(wrongPool).slice(0, 3);
+
+    const options = shuffle([
+      { title: correctJob.title, sub: correctJob.sub || "", isCorrect: true },
+      ...wrongJobs.map(j => ({
+        title: j.title,
+        sub: j.sub || "",
+        isCorrect: false
+      }))
+    ]);
+
+    return {
+      levelNumber: idx + 1,
+      courseName: course.name,
+      options
+    };
+  });
 }
 
 /* =========================
@@ -637,6 +717,7 @@ const levelLabelEl = document.getElementById('levelLabel');
 const headerTitleEl = document.getElementById('headerTitle');
 const streakBadge = document.getElementById('streakBadge');
 const scoringNoteEl = document.getElementById('scoringNote');
+const coursesTitleEl = document.getElementById('coursesTitle');
 
 const resetBtn = document.getElementById('resetBtn');
 const confettiCanvas = document.getElementById('confetti');
@@ -659,18 +740,12 @@ const finalStreakSpan = document.getElementById('finalStreak');
 let levels = [];
 let currentLevelIndex = 0;
 
-let selectedCourseId = null;
-let selectedCourseEl = null;
-
-let jobMatchedById = new Set();
-let matchesThisLevel = 0;
-
 let attempts = 0;
 let score = 0;
 let streak = 0;
 let longestStreak = 0;
 
-let streakBoostApplied = false;
+let levelsCleared = 0;
 let gameLocked = false;
 
 /* Timer */
@@ -728,7 +803,7 @@ function resetTimer(){
 }
 
 /* =========================
-   CONFETTI (lighter)
+   CONFETTI
    ========================= */
 const confettiCtx = confettiCanvas.getContext('2d');
 function fireConfetti(){
@@ -789,84 +864,56 @@ window.addEventListener('resize', ()=> {
 /* =========================
    SCORING NOTE
    ========================= */
-function updateScoringNote(level){
+function updateScoringNote(){
   scoringNoteEl.innerHTML = `
-    Scoring: Correct match <strong>+10</strong>, wrong match <strong>-5</strong> (never below 0).
-    Get <strong>${level.streakTarget}</strong> correct in a row to trigger a <strong>${level.multiplier.toFixed(1)}×</strong> boost!
+    Scoring: Correct answer <strong>+10</strong>, wrong answer <strong>-5</strong> (never below 0).
+    Clear all <strong>${TOTAL_LEVELS}</strong> levels before time runs out.
   `;
 }
 
 /* =========================
    LEVEL UI
    ========================= */
-function clearSelections(){
-  if (selectedCourseEl) selectedCourseEl.classList.remove('selected');
-  selectedCourseEl = null;
-  selectedCourseId = null;
-}
-
 function loadLevel(levelIndex){
   const level = levels[levelIndex];
   currentLevelIndex = levelIndex;
 
-  clearSelections();
-  jobMatchedById = new Set();
-  matchesThisLevel = 0;
-  streakBoostApplied = false;
+  headerTitleEl.textContent =
+    `Match the Course to Its Future Job Prospect (Level ${level.levelNumber} of ${TOTAL_LEVELS})`;
+  levelLabelEl.textContent = `Level ${level.levelNumber} of ${TOTAL_LEVELS}`;
 
-  headerTitleEl.textContent = `Match the Courses to Its Future Job Prospects ${level.titleSuffix}`;
-  levelLabelEl.textContent = `Level ${level.id} of ${TOTAL_LEVELS}`;
-  updateScoringNote(level);
-
-  matchedCountEl.textContent = '0';
-  matchesTotalEl.textContent = String(level.totalMatches);
-
-  coursesList.innerHTML = '';
-  level.courses.forEach((course) => {
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.dataset.type = 'course';
-    div.dataset.id = course.id;
-    div.innerHTML = `
-      <div class="course-label">${course.name}</div>
-      <div class="pill">Course</div>
-    `;
-    coursesList.appendChild(div);
-  });
+  coursesTitleEl.textContent = level.courseName; // dynamic header
+  coursesList.innerHTML = `
+    <div class="item" style="cursor:default;">
+      <div class="course-label">${level.courseName}</div>
+      <div class="pill">Current Course</div>
+    </div>
+  `;
 
   jobsList.innerHTML = '';
-  level.jobs.forEach((job) => {
+  level.options.forEach((opt, i) => {
     const div = document.createElement('div');
     div.className = 'item';
     div.dataset.type = 'job';
-    div.dataset.id = job.id;
+    div.dataset.correct = opt.isCorrect ? 'true' : 'false';
     div.innerHTML = `
       <div class="job-main">
-        <div class="job-title">${job.title}</div>
-        <div class="job-sub">${job.sub || ''}</div>
+        <div class="job-title">${opt.title}</div>
+        <div class="job-sub">${opt.sub || ''}</div>
       </div>
-      <div class="pill">Tap to match</div>
+      <div class="pill">Option ${i + 1}</div>
     `;
     jobsList.appendChild(div);
   });
+
+  matchesTotalEl.textContent = String(TOTAL_LEVELS);
+  matchedCountEl.textContent = String(levelsCleared);
+  updateScoringNote();
 }
 
 /* =========================
-   INPUT (delegated)
+   INPUT (jobs only)
    ========================= */
-coursesList.addEventListener('click', (e) => {
-  if (gameLocked) return;
-  const item = e.target.closest('.item[data-type="course"]');
-  if (!item) return;
-
-  startTimerIfNeeded();
-
-  if (selectedCourseEl) selectedCourseEl.classList.remove('selected');
-  selectedCourseEl = item;
-  selectedCourseId = item.dataset.id;
-  selectedCourseEl.classList.add('selected');
-});
-
 jobsList.addEventListener('click', (e) => {
   if (gameLocked) return;
   const item = e.target.closest('.item[data-type="job"]');
@@ -874,87 +921,54 @@ jobsList.addEventListener('click', (e) => {
 
   startTimerIfNeeded();
 
-  const jobId = item.dataset.id;
-  if (jobMatchedById.has(jobId)) return;
-
-  if (!selectedCourseId){
-    item.classList.add('selected');
-    setTimeout(()=> item.classList.remove('selected'), 220);
-    return;
-  }
-
-  attemptMatch(selectedCourseId, jobId, item);
+  const isCorrect = item.dataset.correct === 'true';
+  handleJobSelection(item, isCorrect);
 });
 
 /* =========================
-   MATCHING
+   MATCHING (single selection)
    ========================= */
-function attemptMatch(courseId, jobId, jobEl){
-  const level = levels[currentLevelIndex];
-
+function handleJobSelection(jobEl, isCorrect){
   attempts++;
   attemptsEl.textContent = attempts;
 
-  const isCorrect = level.matchSet.has(`${courseId}|${jobId}`);
-  const courseEl = coursesList.querySelector(`.item[data-id="${courseId}"]`);
-
   if (isCorrect){
-    jobMatchedById.add(jobId);
-    matchesThisLevel++;
-    matchedCountEl.textContent = String(matchesThisLevel);
+    jobEl.classList.add('matched','correctFlash');
+    const pill = jobEl.querySelector('.pill');
+    if (pill) pill.textContent = 'Correct';
 
     applyScoreChange(+10);
-
-    if (jobEl){
-      jobEl.classList.add('matched','correctFlash');
-      const pill = jobEl.querySelector('.pill');
-      if (pill) pill.textContent = 'Matched';
-      setTimeout(()=> jobEl.classList.remove('correctFlash'), 350);
-    }
-    if (courseEl){
-      courseEl.classList.add('correctFlash');
-      setTimeout(()=> courseEl.classList.remove('correctFlash'), 350);
-    }
 
     streak++;
     if (streak > longestStreak) longestStreak = streak;
     streakEl.textContent = streak;
 
-    if (streak >= level.streakTarget && !streakBoostApplied){
-      streakBoostApplied = true;
-      score = Math.round(score * level.multiplier);
-      scoreEl.textContent = score;
-      scoreEl.classList.add('bump');
-      streakBadge.textContent = `Streak bonus! x${level.multiplier.toFixed(1)} applied`;
-      showStreakBadge();
-      setTimeout(()=> scoreEl.classList.remove('bump'), 260);
-    }
+    // small streak visual
+    streakBadge.textContent = `Streak: ${streak}`;
+    showStreakBadge();
 
-    if (matchesThisLevel === level.totalMatches){
-      if (currentLevelIndex < levels.length - 1){
-        setTimeout(()=> loadLevel(currentLevelIndex + 1), 600);
-      } else {
-        showForgingThenFinalModal();
-      }
+    levelsCleared++;
+    matchedCountEl.textContent = String(levelsCleared);
+
+    // move to next level or finish
+    if (currentLevelIndex < TOTAL_LEVELS - 1){
+      gameLocked = true;
+      setTimeout(()=> {
+        gameLocked = false;
+        loadLevel(currentLevelIndex + 1);
+      }, 600);
+    } else {
+      // all done
+      showForgingThenFinalModal();
     }
   } else {
     streak = 0;
-    streakBoostApplied = false;
     streakEl.textContent = streak;
-
     applyScoreChange(-5);
 
-    if (jobEl){
-      jobEl.classList.add('wrongFlash');
-      setTimeout(()=> jobEl.classList.remove('wrongFlash'), 320);
-    }
-    if (courseEl){
-      courseEl.classList.add('wrongFlash');
-      setTimeout(()=> courseEl.classList.remove('wrongFlash'), 320);
-    }
+    jobEl.classList.add('wrongFlash');
+    setTimeout(()=> jobEl.classList.remove('wrongFlash'), 320);
   }
-
-  clearSelections();
 }
 
 /* =========================
@@ -1018,7 +1032,7 @@ function hardResetToLevel1(){
   score = 0;
   streak = 0;
   longestStreak = 0;
-  streakBoostApplied = false;
+  levelsCleared = 0;
   gameLocked = false;
 
   attemptsEl.textContent = attempts;
@@ -1035,7 +1049,7 @@ function hardResetToLevel1(){
   forging.setAttribute('aria-hidden','true');
   forgeFill.style.width = '0%';
 
-  levels = generateLevels();   // randomize every restart/new user
+  levels = generateLevels();   // randomize every restart
   loadLevel(0);
 }
 
