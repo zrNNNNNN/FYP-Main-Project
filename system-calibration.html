@@ -26,13 +26,35 @@
     margin:0;
     font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     color:#e6eef8;
-    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+
+    /* FULL-SCREEN BACKGROUND IMAGE (same as other 2 games) */
+    background-color:#020617;
+    background-image:url("NYP-FA.webp"); /* make sure this file sits next to the HTML */
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     padding:20px;
     display:flex;
     justify-content:center;
+    align-items:flex-start;
+    position:relative;
+    overflow-x:hidden;
   }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at top left, rgba(37,99,235,0.35), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(8,47,73,0.55), transparent 60%),
+      rgba(15,23,42,0.82);
+    z-index:-1;
+  }
+
   .stage{width:100%;max-width:980px;}
 
   header{
@@ -45,10 +67,10 @@
   }
   .hero{
     flex:1;
-    background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(37,99,235,0.03));
+    background: rgba(15,23,42,0.9);
     border-radius:12px;
     padding:16px;
-    box-shadow: 0 6px 20px rgba(2,6,23,.06);
+    box-shadow: 0 10px 30px rgba(2,6,23,.7);
     display:flex;
     align-items:center;
     gap:14px;
@@ -59,14 +81,14 @@
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,var(--accent-500),var(--accent-400));
     color:white;font-weight:700;font-size:20px;
-    box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+    box-shadow: 0 6px 18px rgba(59,130,246,0.35);
     flex:0 0 56px;
   }
   .hero-text h1{margin:0;font-size:1.05rem}
   .hero-text p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
 
   #timerBox{
-    background: rgba(15,23,42,0.85);
+    background: rgba(15,23,42,0.9);
     border-radius:12px;
     padding:10px 14px;
     display:flex;
@@ -74,8 +96,8 @@
     justify-content:center;
     align-items:flex-start;
     min-width:130px;
-    box-shadow:0 8px 26px rgba(2,6,23,0.6);
-    border:1px solid rgba(148,163,184,0.2);
+    box-shadow:0 8px 26px rgba(2,6,23,0.8);
+    border:1px solid rgba(148,163,184,0.35);
   }
   #timerLabel{font-size:.8rem;color:var(--muted);}
   #timer{font-size:1.3rem;font-weight:700;color:#22c55e;}
@@ -88,8 +110,9 @@
     background:var(--card-bg);
     border-radius:var(--card-radius);
     padding:16px;
-    box-shadow: 0 14px 44px rgba(2,6,23,.28);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 18px 50px rgba(2,6,23,.85);
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
   }
 
   .top-bar{
@@ -104,8 +127,8 @@
     font-size:.78rem;
     padding:6px 12px;
     border-radius:999px;
-    background:rgba(15,23,42,0.85);
-    border:1px solid rgba(148,163,184,0.55);
+    background:rgba(15,23,42,0.9);
+    border:1px solid rgba(148,163,184,0.6);
     color:#cbd5f5;
     display:inline-flex;
     align-items:center;
@@ -136,8 +159,8 @@
     margin-top:10px;
     padding:12px;
     border-radius:12px;
-    border:1px solid rgba(59,130,246,0.25);
-    background:linear-gradient(90deg, rgba(59,130,246,0.08), rgba(15,23,42,0.35));
+    border:1px solid rgba(59,130,246,0.35);
+    background:linear-gradient(90deg, rgba(59,130,246,0.16), rgba(15,23,42,0.65));
     display:flex;
     gap:10px;
     align-items:flex-start;
@@ -147,7 +170,7 @@
     font-weight:800;
     color:#dbeafe;
     background:rgba(59,130,246,0.22);
-    border:1px solid rgba(59,130,246,0.35);
+    border:1px solid rgba(59,130,246,0.45);
     padding:6px 10px;
     border-radius:999px;
     font-size:.85rem;
@@ -166,8 +189,8 @@
     margin:12px 0;
     padding:12px;
     border-radius:12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(15,23,42,0.85));
+    border:1px solid rgba(255,255,255,0.06);
     will-change: transform;
   }
   .trackLabel{
@@ -184,9 +207,9 @@
     position:relative;
     height:18px;
     border-radius:999px;
-    background: rgba(148,163,184,0.12);
+    background: rgba(148,163,184,0.18);
     overflow:hidden;
-    box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
   }
   .zone{
     position:absolute;
@@ -196,7 +219,7 @@
     border-radius:999px;
     background: linear-gradient(90deg, rgba(16,185,129,0.35), rgba(16,185,129,0.18));
     border:1px solid rgba(16,185,129,0.45);
-    box-shadow:0 0 18px rgba(16,185,129,0.22);
+    box-shadow:0 0 18px rgba(16,185,129,0.32);
   }
   .round3 .zone{ left:44%; width:12%; }
 
@@ -208,20 +231,20 @@
     transform:translate(-50%,-50%);
     border-radius:10px;
     background: linear-gradient(180deg,#e2e8f0,#94a3b8);
-    box-shadow:0 10px 26px rgba(2,6,23,0.55);
+    box-shadow:0 10px 26px rgba(2,6,23,0.75);
     will-change: left;
   }
 
   .trackWrap.locked .track{
-    background: rgba(16,185,129,0.12);
-    border:1px solid rgba(16,185,129,0.25);
+    background: rgba(16,185,129,0.18);
+    border:1px solid rgba(16,185,129,0.4);
   }
   .trackWrap.locked .needle{
     background: linear-gradient(180deg,#10b981,#065f46);
   }
   .trackWrap.overheated .track{
-    background: rgba(239,68,68,0.10);
-    border:1px solid rgba(239,68,68,0.22);
+    background: rgba(239,68,68,0.14);
+    border:1px solid rgba(239,68,68,0.4);
   }
 
   /* Per-system action row (Rounds 1 & 2) */
@@ -240,7 +263,7 @@
     border:0;
     cursor:pointer;
     font-weight:900;
-    box-shadow:0 10px 28px rgba(37,99,235,0.22);
+    box-shadow:0 10px 28px rgba(37,99,235,0.35);
     font-size:.95rem;
     letter-spacing:.4px;
     min-height:44px;
@@ -267,7 +290,7 @@
     border:0;
     cursor:pointer;
     font-weight:900;
-    box-shadow:0 10px 28px rgba(37,99,235,0.22);
+    box-shadow:0 10px 28px rgba(37,99,235,0.35);
     font-size:1rem;
     letter-spacing:.5px;
     min-height:48px;
@@ -275,7 +298,7 @@
   .btn.ghost{
     background:transparent;
     color:var(--accent-400);
-    border:1px solid rgba(59,130,246,0.3);
+    border:1px solid rgba(59,130,246,0.5);
     box-shadow:none;
     padding:12px 16px;
     border-radius:12px;
@@ -321,12 +344,12 @@
     left:50%;
     transform:translateX(-50%);
     bottom:18px;
-    background: rgba(15,23,42,0.92);
-    border:1px solid rgba(148,163,184,0.25);
+    background: rgba(15,23,42,0.95);
+    border:1px solid rgba(148,163,184,0.35);
     color:#e6eef8;
     padding:10px 14px;
     border-radius:999px;
-    box-shadow:0 12px 34px rgba(2,6,23,0.65);
+    box-shadow:0 12px 34px rgba(2,6,23,0.9);
     z-index:90;
     opacity:0;
     pointer-events:none;
@@ -380,8 +403,8 @@
     padding:18px;
     border-radius:12px;
     text-align:center;
-    box-shadow:0 14px 40px rgba(2,6,23,.6);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 14px 40px rgba(2,6,23,.9);
+    border:1px solid rgba(255,255,255,0.06);
   }
   .forge-bar{height:10px;background: rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;margin-top:12px;}
   .forge-fill{height:100%;width:0%;background: linear-gradient(90deg,#ffd166,#f4a261);transition: width 1.2s ease;}
@@ -401,8 +424,8 @@
     border-radius:14px;
     padding:22px;
     text-align:center;
-    box-shadow:0 30px 80px rgba(2,6,23,.6);
-    border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 30px 80px rgba(2,6,23,.9);
+    border:1px solid rgba(255,255,255,0.06);
     transform:translateY(8px);
     opacity:0;
     transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .18s;
@@ -414,7 +437,7 @@
     width:96px;height:96px;margin:16px auto 8px;border-radius:16px;
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#ffd166,#f4a261);
-    box-shadow:0 12px 28px rgba(244,162,97,0.12);
+    box-shadow:0 12px 28px rgba(244,162,97,0.2);
   }
   .modal .scoreline{
     margin-top:10px;
@@ -427,7 +450,7 @@
   }
   .modal .scoreline span{
     background:rgba(15,23,42,0.65);
-    border:1px solid rgba(148,163,184,0.22);
+    border:1px solid rgba(148,163,184,0.35);
     padding:6px 10px;
     border-radius:999px;
     font-size:.92rem;
@@ -450,7 +473,6 @@
       width:100%;
     }
 
-    /* 🔧 Controls now behave like normal content, not sticky overlay */
     .controls{
       flex-direction:column;
       align-items:stretch;
@@ -496,7 +518,7 @@
     </div>
     <div id="timerBox">
       <span id="timerLabel">Time Left</span>
-      <span id="timer">4:00</span>
+      <span id="timer">5:00</span>
     </div>
   </header>
 
@@ -586,7 +608,7 @@
    ========================= */
 const SCORE_CORRECT = 10;
 const SCORE_WRONG = -5;
-const TOTAL_TIME_SECONDS = 240; // 4 minutes
+const TOTAL_TIME_SECONDS = 300; // 5 minutes
 
 const ROUND1_SYSTEMS = 2;
 const ROUND1_SPEEDS = [0.85, 1.05];
@@ -711,7 +733,6 @@ function resetTimer(){
 function handleTimeUp(){
   gameLocked = true;
   actionBtn.disabled = true;
-  // disable per-system buttons
   tracks.forEach(t => { if (t.btnEl) t.btnEl.disabled = true; });
   stopTracksAnimation();
   timeUpBar.style.display = 'flex';
@@ -738,7 +759,6 @@ function isInGreenZone(pos){
 
 /* =========================
    TRACK ANIMATION (RAF)
-   speed is "% per 16ms"
    ========================= */
 function startTracksAnimation(){
   stopTracksAnimation();
@@ -901,7 +921,6 @@ function initTracks(count, speeds, perSystemButtons){
         }
         const result = attemptLockAtIndex(i);
         if (result && result.done){
-          // Advance rounds if all done
           setTimeout(()=> {
             if (round === 1){
               buildRound2();
@@ -943,7 +962,7 @@ function setRulesForRound(){
   } else {
     rulesTextEl.innerHTML = `
       <b>Round 3:</b> Pick a target (A/B/C) then tap <b>LOCK TARGET</b> inside the green zone.<br/>
-      <div class="mini">Miss = <b>Overheat</b> 🔥. Land <b>2 successes in a row</b> on that system to recover.</div>
+      <div class="mini">Miss = <b>Overheat</b> 🔥. Land <b>1 success</b> on that system to recover.</div>
     `;
   }
 }
@@ -963,7 +982,6 @@ function buildRound1(){
     'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
     'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
 
-  // Round 1/2: hide global action button (use per-system buttons)
   actionBtn.style.display = 'none';
   actionBtn.disabled = true;
 
@@ -997,19 +1015,17 @@ function buildRound3(){
   roundTitleEl.textContent = 'Round 3 — Overheat Protocol';
   roundDescEl.innerHTML =
     'Pick a system (A/B/C), then tap <strong>LOCK TARGET</strong> when the needle is inside the (smaller) green zone. '+
-    'Misses cause <strong>overheat</strong>: land <strong>two successful locks in a row</strong> on that system to recover.';
+    'Misses cause <strong>overheat</strong>: land <strong>1 successful lock</strong> on that system to recover.';
   scoringNoteEl.innerHTML =
     'Scoring: Successful lock <strong>+10</strong>, unsuccessful lock <strong>-5</strong> (never below 0). '+
     'Get <strong>4</strong> successful locks in a row to trigger a <strong>1.5×</strong> score boost!';
 
   setRulesForRound();
 
-  // Show global action button for Round 3
   actionBtn.style.display = '';
   actionBtn.disabled = false;
   actionBtn.textContent = 'LOCK TARGET';
 
-  // Target picker + tracks
   tracksArea.innerHTML = `
     <div class="controls" style="margin-top:0;margin-bottom:10px;">
       <button class="btn ghost" id="pickA" type="button">Target: A</button>
@@ -1034,7 +1050,6 @@ function buildRound3(){
   document.getElementById('pickB').addEventListener('click', ()=>setTarget(1));
   document.getElementById('pickC').addEventListener('click', ()=>setTarget(2));
 
-  // Init track objects
   tracks = [];
   for (let i=0;i<ROUND3_SYSTEMS;i++){
     const wrapEl = document.getElementById(`wrap${i}`);
@@ -1074,23 +1089,18 @@ function attemptLockAtIndex(idx){
   attemptsEl.textContent = attempts;
 
   if (ok){
-    // Round 3 overheated recovery: need 2 consecutive OK to recover
+    // 🔥 Overheated system: now recovers with ONE success
     if (round === 3 && s.overheated){
-      s.consecOk++;
+      s.overheated = false;
+      s.consecOk = 0;
+      s.wrapEl.classList.remove('overheated');
+      s.lockStateEl.textContent = 'Recovered ✅';
+
       applyCorrectVisual(s.wrapEl);
       bumpScore(SCORE_CORRECT);
-
       addStreak();
       applyStreakBonusIfNeeded();
-
-      showToast(`Successful lock! +10 (cooling ${s.consecOk}/2)`);
-
-      if (s.consecOk >= 2){
-        s.overheated = false;
-        s.consecOk = 0;
-        s.wrapEl.classList.remove('overheated');
-        s.lockStateEl.textContent = 'Recovered ✅';
-      }
+      showToast('Successful lock! +10 (recovered)');
       return {done:false, correct:true};
     }
 
@@ -1232,7 +1242,7 @@ function fireConfetti(){
   requestAnimationFrame(render);
 }
 
-window.addEventListener('resize', ()=> {
+window.addEventListener('resize', ()=>{
   if (confettiCanvas.style.display !== 'none'){
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
@@ -1274,7 +1284,7 @@ restartBtn.addEventListener('click', hardReset);
    ========================= */
 actionBtn.addEventListener('click', ()=>{
   if (gameLocked) return;
-  if (round !== 3) return; // only works in round 3
+  if (round !== 3) return;
   startTimerIfNeeded();
 
   const result = lockTargetRound3();
