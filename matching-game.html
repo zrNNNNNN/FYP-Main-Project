@@ -466,6 +466,61 @@
     .hero-text h1{font-size:1rem;}
     .hero-text p{font-size:.85rem;}
   }
+
+  /* ===== DIGITAL ACHIEVEMENT CARD ===== */
+.achievement-card{
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: 20px;
+  padding: 26px 22px;
+  color: white;
+}
+
+.achievement-card h3{
+  margin: 10px 0 4px;
+  font-size: 1.1rem;
+  color: #fde68a;
+}
+
+.achievement-card h2{
+  margin: 0 0 14px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.badge{
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#facc15,#fb923c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.achievement-meta{
+  margin-top: 12px;
+  font-size: .95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.achievement-footer{
+  margin-top: 14px;
+  opacity: .85;
+}
+
+.achievement-actions{
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 </style>
 </head>
 <body>
@@ -557,26 +612,32 @@
 </div>
 
 <div id="finalOverlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="modal" role="document">
-    <div class="key" aria-hidden="true">
-      <svg width="56" height="56" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="k1" x1="0" x2="1">
-            <stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/>
-          </linearGradient>
-        </defs>
-        <path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k1)"/>
-      </svg>
+  <div class="modal achievement-card" role="document" id="achievementCard">
+
+    <div class="badge">🏆</div>
+
+    <h3>Achievement Unlocked</h3>
+    <h2>Matching Master</h2>
+
+    <div class="achievement-meta">
+      <div>✔ Game Completed</div>
+      <div>⭐ Final Score: <strong><span id="finalScore">0</span></strong></div>
+      <div>🔥 Best Streak: <strong><span id="finalStreak">0</span></strong></div>
     </div>
-    <h3>Key #1 Received!</h3>
-    <p>Your final score is <strong><span id="finalScore">0</span></strong>.</p>
-    <p>Your longest streak was <strong><span id="finalStreak">0</span></strong> correct in a row.</p>
-    <p>Great! Screenshot this page to claim your prize at Level 1.</p>
-    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
-      <button id="finalClose" class="btn ghost" aria-label="Close">Close</button>
+
+    <div class="achievement-footer">
+      <small>SEG 2026</small>
     </div>
+
+    <div class="achievement-actions">
+      <button class="btn" onclick="downloadAchievement()">Download Sticker</button>
+      <button id="finalClose" class="btn ghost">Close</button>
+    </div>
+
+    <p class="small">You may also screenshot this card 📸</p>
   </div>
 </div>
+
 
 <script>
 /* =========================
@@ -1061,11 +1122,37 @@ finalCloseBtn.addEventListener('click', ()=> {
   finalOverlay.setAttribute('aria-hidden','true');
 });
 
+
+
 /* =========================
    INIT
    ========================= */
 updateTimerUI();
 hardResetToLevel1();
+
 </script>
+
+<!-- html2canvas library -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<!-- Achievement download function -->
+<script>
+function downloadAchievement(){
+  const card = document.getElementById("achievementCard");
+
+  if (!card) {
+    alert("Achievement card not found");
+    return;
+  }
+
+  html2canvas(card, { backgroundColor: null }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "SEG_Matching_Master.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+</script>
+
 </body>
 </html>
