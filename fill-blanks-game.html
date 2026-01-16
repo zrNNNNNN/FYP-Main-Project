@@ -411,7 +411,38 @@ input.blank.wrong{
   .hero h1{font-size:1rem;}
   .hero p{font-size:.85rem;}
 }
+
+/* ========= FINAL ACHIEVEMENT HARD RESET ========= */
+#achievementOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: none !important;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(5, 10, 30, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+
+#achievementOverlay.show {
+  display: flex !important;
+}
+
+/* === DISABLE OLD FINAL MODAL (DO NOT DELETE) === */
+.modal:has(.key):has(#closeModal) {
+  display: none !important;
+}
+
+
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 </head>
 <body>
 <div class="stage">
@@ -493,16 +524,34 @@ input.blank.wrong{
             <stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a261"/>
           </linearGradient>
         </defs>
-        <path d="M44 24a12 12 0 1 0-8.485 11.314L43 31.828V36h4v6h-4v4h-4v-4h-4v4h-6l-9 9v-6H8v-8h8v-6h6v-6l2-2.001A12 12 0 0 0 44 24z" fill="url(#k)"/>
       </svg>
     </div>
-    <h3 id="modalTitle">Key #2 Received!</h3>
-    <p class="small">Great! Screenshot this page to claim your prize at Level 1.</p>
-    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
       <button id="closeModal" class="btn ghost" aria-label="Close">Close</button>
     </div>
   </div>
 </div>
+
+
+<!-- Achievement Card Modal -->
+<div id="achievementOverlay" class="overlay" aria-hidden="true">
+  <div class="modal" role="document" aria-labelledby="achievementTitle" style="max-width:360px;">
+    <div style="width:72px;height:72px;margin:0 auto 12px;border-radius:50%;background:linear-gradient(135deg,#ffd166,#f4a261);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(244,162,97,0.28);">
+      <!-- trophy icon -->
+      <img src="/mnt/data/48d81f0f-a05b-43ca-8d67-5b076c0bd9d5.png" alt="Trophy" style="width:40px;height:40px;">
+    </div>
+    <h3 id="achievementTitle" style="color:#ffd166;margin-bottom:8px;">Fill-in-the-Blanks Champion</h3>
+    <p style="margin:4px 0; font-weight:500;">✅ Game Completed</p>
+    <p style="margin:4px 0;">⭐ Final Score: <span id="achScore">0</span></p>
+    <p style="margin:4px 0;">🔥 Best Streak: <span id="achStreak">0</span></p>
+    <p style="margin:6px 0 12px;font-size:0.85rem;color:var(--muted);">SEG 2026</p>
+    <div style="display:flex;justify-content:center;gap:10px;margin-top:10px;">
+      <button id="downloadSticker" class="btn">Download Sticker</button>
+      <button id="closeAchievement" class="btn ghost">Close</button>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:8px;">You may also screenshot this card 📸</p>
+  </div>
+</div>
+
 
 <script>
 /* =========================
@@ -812,10 +861,57 @@ function showForgingThenModal() {
     forging.setAttribute('aria-hidden','true');
     playSuccess();
     fireConfetti();
+    showAchievementCard();
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
   }, 1400);
 }
+
+
+
+function showAchievementCard() {
+  const overlay = document.getElementById("achievementOverlay");
+  const card = document.getElementById("achievementCard");
+
+  // update stats (use your existing variables)
+  document.getElementById("achScore").textContent = totalBlanks;
+  document.getElementById("achStreak").textContent =
+    Math.max(1, totalBlanks - attempts);
+
+  // show overlay
+  overlay.classList.add("show");
+
+  // DOWNLOAD BUTTON (bind here, when it exists)
+  const downloadBtn = document.getElementById("downloadSticker");
+  downloadBtn.onclick = () => {
+    html2canvas(card, { backgroundColor: null }).then(canvas => {
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "Fill-in-the-Blanks-Champion.png";
+      a.click();
+    });
+  };
+
+  // CLOSE BUTTON
+  document.getElementById("closeAchievement").onclick = () => {
+    overlay.classList.remove("show");
+  };
+}
+
+
+
+// Optional: download sticker functionality
+document.getElementById("downloadSticker").addEventListener("click", () => {
+  // Capture modal and download as image
+  const card = document.querySelector("#achievementOverlay .modal");
+  html2canvas(card).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "achievement.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+});
+
 
 /* =========================
    TIMER SYSTEM (3 MINUTES, MM:SS)
@@ -940,5 +1036,8 @@ buildQuestions();
 updateProgress();
 timerDisplay.textContent = formatTime(timeLeft);
 </script>
+
+
 </body>
 </html>
+
